@@ -30,7 +30,8 @@ Add people** y agregalo. Le llega un mail para aceptar.
 | **Liderazgo** | Pastores, ancianos y diáconos, con su retrato. |
 | **Datos de la iglesia** | Próximo culto, horarios, dirección, mapa, mails, WhatsApp y redes. |
 | **Portada** | Textos del inicio: encabezado, «Confesamos», franja de iglesia local, versículo y «Visitanos». |
-| **Fotos del sitio** | Las fotos de fondo de los encabezados y franjas. |
+| **Fotos del sitio** | Las fotos de fondo de los encabezados y franjas (la portada alterna varias). |
+| **Galería de reuniones** | Las fotos y textos de «Nuestras reuniones» en la portada (domingo y miércoles). |
 | **Recursos escritos** | PDFs y enlaces de la página de recursos. |
 | **Página «Nuestra historia»** | Todo el texto de esa página. |
 

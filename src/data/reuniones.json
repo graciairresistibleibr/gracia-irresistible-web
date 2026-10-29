@@ -1,0 +1,26 @@
+{
+  "antetitulo": "Nuestras reuniones",
+  "titulo": "Una iglesia que se reúne",
+  "texto": "Cada semana nos juntamos para escuchar la Palabra, orar y cuidarnos como hermanos. Así se ven nuestras reuniones.",
+  "domingo": {
+    "cuando": "Domingos · 10:00 h",
+    "titulo": "Culto de adoración",
+    "texto": "Cantamos, oramos y escuchamos la predicación expositiva de las Escrituras como congregación.",
+    "fotos": [
+      { "foto": "/images/reuniones/domingo-1.jpg", "descripcion": "La congregación escuchando la predicación del domingo" },
+      { "foto": "/images/reuniones/domingo-2.jpg", "descripcion": "El Pr. Telias Camacho Jonatan predicando desde el púlpito" },
+      { "foto": "/images/reuniones/domingo-3.jpg", "descripcion": "La congregación de pie, cantando durante el culto" },
+      { "foto": "/images/reuniones/domingo-4.jpg", "descripcion": "Hermanos y familias reunidos el domingo" },
+      { "foto": "/images/reuniones/domingo-5.jpg", "descripcion": "Vista del salón durante el culto de adoración" }
+    ]
+  },
+  "miercoles": {
+    "cuando": "Miércoles · 20:00 h",
+    "titulo": "Oración y estudio bíblico",
+    "texto": "A mitad de semana nos reunimos para orar juntos y estudiar la Biblia en un ambiente cercano.",
+    "fotos": [
+      { "foto": "/images/reuniones/miercoles-1.jpg", "descripcion": "Hermanos orando juntos en la reunión del miércoles" },
+      { "foto": "/images/reuniones/miercoles-2.jpg", "descripcion": "Estudio bíblico en ronda los miércoles" }
+    ]
+  }
+}

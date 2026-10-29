@@ -30,7 +30,7 @@ Editá estos tres campos cada semana. Se reflejan automáticamente en el home.
 horarios: [
   { dia: 'Domingo',   hora: '10:00', titulo: 'Culto de adoración' },
   { dia: 'Domingo',   hora: '18:30', titulo: 'Estudio bíblico' },
-  { dia: 'Miércoles', hora: '20:00', titulo: 'Reunión de oración' },
+  { dia: 'Miércoles', hora: '20:00', titulo: 'Oración y estudio bíblico' },
 ],
 ```
 

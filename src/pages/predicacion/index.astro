@@ -11,6 +11,7 @@ import Icon from '../../components/ui/Icon.astro';
 import Watermark from '../../components/ui/Watermark.astro';
 import SermonCard from '../../components/sermones/SermonCard.astro';
 import { formatFecha } from '../../utils/format.ts';
+import { fotoSrc } from '../../utils/fotos.ts';
 
 const todos = (await getSermones()).sort(
   (a, b) => b.data.fecha.getTime() - a.data.fecha.getTime(),
@@ -21,6 +22,7 @@ const ultimos = todos.slice(0, 6);
 const sermonesSerieActual = serieActual
   ? todos.filter((s) => s.data.serieSlug === serieActual.id).length
   : 0;
+const fondo = fotoSrc('predicacion');
 ---
 
 <Layout
@@ -30,6 +32,13 @@ const sermonesSerieActual = serieActual
   <!-- Serie actual destacada -->
   {serieActual && (
     <section class="serie-hero">
+      <div class="serie-hero__bg" aria-hidden="true">
+        <picture>
+          {fondo.webp && <source srcset={fondo.webp} type="image/webp" />}
+          <img src={fondo.src} alt="" fetchpriority="high" decoding="async" />
+        </picture>
+      </div>
+      <div class="serie-hero__overlay" aria-hidden="true"></div>
       <Watermark position="right" opacity={0.08} color="var(--color-crema)" size="min(55%, 460px)" />
       <Container>
         <div class="serie-hero__inner">
@@ -105,6 +114,25 @@ const sermonesSerieActual = serieActual
     background: var(--color-sepia-profundo);
     color: var(--color-crema);
     padding-block: clamp(3.5rem, 9vw, 6.5rem);
+  }
+  .serie-hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .serie-hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center 30%;
+    filter: saturate(0.85) blur(2px);
+    transform: scale(1.06);
+  }
+  .serie-hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(74, 46, 23, 0.7);
   }
   .serie-hero__inner {
     position: relative;

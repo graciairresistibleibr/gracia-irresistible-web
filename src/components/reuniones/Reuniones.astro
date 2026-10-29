@@ -1,0 +1,149 @@
+---
+/**
+ * Galería «Nuestras reuniones»: culto del domingo (mosaico con una foto grande)
+ * y oración y estudio de los miércoles. Textos y fotos en src/data/reuniones.json
+ * (panel → «Galería de reuniones»).
+ */
+import Section from '../ui/Section.astro';
+import Eyebrow from '../ui/Eyebrow.astro';
+import { conWebp } from '../../utils/fotos.ts';
+import reuniones from '../../data/reuniones.json';
+
+const { antetitulo, titulo, texto, domingo, miercoles } = reuniones;
+const fotos = (lista: { foto: string; descripcion?: string }[]) =>
+  (lista ?? []).filter((f) => f.foto).map((f) => ({ ...conWebp(f.foto), alt: f.descripcion ?? '' }));
+const fotosDomingo = fotos(domingo.fotos);
+const fotosMiercoles = fotos(miercoles.fotos);
+---
+
+<Section surface="crema" space="md" id="reuniones">
+  <div class="head">
+    <Eyebrow>{antetitulo}</Eyebrow>
+    <h2 class="t-h2 mt-2">{titulo}</h2>
+    {texto && <p class="head__text">{texto}</p>}
+  </div>
+
+  <article class="reunion">
+    <header class="reunion__head">
+      <p class="t-eyebrow reunion__when">{domingo.cuando}</p>
+      <h3 class="t-h3">{domingo.titulo}</h3>
+      {domingo.texto && <p class="reunion__text">{domingo.texto}</p>}
+    </header>
+    <div class="mosaico">
+      {fotosDomingo.map((f) => (
+        <figure class="foto">
+          <picture>
+            {f.webp && <source srcset={f.webp} type="image/webp" />}
+            <img class="photo-treatment" src={f.src} alt={f.alt} loading="lazy" decoding="async" />
+          </picture>
+        </figure>
+      ))}
+    </div>
+  </article>
+
+  <article class="reunion reunion--split">
+    <header class="reunion__head">
+      <p class="t-eyebrow reunion__when">{miercoles.cuando}</p>
+      <h3 class="t-h3">{miercoles.titulo}</h3>
+      {miercoles.texto && <p class="reunion__text">{miercoles.texto}</p>}
+    </header>
+    <div class="par">
+      {fotosMiercoles.map((f) => (
+        <figure class="foto">
+          <picture>
+            {f.webp && <source srcset={f.webp} type="image/webp" />}
+            <img class="photo-treatment" src={f.src} alt={f.alt} loading="lazy" decoding="async" />
+          </picture>
+        </figure>
+      ))}
+    </div>
+  </article>
+</Section>
+
+<style>
+  .mt-2 { margin-top: var(--space-2); }
+  .head {
+    margin-bottom: var(--space-12);
+  }
+  .head h2 {
+    max-width: 24ch;
+  }
+  .head__text {
+    margin-top: var(--space-4);
+    max-width: 56ch;
+    color: var(--color-piedra-texto);
+  }
+
+  .reunion + .reunion {
+    margin-top: var(--space-16);
+    padding-top: var(--space-12);
+    border-top: 1px solid var(--border-subtle);
+  }
+  .reunion__head {
+    margin-bottom: var(--space-6);
+    max-width: 52ch;
+  }
+  .reunion__when {
+    color: var(--color-sepia);
+    margin-bottom: var(--space-2);
+  }
+  .reunion__text {
+    margin-top: var(--space-3);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-piedra-texto);
+  }
+
+  .foto {
+    position: relative;
+    margin: 0;
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--color-sepia-profundo);
+    aspect-ratio: 4 / 3;
+  }
+  .foto img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Domingo: la primera foto grande y las demás alrededor, en tamaño parejo */
+  .mosaico {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .mosaico .foto:first-child {
+    grid-column: span 2;
+  }
+  @media (min-width: 900px) {
+    .mosaico {
+      grid-template-columns: repeat(4, 1fr);
+    }
+    .mosaico .foto:first-child {
+      grid-row: span 2;
+      aspect-ratio: auto;
+    }
+  }
+
+  /* Miércoles: texto a un lado y dos fotos al otro */
+  .par {
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr));
+  }
+  @media (min-width: 900px) {
+    .reunion--split {
+      display: grid;
+      grid-template-columns: 4fr 8fr;
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: center;
+    }
+    .reunion--split .reunion__head {
+      margin-bottom: 0;
+    }
+  }
+</style>
