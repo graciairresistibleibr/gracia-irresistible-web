@@ -1,0 +1,341 @@
+/* =========================================================================
+   Sistema de diseño · Iglesia Bautista Reformada "Gracia Irresistible"
+   Derivado del Manual de Identidad de Marca v1.0 (Edición 2026).
+   Estos tokens son inmutables. No introducir colores ni tamaños fuera de aquí.
+   ========================================================================= */
+
+@import 'tailwindcss';
+
+/* --- Fuentes self-hosted (nunca CDN de Google Fonts) --------------------- */
+@import '@fontsource/lora/latin-400.css';
+@import '@fontsource/lora/latin-500.css';
+@import '@fontsource/lora/latin-400-italic.css';
+@import '@fontsource/lora/latin-ext-400.css';
+@import '@fontsource/poppins/latin-400.css';
+@import '@fontsource/poppins/latin-500.css';
+@import '@fontsource/poppins/latin-600.css';
+@import '@fontsource/poppins/latin-400-italic.css';
+@import '@fontsource/poppins/latin-ext-400.css';
+
+/* =========================================================================
+   1 · Tokens de marca como CSS custom properties
+   ========================================================================= */
+:root {
+  /* Primarios */
+  --color-sepia: #6b4423;
+  --color-sepia-profundo: #4a2e17;
+  --color-tinta: #1a1a1a; /* nunca #000000 */
+
+  /* Neutros */
+  --color-crema: #f5efe6;
+  --color-marfil: #faf7f2;
+  --color-piedra: #78716c;
+  /* Variante más oscura de piedra SÓLO para texto pequeño, para cumplir WCAG AA
+     (piedra puro queda en ~4.48:1 sobre crema/marfil). El swatch de identidad
+     sigue siendo #78716C; este derivado se usa en textos secundarios. */
+  --color-piedra-texto: #6d675e;
+  --color-oro-antiguo: #b8935a; /* uso ocasional, litúrgico (ornamento y display grande) */
+  /* Oro más oscuro SÓLO para texto sobre fondos claros (oro puro queda en
+     ~2.7:1 sobre crema). El acento litúrgico sigue siendo #B8935A. */
+  --color-oro-texto: #8a6a2f;
+
+  /* Secundarios · Verde bosque (uso reservado) */
+  --color-verde-bosque: #3e5641;
+  --color-verde-profundo: #2a3d2d;
+  --color-verde-salvia: #7a8b72;
+
+  /* Tipografías */
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Poppins', system-ui, -apple-system, sans-serif;
+
+  /* Escala tipográfica fluida (clamp) */
+  --fs-display: clamp(2rem, 5vw, 3.5rem);
+  --fs-h1: clamp(1.75rem, 4vw, 2.625rem);
+  --fs-h2: clamp(1.375rem, 3vw, 1.75rem);
+  --fs-h3: clamp(1.125rem, 2.2vw, 1.375rem);
+  --fs-eyebrow: 0.6875rem;
+  --fs-body: clamp(1rem, 1.05vw, 1.0625rem);
+  --fs-body-lg: clamp(1.0625rem, 1.15vw, 1.1875rem);
+  --fs-cita: clamp(1.0625rem, 1.4vw, 1.25rem);
+  --fs-caption: 0.8125rem;
+
+  /* Espaciado base 4px */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-24: 6rem;
+  --space-32: 8rem;
+  --space-40: 10rem;
+
+  /* Contenedores */
+  --container-max: 1200px;
+  --reading-max: 720px;
+
+  /* Superficie */
+  --radius: 2px;
+  --shadow-hover: 0 1px 2px rgba(26, 26, 26, 0.06);
+  --border-subtle: rgba(107, 68, 35, 0.3); /* sepia 30% */
+  --border-stone: rgba(120, 113, 108, 0.3); /* piedra 30% */
+}
+
+/* Exponer tokens al motor de Tailwind 4 (theme inline) --------------------- */
+@theme inline {
+  --color-sepia: var(--color-sepia);
+  --color-sepia-profundo: var(--color-sepia-profundo);
+  --color-tinta: var(--color-tinta);
+  --color-crema: var(--color-crema);
+  --color-marfil: var(--color-marfil);
+  --color-piedra: var(--color-piedra);
+  --color-oro-antiguo: var(--color-oro-antiguo);
+  --color-verde-bosque: var(--color-verde-bosque);
+  --color-verde-profundo: var(--color-verde-profundo);
+  --color-verde-salvia: var(--color-verde-salvia);
+
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+
+  --radius-sm: 2px;
+  --radius: 2px;
+}
+
+/* =========================================================================
+   2 · Reset ligero y base
+   ========================================================================= */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+* {
+  margin: 0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--color-tinta);
+  background-color: var(--color-marfil);
+  font-feature-settings: 'kern', 'liga', 'onum';
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img,
+picture,
+svg,
+video {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+}
+
+/* =========================================================================
+   3 · Escala tipográfica (roles)
+   ========================================================================= */
+.t-display {
+  font-family: var(--font-serif);
+  font-size: var(--fs-display);
+  font-weight: 400;
+  line-height: 1.1;
+  letter-spacing: -0.5px;
+}
+
+.t-h1 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h1);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: -0.3px;
+}
+
+.t-h2 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.2px;
+}
+
+.t-h3 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.t-eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--fs-eyebrow);
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+}
+
+.t-body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  font-weight: 400;
+  line-height: 1.6;
+}
+
+.t-body-lg {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-lg);
+  font-weight: 400;
+  line-height: 1.55;
+}
+
+.t-cita {
+  font-family: var(--font-serif);
+  font-size: var(--fs-cita);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.t-caption {
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.4;
+  color: var(--color-piedra-texto);
+}
+
+/* =========================================================================
+   4 · Utilidades editoriales
+   ========================================================================= */
+.reading {
+  max-width: var(--reading-max);
+  margin-inline: auto;
+}
+
+/* Ancho de línea ideal 65-75 caracteres para bloques de lectura */
+.measure {
+  max-width: 65ch;
+}
+
+/* Contenido MDX / prosa larga --------------------------------------------- */
+.prose {
+  color: var(--color-tinta);
+  font-size: var(--fs-body);
+  line-height: 1.7;
+  max-width: 65ch;
+}
+.prose > * + * {
+  margin-top: var(--space-6);
+}
+.prose h2 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h2);
+  font-weight: 400;
+  line-height: 1.2;
+  letter-spacing: -0.2px;
+  margin-top: var(--space-12);
+}
+.prose h3 {
+  font-family: var(--font-serif);
+  font-size: var(--fs-h3);
+  font-weight: 500;
+  margin-top: var(--space-8);
+}
+.prose a {
+  color: var(--color-sepia);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.prose blockquote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: var(--fs-cita);
+  color: var(--color-sepia-profundo);
+  border-left: 2px solid var(--color-sepia);
+  padding-left: var(--space-6);
+}
+.prose ul,
+.prose ol {
+  padding-left: var(--space-6);
+}
+.prose li + li {
+  margin-top: var(--space-2);
+}
+.prose strong {
+  font-weight: 600;
+  color: var(--color-sepia-profundo);
+}
+
+/* =========================================================================
+   5 · Accesibilidad
+   ========================================================================= */
+:focus-visible {
+  outline: 2px solid var(--color-sepia);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: 0;
+  z-index: 100;
+  background: var(--color-crema);
+  color: var(--color-sepia-profundo);
+  padding: var(--space-2) var(--space-4);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+}
+.skip-link:focus {
+  left: var(--space-2);
+  top: var(--space-2);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Tratamiento cálido uniforme para toda la fotografía (familia visual) ----- */
+.photo-treatment {
+  filter: sepia(0.15) saturate(0.85);
+}

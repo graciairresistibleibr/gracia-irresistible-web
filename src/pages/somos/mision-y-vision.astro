@@ -1,0 +1,95 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Container from '../../components/ui/Container.astro';
+import Section from '../../components/ui/Section.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import ValueCard from '../../components/somos/ValueCard.astro';
+
+const valores = [
+  { titulo: 'Sujeción a la Escritura', texto: 'La Palabra sola gobierna nuestra fe y nuestra práctica.' },
+  { titulo: 'Predicación expositiva', texto: 'Explicamos el texto en su contexto, semana a semana.' },
+  { titulo: 'Adoración regulada', texto: 'Adoramos como Dios ha ordenado, no como el hombre prefiere.' },
+  { titulo: 'Membresía significativa', texto: 'Ser miembro es un compromiso mutuo de amor y cuidado.' },
+  { titulo: 'Gobierno de ancianos', texto: 'Cristo pastorea a su iglesia por medio de ancianos calificados.' },
+  { titulo: 'Las ordenanzas', texto: 'Guardamos el bautismo de creyentes y la Cena del Señor.' },
+  { titulo: 'El hogar', texto: 'La primera iglesia es el hogar; fortalecemos a las familias.' },
+  { titulo: 'La gloria de Dios', texto: 'Todo lo hacemos para la gloria de Dios, y de nadie más.' },
+];
+---
+
+<Layout
+  title="Misión y visión"
+  description="La misión y la visión de la Iglesia Bautista Reformada Gracia Irresistible, con nuestros ocho valores fundamentales."
+>
+  <h1 class="visually-hidden">Misión y visión</h1>
+
+  <!-- Misión -->
+  <Section surface="sepia" space="md">
+    <Container width="reading">
+      <Eyebrow color="crema">Nuestra misión</Eyebrow>
+      <p class="declara mt-4">
+        Adorar a Dios, edificar a los santos por la Palabra y anunciar el evangelio
+        de la gracia soberana, para la gloria de Cristo en Resistencia y hasta lo
+        último de la tierra.
+      </p>
+    </Container>
+  </Section>
+
+  <!-- Visión -->
+  <Section surface="crema" space="md">
+    <Container width="reading">
+      <Eyebrow>Nuestra visión</Eyebrow>
+      <p class="declara declara--dark mt-4">
+        Una congregación sana y perdurable: fiel a la Escritura, arraigada en la
+        Confesión de 1689, con hogares fortalecidos, miembros que se aman y una mesa
+        abierta a todo pecador que se arrepiente y cree.
+      </p>
+    </Container>
+  </Section>
+
+  <!-- Valores -->
+  <Section surface="marfil" space="md">
+    <div class="valores-head">
+      <Eyebrow>Valores fundamentales</Eyebrow>
+      <h2 class="t-h2 mt-2">Ocho convicciones que nos ordenan</h2>
+    </div>
+    <div class="valores-grid">
+      {valores.map((v, i) => (
+        <ValueCard numero={i + 1} titulo={v.titulo}>{v.texto}</ValueCard>
+      ))}
+    </div>
+  </Section>
+</Layout>
+
+<style>
+  .mt-2 { margin-top: var(--space-2); }
+  .mt-4 { margin-top: var(--space-4); }
+  .declara {
+    font-family: var(--font-serif);
+    font-size: clamp(1.375rem, 3vw, 1.875rem);
+    line-height: 1.4;
+    color: var(--color-crema);
+    text-wrap: balance;
+  }
+  .declara--dark {
+    color: var(--color-sepia-profundo);
+  }
+  .valores-head {
+    margin-bottom: var(--space-8);
+  }
+  .valores-grid {
+    display: grid;
+    gap: var(--space-8) var(--space-6);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 820px) {
+    .valores-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  @media (max-width: 480px) {
+    .valores-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

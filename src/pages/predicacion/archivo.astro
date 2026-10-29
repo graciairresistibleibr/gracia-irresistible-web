@@ -1,0 +1,284 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { formatFecha, isoFecha, formatDuracion } from '../../utils/format.ts';
+
+const sermones = (await getCollection('sermones')).sort(
+  (a, b) => b.data.fecha.getTime() - a.data.fecha.getTime(),
+);
+
+const uniq = (arr: string[]) => [...new Set(arr)].sort();
+const series = uniq(sermones.map((s) => s.data.serie));
+const libros = uniq(sermones.map((s) => s.data.libro));
+const predicadores = uniq(sermones.map((s) => s.data.predicador));
+const anios = uniq(sermones.map((s) => String(s.data.fecha.getUTCFullYear()))).reverse();
+---
+
+<Layout
+  title="Archivo de predicación"
+  description="Todas las predicaciones de la iglesia, con filtros por serie, libro, predicador y año."
+>
+  <PageHero
+    eyebrow="Predicación"
+    title="Archivo de predicaciones"
+    subtitle="Toda la Palabra predicada, para escuchar y descargar."
+    image="biblia-espanol"
+  />
+
+  <Section surface="marfil" space="md">
+    <Container>
+      <!-- Filtros -->
+      <form class="filtros" id="filtros" aria-label="Filtrar predicaciones">
+        <div class="filtros__search">
+          <Icon name="search" size={18} class="filtros__search-icon" />
+          <input
+            type="search"
+            id="buscar"
+            placeholder="Buscar por título o texto bíblico…  (Ctrl + K)"
+            aria-label="Buscar predicaciones"
+            autocomplete="off"
+          />
+        </div>
+        <div class="filtros__selects">
+          <label>
+            <span class="visually-hidden">Serie</span>
+            <select data-filter="serie">
+              <option value="">Todas las series</option>
+              {series.map((s) => <option value={s}>{s}</option>)}
+            </select>
+          </label>
+          <label>
+            <span class="visually-hidden">Libro</span>
+            <select data-filter="libro">
+              <option value="">Todos los libros</option>
+              {libros.map((l) => <option value={l}>{l}</option>)}
+            </select>
+          </label>
+          <label>
+            <span class="visually-hidden">Predicador</span>
+            <select data-filter="predicador">
+              <option value="">Todos los predicadores</option>
+              {predicadores.map((p) => <option value={p}>{p}</option>)}
+            </select>
+          </label>
+          <label>
+            <span class="visually-hidden">Año</span>
+            <select data-filter="anio">
+              <option value="">Todos los años</option>
+              {anios.map((a) => <option value={a}>{a}</option>)}
+            </select>
+          </label>
+        </div>
+      </form>
+
+      <p class="conteo" id="conteo" aria-live="polite">{sermones.length} predicaciones</p>
+
+      <!-- Lista -->
+      <ul class="lista" id="lista">
+        {sermones.map((s) => (
+          <li
+            class="fila"
+            data-serie={s.data.serie}
+            data-libro={s.data.libro}
+            data-predicador={s.data.predicador}
+            data-anio={s.data.fecha.getUTCFullYear()}
+            data-texto={`${s.data.titulo} ${s.data.textoBiblico} ${s.data.serie}`.toLowerCase()}
+          >
+            <a class="fila__link" href={`/predicacion/${s.id}`}>
+              <div class="fila__main">
+                <span class="fila__serie">{s.data.serie}</span>
+                <span class="fila__titulo">{s.data.titulo}</span>
+                <span class="fila__ref">{s.data.textoBiblico}</span>
+              </div>
+              <div class="fila__meta">
+                <span>{s.data.predicador}</span>
+                <time datetime={isoFecha(s.data.fecha)}>{formatFecha(s.data.fecha)}</time>
+                <span>{formatDuracion(s.data.duracion)}</span>
+              </div>
+              <span class="fila__icon" aria-hidden="true"><Icon name="chevron-right" size={18} /></span>
+            </a>
+          </li>
+        ))}
+      </ul>
+
+      <p class="sin-resultados" id="sin-resultados" hidden>
+        No hay predicaciones que coincidan con el filtro.
+      </p>
+    </Container>
+  </Section>
+</Layout>
+
+<style>
+  .filtros {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+  .filtros__search {
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .filtros__search-icon {
+    position: absolute;
+    left: var(--space-4);
+    color: var(--color-piedra-texto);
+    pointer-events: none;
+  }
+  .filtros__search input {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    padding: 0.875rem 1rem 0.875rem 2.75rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    background: var(--color-crema);
+    color: var(--color-tinta);
+  }
+  .filtros__selects {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+  @media (min-width: 760px) {
+    .filtros__selects {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+  .filtros__selects select {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    background: var(--color-marfil);
+    color: var(--color-tinta);
+    cursor: pointer;
+  }
+  .conteo {
+    font-size: 0.8125rem;
+    color: var(--color-piedra-texto);
+    margin-bottom: var(--space-6);
+  }
+  .lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+  .fila {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .fila__link {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-5) 0;
+    text-decoration: none;
+    color: inherit;
+  }
+  @media (min-width: 760px) {
+    .fila__link {
+      grid-template-columns: 1fr auto auto;
+    }
+  }
+  .fila__link:hover .fila__titulo,
+  .fila__link:focus-visible .fila__titulo {
+    color: var(--color-sepia);
+  }
+  .fila__serie {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-sepia);
+    margin-bottom: var(--space-1);
+  }
+  .fila__titulo {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.1875rem;
+    line-height: 1.25;
+  }
+  .fila__ref {
+    display: block;
+    font-size: 0.8125rem;
+    font-style: italic;
+    color: var(--color-piedra-texto);
+    margin-top: var(--space-1);
+  }
+  .fila__meta {
+    display: none;
+    text-align: right;
+    font-size: 0.8125rem;
+    color: var(--color-piedra-texto);
+  }
+  @media (min-width: 760px) {
+    .fila__meta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+  }
+  .fila__icon {
+    color: var(--color-piedra-texto);
+    justify-self: end;
+  }
+  .sin-resultados {
+    padding: var(--space-8) 0;
+    text-align: center;
+    color: var(--color-piedra-texto);
+  }
+</style>
+
+<script>
+  const form = document.getElementById('filtros') as HTMLFormElement | null;
+  const buscar = document.getElementById('buscar') as HTMLInputElement | null;
+  const filas = Array.from(document.querySelectorAll<HTMLElement>('.fila'));
+  const conteo = document.getElementById('conteo');
+  const sinResultados = document.getElementById('sin-resultados');
+  const selects = Array.from(document.querySelectorAll<HTMLSelectElement>('[data-filter]'));
+
+  function aplicar() {
+    const q = (buscar?.value ?? '').trim().toLowerCase();
+    const activos = selects.map((sel) => ({
+      key: sel.dataset.filter!,
+      val: sel.value,
+    }));
+    let visibles = 0;
+    for (const fila of filas) {
+      const coincideTexto = !q || (fila.dataset.texto ?? '').includes(q);
+      const coincideFiltros = activos.every(
+        ({ key, val }) => !val || fila.dataset[key] === val,
+      );
+      const visible = coincideTexto && coincideFiltros;
+      fila.hidden = !visible;
+      if (visible) visibles++;
+    }
+    if (conteo) {
+      conteo.textContent = `${visibles} ${visibles === 1 ? 'predicación' : 'predicaciones'}`;
+    }
+    if (sinResultados) sinResultados.hidden = visibles !== 0;
+  }
+
+  form?.addEventListener('input', aplicar);
+  form?.addEventListener('submit', (e) => e.preventDefault());
+
+  // Ctrl/Cmd + K enfoca el buscador
+  document.addEventListener('keydown', (e) => {
+    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+      e.preventDefault();
+      buscar?.focus();
+      buscar?.select();
+    }
+  });
+</script>

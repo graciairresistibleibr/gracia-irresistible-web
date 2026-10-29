@@ -1,0 +1,49 @@
+---
+/**
+ * Layout de dos columnas que colapsa a una en mobile.
+ * Slots: "start" y "end". `ratio` controla el reparto en desktop.
+ * `flip` invierte el orden visual en desktop manteniendo el orden del DOM.
+ */
+interface Props {
+  ratio?: '1-1' | '5-7' | '7-5' | '4-6' | '6-4';
+  gap?: 'md' | 'lg';
+  align?: 'start' | 'center';
+  flip?: boolean;
+  class?: string;
+}
+const { ratio = '1-1', gap = 'lg', align = 'center', flip = false, class: className } = Astro.props;
+const cols = {
+  '1-1': '1fr 1fr',
+  '5-7': '5fr 7fr',
+  '7-5': '7fr 5fr',
+  '4-6': '4fr 6fr',
+  '6-4': '6fr 4fr',
+};
+---
+
+<div
+  class:list={['twocol', flip && 'twocol--flip', className]}
+  style={`--cols:${cols[ratio]}; --gap:${gap === 'lg' ? 'clamp(2rem,5vw,4rem)' : '2rem'}; --align:${align};`}
+>
+  <div class="twocol__start"><slot name="start" /></div>
+  <div class="twocol__end"><slot name="end" /></div>
+</div>
+
+<style>
+  .twocol {
+    display: grid;
+    gap: var(--gap);
+    align-items: var(--align);
+  }
+  @media (min-width: 768px) {
+    .twocol {
+      grid-template-columns: var(--cols);
+    }
+    .twocol--flip .twocol__start {
+      order: 2;
+    }
+    .twocol--flip .twocol__end {
+      order: 1;
+    }
+  }
+</style>

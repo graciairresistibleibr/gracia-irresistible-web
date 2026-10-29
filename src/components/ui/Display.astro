@@ -1,0 +1,17 @@
+---
+/** Titular de portada / hero. Lora, escala display. */
+interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  color?: string;
+  class?: string;
+  balance?: boolean;
+}
+const { as = 'h1', color, class: className, balance = true } = Astro.props;
+const Tag = as;
+---
+<Tag
+  class:list={['t-display', className]}
+  style={[color && `color:${color}`, balance && 'text-wrap:balance'].filter(Boolean).join(';')}
+>
+  <slot />
+</Tag>

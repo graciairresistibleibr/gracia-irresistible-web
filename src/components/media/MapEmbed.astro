@@ -1,0 +1,59 @@
+---
+/**
+ * Mapa sobrio con OpenStreetMap (sin Google, sin publicidad, sin cookies de
+ * terceros). Tiles en escala de grises vía filtro CSS. Carga diferida.
+ */
+interface Props {
+  lat: number;
+  lng: number;
+  label?: string;
+  zoomBox?: number; // margen del bbox en grados (más pequeño = más cerca)
+  class?: string;
+}
+const { lat, lng, label = 'Ubicación de la iglesia', zoomBox = 0.006, class: className } =
+  Astro.props;
+const bbox = [lng - zoomBox, lat - zoomBox, lng + zoomBox, lat + zoomBox].join('%2C');
+const src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lng}`;
+const verMasUrl = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=17/${lat}/${lng}`;
+const comoLlegarUrl = `https://www.openstreetmap.org/directions?to=${lat}%2C${lng}`;
+---
+
+<figure class:list={['map', className]}>
+  <iframe
+    class="map__frame"
+    title={label}
+    src={src}
+    loading="lazy"
+    referrerpolicy="no-referrer"
+  ></iframe>
+  <figcaption class="map__caption">
+    <a href={comoLlegarUrl} target="_blank" rel="noopener noreferrer">Cómo llegar</a>
+    <span aria-hidden="true">·</span>
+    <a href={verMasUrl} target="_blank" rel="noopener noreferrer">Ver mapa más grande</a>
+  </figcaption>
+</figure>
+
+<style>
+  .map {
+    margin: 0;
+  }
+  .map__frame {
+    width: 100%;
+    height: 340px;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    filter: grayscale(1) contrast(0.92) sepia(0.08);
+    display: block;
+  }
+  .map__caption {
+    display: flex;
+    gap: 0.6rem;
+    margin-top: var(--space-3);
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+  }
+  .map__caption a {
+    color: var(--color-sepia);
+    text-underline-offset: 3px;
+  }
+</style>

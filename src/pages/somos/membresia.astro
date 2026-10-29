@@ -1,0 +1,80 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import Section from '../../components/ui/Section.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Accordion from '../../components/ui/Accordion.astro';
+import Divider from '../../components/ui/Divider.astro';
+import Button from '../../components/ui/Button.astro';
+
+const faqs = [
+  {
+    q: '¿Cómo me hago miembro?',
+    a: 'El camino habitual comienza participando de la vida de la iglesia y conversando con un anciano. Luego hay un tiempo de conocimiento mutuo, una clase de membresía donde repasamos qué creemos y qué esperamos unos de otros, y finalmente la recepción ante la congregación.',
+  },
+  {
+    q: '¿Qué implica ser miembro?',
+    a: 'Implica un compromiso mutuo: la congregación se compromete a amarte, enseñarte y cuidarte; vos te comprometés a reunirte con los hermanos, someterte a la enseñanza de la Palabra, servir según tus dones y vivir en santidad. La membresía no es un trámite, sino un pacto de amor.',
+  },
+  {
+    q: '¿Qué es la disciplina restauradora?',
+    a: 'Es el cuidado que la iglesia ejerce cuando un miembro persiste en pecado sin arrepentimiento. Siguiendo Mateo 18, el objetivo nunca es el castigo, sino la restauración: buscar con paciencia y amor que el hermano vuelva a Cristo.',
+  },
+  {
+    q: '¿Puedo participar sin ser miembro?',
+    a: 'Sí. Todos son bienvenidos a nuestros cultos y estudios. La membresía es el paso de comprometerse formalmente con esta congregación en particular, pero no es requisito para visitarnos ni para escuchar la predicación.',
+  },
+];
+---
+
+<Layout
+  title="Membresía"
+  description="Qué es la membresía significativa en la Iglesia Bautista Reformada Gracia Irresistible y cómo integrarte."
+>
+  <PageHero
+    eyebrow="Membresía"
+    title="Un compromiso mutuo, no un trámite"
+    subtitle="Ser miembro es pertenecer a un pueblo que se ama, se enseña y se cuida en Cristo."
+    image="oracion"
+  />
+
+  <Section surface="marfil" space="md" contain="reading">
+    <div class="prose">
+      <p>
+        En el Nuevo Testamento no existe el creyente aislado. Cristo salva a personas
+        y las incorpora a su cuerpo, la iglesia. La membresía significativa es,
+        sencillamente, tomar en serio esa realidad: hacer visible y concreto el
+        compromiso de amor entre un cristiano y una congregación local.
+      </p>
+      <p>
+        Ser miembro no otorga un estatus especial ni un mérito espiritual. Es asumir
+        responsabilidades y también recibir cuidado: un lugar donde rendir cuentas,
+        crecer y servir bajo el pastoreo de ancianos que velan por tu alma.
+      </p>
+    </div>
+
+    <Divider variant="diamond-line" />
+
+    <h2 class="t-h2">Preguntas frecuentes</h2>
+    <div class="faq mt-6">
+      {faqs.map((f) => <Accordion summary={f.q}><p>{f.a}</p></Accordion>)}
+    </div>
+
+    <div class="cta mt-8">
+      <p class="t-body-lg">¿Querés dar el paso o conversar con un anciano?</p>
+      <Button variant="primary" href="/contacto" class="mt-4">Escribinos</Button>
+    </div>
+  </Section>
+</Layout>
+
+<style>
+  .mt-6 { margin-top: var(--space-6); }
+  .mt-8 { margin-top: var(--space-8); }
+  .mt-4 { margin-top: var(--space-4); }
+  .faq {
+    border-top: 1px solid var(--border-subtle);
+  }
+  .cta {
+    text-align: center;
+    padding-top: var(--space-8);
+  }
+</style>

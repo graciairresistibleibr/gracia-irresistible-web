@@ -1,0 +1,42 @@
+---
+/**
+ * Enlace de texto: subrayado que aparece en hover, sin cambios estridentes.
+ * `arrow` añade una flecha → para enlaces de "leer más".
+ */
+interface Props {
+  href: string;
+  arrow?: boolean;
+  external?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
+const { href, arrow = false, external = false, class: className, ...rest } = Astro.props;
+const extAttrs = external ? { target: '_blank', rel: 'noopener noreferrer' } : {};
+---
+
+<a class:list={['link', arrow && 'link--arrow', className]} href={href} {...extAttrs} {...rest}>
+  <slot />{arrow && <span class="link__arrow" aria-hidden="true">→</span>}
+</a>
+
+<style>
+  .link {
+    color: var(--color-sepia);
+    font-weight: 500;
+    text-decoration: none;
+    text-underline-offset: 3px;
+    text-decoration-thickness: 1px;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 0.4em;
+  }
+  .link:hover,
+  .link:focus-visible {
+    text-decoration: underline;
+  }
+  .link--arrow .link__arrow {
+    transition: transform 160ms ease;
+  }
+  .link--arrow:hover .link__arrow {
+    transform: translateX(3px);
+  }
+</style>

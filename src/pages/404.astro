@@ -1,0 +1,57 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/ui/Section.astro';
+import Container from '../components/ui/Container.astro';
+import Button from '../components/ui/Button.astro';
+import Divider from '../components/ui/Divider.astro';
+---
+
+<Layout title="Página no encontrada" description="No encontramos esa página." noindex={true}>
+  <Section surface="marfil" space="lg">
+    <Container width="reading">
+      <div class="nf">
+        <p class="t-eyebrow nf__eyebrow">Error 404</p>
+        <h1 class="t-display nf__title">No encontramos esa página</h1>
+        <Divider variant="diamond-line" class="nf__div" />
+        <p class="nf__text">
+          Puede que el enlace haya cambiado o que la dirección esté mal escrita.
+          Volvé al inicio y seguí desde ahí.
+        </p>
+        <div class="nf__actions">
+          <Button variant="primary" href="/">Volver al inicio</Button>
+          <Button variant="secondary" href="/predicacion/archivo">Ver predicaciones</Button>
+        </div>
+      </div>
+    </Container>
+  </Section>
+</Layout>
+
+<style>
+  .nf {
+    text-align: center;
+    max-width: 46ch;
+    margin-inline: auto;
+  }
+  .nf__eyebrow {
+    color: var(--color-piedra-texto);
+  }
+  .nf__title {
+    margin-top: var(--space-3);
+  }
+  .nf__div {
+    max-width: 180px;
+    margin-inline: auto;
+    margin-block: var(--space-6);
+  }
+  .nf__text {
+    color: var(--color-piedra-texto);
+    line-height: 1.6;
+  }
+  .nf__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    justify-content: center;
+    margin-top: var(--space-8);
+  }
+</style>

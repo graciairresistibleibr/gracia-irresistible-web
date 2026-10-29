@@ -1,0 +1,83 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import HubCard from '../../components/ui/HubCard.astro';
+import Divider from '../../components/ui/Divider.astro';
+
+const subpaginas = [
+  {
+    href: '/somos/historia',
+    titulo: 'Nuestra historia',
+    texto: 'Cómo el Señor levantó esta congregación en Resistencia y por qué existimos.',
+  },
+  {
+    href: '/somos/mision-y-vision',
+    titulo: 'Misión y visión',
+    texto: 'Para qué nos reunimos y hacia dónde caminamos, con nuestros valores fundamentales.',
+  },
+  {
+    href: '/somos/liderazgo',
+    titulo: 'Liderazgo',
+    texto: 'Los ancianos y diáconos que Dios ha puesto para pastorear y servir a la iglesia.',
+  },
+  {
+    href: '/somos/membresia',
+    titulo: 'Membresía',
+    texto: 'Qué significa ser miembro y cómo integrarte a la vida de la congregación.',
+  },
+];
+---
+
+<Layout
+  title="Somos"
+  description="Quiénes somos: una iglesia bautista reformada y confesional en Resistencia, Chaco."
+>
+  <PageHero
+    eyebrow="Quiénes somos"
+    title="Una congregación local, confesional y reformada"
+    subtitle="La iglesia no es un lugar. Es un pueblo que Cristo compró con su sangre."
+    image="oracion"
+  />
+
+  <Section surface="marfil" space="md" contain="reading">
+    <p class="t-body-lg measure">
+      Somos una iglesia bautista reformada en Resistencia, Chaco. Confesamos la
+      Confesión de Fe Bautista de Londres de 1689: reformados en doctrina y
+      bautistas en las ordenanzas.
+    </p>
+    <p class="t-body mt-6">
+      Nos reunimos semana a semana en torno a la Palabra predicada. Creemos que la
+      salud de una iglesia no se mide por su tamaño ni por su actividad, sino por su
+      fidelidad a la Escritura: predicación expositiva, adoración regulada por la
+      Palabra, membresía significativa y el cuidado mutuo de los hermanos.
+    </p>
+    <Divider variant="diamond-line" />
+    <p class="t-body">
+      Estas páginas cuentan quiénes somos con más detalle. Te invitamos a recorrerlas,
+      y sobre todo a visitarnos un domingo.
+    </p>
+  </Section>
+
+  <Section surface="crema" space="md">
+    <Container>
+      <div class="hub-grid">
+        {subpaginas.map((p) => <HubCard href={p.href} titulo={p.titulo}>{p.texto}</HubCard>)}
+      </div>
+    </Container>
+  </Section>
+</Layout>
+
+<style>
+  .mt-6 { margin-top: var(--space-6); }
+  .hub-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+  @media (min-width: 720px) {
+    .hub-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

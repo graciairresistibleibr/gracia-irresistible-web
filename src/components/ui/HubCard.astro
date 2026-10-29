@@ -1,0 +1,44 @@
+---
+/**
+ * Tarjeta de navegación hacia una subpágina (hubs de Somos / Creemos / etc.).
+ */
+import Card from './Card.astro';
+interface Props {
+  href: string;
+  titulo: string;
+  surface?: 'crema' | 'marfil';
+  class?: string;
+}
+const { href, titulo, surface = 'marfil', class: className } = Astro.props;
+---
+
+<Card surface={surface} href={href} class:list={['hubcard', className]}>
+  <h2 class="t-h3 hubcard__title">{titulo}</h2>
+  <p class="hubcard__text"><slot /></p>
+  <span class="hubcard__more">Leer más →</span>
+</Card>
+
+<style>
+  .hubcard {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  .hubcard__title {
+    color: var(--color-sepia);
+    margin-bottom: var(--space-3);
+  }
+  .hubcard__text {
+    color: var(--color-piedra-texto);
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+    flex: 1;
+  }
+  .hubcard__more {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    color: var(--color-sepia);
+  }
+</style>

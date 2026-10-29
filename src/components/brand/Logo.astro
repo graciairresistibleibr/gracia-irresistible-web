@@ -1,0 +1,69 @@
+---
+/**
+ * Wordmark horizontal para header y footer: emblema + nombre.
+ * Hereda color vía currentColor. Legible a tamaño pequeño.
+ */
+import Emblem from './Emblem.astro';
+interface Props {
+  class?: string;
+  /** Oculta el texto y deja sólo el emblema (útil en espacios reducidos). */
+  soloEmblema?: boolean;
+}
+const { class: className, soloEmblema = false } = Astro.props;
+---
+
+<span
+  class:list={['logo', className]}
+  aria-label={soloEmblema ? 'Iglesia Bautista Reformada Gracia Irresistible' : undefined}
+>
+  <span class="logo__mark"><Emblem /></span>
+  {
+    !soloEmblema && (
+      <span class="logo__text">
+        <span class="logo__name">Gracia Irresistible</span>
+        <span class="logo__sub">Iglesia Bautista Reformada</span>
+      </span>
+    )
+  }
+</span>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.625rem;
+    color: inherit;
+    text-decoration: none;
+  }
+  .logo__mark {
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    display: inline-flex;
+  }
+  .logo__mark :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .logo__text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.05;
+  }
+  .logo__name {
+    font-family: var(--font-serif);
+    font-size: 1.0625rem;
+    font-weight: 500;
+    letter-spacing: -0.2px;
+  }
+  .logo__sub {
+    font-family: var(--font-sans);
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    margin-top: 2px;
+  }
+</style>

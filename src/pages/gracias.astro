@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/ui/Section.astro';
+import Container from '../components/ui/Container.astro';
+import Verse from '../components/ui/Verse.astro';
+import Button from '../components/ui/Button.astro';
+---
+
+<Layout title="Gracias" description="Recibimos tu mensaje." noindex={true}>
+  <Section surface="sepia-profundo" space="lg">
+    <Container width="reading">
+      <div class="gracias">
+        <p class="t-eyebrow gracias__eyebrow">Mensaje recibido</p>
+        <h1 class="t-display gracias__title">Gracias por escribirnos</h1>
+        <p class="gracias__text">
+          Recibimos tu mensaje. Te responderemos por email tan pronto como podamos.
+        </p>
+        <Verse reference="Números 6:24-25" accent="oro" color="var(--color-crema)" class="gracias__verse">
+          Jehová te bendiga y te guarde; Jehová haga resplandecer su rostro sobre ti,
+          y tenga de ti misericordia.
+        </Verse>
+        <Button variant="secondary" href="/" onLight>Volver al inicio</Button>
+      </div>
+    </Container>
+  </Section>
+</Layout>
+
+<style>
+  .gracias {
+    text-align: center;
+    color: var(--color-crema);
+  }
+  .gracias__eyebrow {
+    color: var(--color-crema);
+    opacity: 0.85;
+  }
+  .gracias__title {
+    color: var(--color-crema);
+    margin-top: var(--space-3);
+  }
+  .gracias__text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--fs-cita);
+    margin-top: var(--space-4);
+    color: rgba(245, 239, 230, 0.9);
+  }
+  .gracias__verse {
+    margin-block: var(--space-12);
+  }
+</style>

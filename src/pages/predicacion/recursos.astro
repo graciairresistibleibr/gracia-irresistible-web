@@ -1,0 +1,118 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import Card from '../../components/ui/Card.astro';
+import Icon from '../../components/ui/Icon.astro';
+
+// PLACEHOLDER: reemplazar por los recursos reales (rutas a PDFs en /recursos/).
+const recursos = [
+  {
+    titulo: 'Confesión de Fe de 1689',
+    tipo: 'PDF',
+    descripcion: 'El texto completo de la Confesión Bautista de Londres, en español.',
+    href: '/recursos/confesion-1689.pdf',
+  },
+  {
+    titulo: 'Catecismo Bautista de 1689',
+    tipo: 'PDF',
+    descripcion: 'Preguntas y respuestas para la enseñanza de la doctrina en el hogar.',
+    href: '/recursos/catecismo-bautista.pdf',
+  },
+  {
+    titulo: 'Guía de estudio: Efesios',
+    tipo: 'PDF',
+    descripcion: 'Preguntas para el estudio personal y familiar de la serie en curso.',
+    href: '/recursos/guia-efesios.pdf',
+  },
+  {
+    titulo: 'Cómo prepararte para la Cena del Señor',
+    tipo: 'Artículo',
+    descripcion: 'Una breve hoja pastoral sobre el examen propio antes de la mesa.',
+    href: '/recursos/cena-del-senor.pdf',
+  },
+];
+---
+
+<Layout
+  title="Recursos"
+  description="Confesiones, catecismos, guías de estudio y hojas pastorales para profundizar en la Palabra."
+>
+  <PageHero
+    eyebrow="Predicación"
+    title="Recursos escritos"
+    subtitle="Material para profundizar en la Escritura, en el estudio personal y en el hogar."
+    image="salmo"
+  />
+
+  <Section surface="marfil" space="md">
+    <Container>
+      <ul class="recursos">
+        {recursos.map((r) => (
+          <li>
+            <Card surface="crema" href={r.href} class="recurso">
+              <span class="recurso__icon" aria-hidden="true"><Icon name="file-text" size={22} /></span>
+              <span class="recurso__body">
+                <span class="recurso__tipo">{r.tipo}</span>
+                <span class="t-h3 recurso__titulo">{r.titulo}</span>
+                <span class="recurso__desc">{r.descripcion}</span>
+              </span>
+              <span class="recurso__dl" aria-hidden="true"><Icon name="download" size={18} /></span>
+            </Card>
+          </li>
+        ))}
+      </ul>
+    </Container>
+  </Section>
+</Layout>
+
+<style>
+  .recursos {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-4);
+  }
+  @media (min-width: 720px) {
+    .recursos {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  .recurso {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    gap: var(--space-4);
+    align-items: start;
+    height: 100%;
+  }
+  .recurso__icon {
+    color: var(--color-sepia);
+    margin-top: 2px;
+  }
+  .recurso__tipo {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-piedra-texto);
+    margin-bottom: var(--space-1);
+  }
+  .recurso__titulo {
+    display: block;
+    color: var(--color-tinta);
+  }
+  .recurso__desc {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--color-piedra-texto);
+    margin-top: var(--space-2);
+    line-height: 1.55;
+  }
+  .recurso__dl {
+    color: var(--color-piedra-texto);
+  }
+</style>

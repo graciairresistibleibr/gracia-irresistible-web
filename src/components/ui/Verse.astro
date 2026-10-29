@@ -1,0 +1,53 @@
+---
+/**
+ * Cita bíblica destacada: versículo en Lora italic + divisor con diamante +
+ * referencia en Poppins uppercase. Uso en bloques de acento (home, creemos).
+ */
+import Divider from './Divider.astro';
+interface Props {
+  reference: string;
+  size?: 'md' | 'lg';
+  color?: string; // color del texto
+  accent?: 'sepia' | 'oro' | 'crema' | 'piedra';
+  class?: string;
+}
+const { reference, size = 'lg', color, accent = 'sepia', class: className } = Astro.props;
+---
+
+<figure class:list={['verse', `verse--${size}`, className]} style={color ? `color:${color}` : undefined}>
+  <blockquote class="verse__text">
+    <slot />
+  </blockquote>
+  <Divider variant="diamond-line" color={accent} class="verse__divider" />
+  <figcaption class="t-eyebrow verse__ref">{reference}</figcaption>
+</figure>
+
+<style>
+  .verse {
+    text-align: center;
+    max-width: 46ch;
+    margin-inline: auto;
+  }
+  .verse__text {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    line-height: 1.45;
+    text-wrap: balance;
+    margin: 0;
+  }
+  .verse--md .verse__text {
+    font-size: var(--fs-cita);
+  }
+  .verse--lg .verse__text {
+    font-size: clamp(1.375rem, 3.2vw, 2rem);
+  }
+  .verse__divider {
+    margin-block: var(--space-6);
+    max-width: 180px;
+    margin-inline: auto;
+  }
+  .verse__ref {
+    opacity: 0.85;
+  }
+</style>

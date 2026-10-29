@@ -1,0 +1,51 @@
+---
+/**
+ * Marca de agua: el emblema a baja opacidad, posicionado en un contenedor
+ * relativo. Nunca compite con el texto. Es decorativa (aria-hidden).
+ */
+import Emblem from '../brand/Emblem.astro';
+interface Props {
+  opacity?: number; // 0.08–0.12 recomendado
+  position?: 'right' | 'left' | 'center';
+  size?: string; // ej: "min(60%, 520px)"
+  color?: string; // currentColor por defecto
+  class?: string;
+}
+const {
+  opacity = 0.08,
+  position = 'right',
+  size = 'min(58%, 520px)',
+  color = 'currentColor',
+  class: className,
+} = Astro.props;
+const pos = {
+  right: 'right: -4%; top: 50%; transform: translateY(-50%);',
+  left: 'left: -4%; top: 50%; transform: translateY(-50%);',
+  center: 'left: 50%; top: 50%; transform: translate(-50%, -50%);',
+};
+---
+
+<span
+  class:list={['watermark', className]}
+  style={`--wm-opacity:${opacity}; --wm-size:${size}; --wm-color:${color}; ${pos[position]}`}
+  aria-hidden="true"
+>
+  <Emblem />
+</span>
+
+<style>
+  .watermark {
+    position: absolute;
+    width: var(--wm-size);
+    max-width: 620px;
+    aspect-ratio: 1;
+    opacity: var(--wm-opacity);
+    color: var(--wm-color);
+    pointer-events: none;
+    z-index: 0;
+  }
+  .watermark :global(svg) {
+    width: 100%;
+    height: 100%;
+  }
+</style>

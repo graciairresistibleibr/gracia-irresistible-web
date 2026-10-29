@@ -1,0 +1,109 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Accordion from '../../components/ui/Accordion.astro';
+import Button from '../../components/ui/Button.astro';
+import Callout from '../../components/ui/Callout.astro';
+import Icon from '../../components/ui/Icon.astro';
+
+const capitulos = [
+  ['De las Sagradas Escrituras', 'La Palabra escrita es la única regla infalible de fe y práctica.'],
+  ['De Dios y de la Santa Trinidad', 'Un solo Dios verdadero, subsistente en tres personas: Padre, Hijo y Espíritu.'],
+  ['Del decreto de Dios', 'Dios ha ordenado desde la eternidad todo cuanto sucede, sin ser autor del pecado.'],
+  ['De la creación', 'Dios creó todas las cosas de la nada, y al hombre a su imagen.'],
+  ['De la divina providencia', 'Dios sostiene y gobierna todas sus criaturas y acciones.'],
+  ['De la caída, el pecado y su castigo', 'Por la desobediencia de Adán entró el pecado y la muerte en la raza humana.'],
+  ['Del pacto de Dios', 'Dios se relaciona con el hombre por medio de pacto, cumplido en Cristo.'],
+  ['De Cristo el Mediador', 'El Hijo, verdadero Dios y verdadero hombre, es el único Mediador.'],
+  ['Del libre albedrío', 'La voluntad del hombre caído está esclavizada al pecado hasta que la gracia la libera.'],
+  ['Del llamamiento eficaz', 'Dios llama eficazmente a los suyos de muerte a vida por su Espíritu.'],
+  ['De la justificación', 'El pecador es declarado justo por la fe, en virtud de Cristo, no por sus obras.'],
+  ['De la adopción', 'Los justificados son recibidos como hijos en la familia de Dios.'],
+  ['De la santificación', 'Dios va conformando al creyente a la imagen de Cristo a lo largo de la vida.'],
+  ['De la fe salvadora', 'La fe que salva es don de Dios y descansa sólo en Cristo.'],
+  ['Del arrepentimiento para vida y salvación', 'El pecador se vuelve del pecado a Dios con dolor y propósito de obedecer.'],
+  ['De las buenas obras', 'Fruto de la fe, no fundamento de la salvación; hechas para gloria de Dios.'],
+  ['De la perseverancia de los santos', 'Los que Dios acepta perseverarán hasta el fin y no se perderán.'],
+  ['De la seguridad de la gracia y salvación', 'El creyente puede tener certeza fundada de su salvación.'],
+  ['De la ley de Dios', 'La ley moral obliga a todos y sirve de regla de vida para el creyente.'],
+  ['Del evangelio y su gracia', 'La promesa de salvación se ofrece libremente en Cristo a los pecadores.'],
+  ['De la libertad cristiana y de conciencia', 'Cristo libera de la culpa del pecado; sólo Dios es Señor de la conciencia.'],
+  ['De la adoración y el día de reposo', 'Adoramos a Dios como Él ha ordenado, y guardamos el día del Señor.'],
+  ['De los juramentos y votos lícitos', 'El juramento reverente es un acto de adoración cuando es debido.'],
+  ['Del magistrado civil', 'La autoridad civil es ordenada por Dios y merece obediencia en lo lícito.'],
+  ['Del matrimonio', 'Unión de un hombre y una mujer, según la institución de Dios.'],
+  ['De la iglesia', 'Cristo edifica su iglesia, universal y local, sobre su Palabra.'],
+  ['De la comunión de los santos', 'Los creyentes están unidos a Cristo y entre sí en amor y servicio.'],
+  ['Del bautismo y la Cena del Señor', 'Las dos ordenanzas instituidas por Cristo para su iglesia.'],
+  ['Del bautismo', 'Señal de unión con Cristo, aplicada a los que profesan fe.'],
+  ['De la Cena del Señor', 'Memorial y comunión con Cristo, para el alimento espiritual de los creyentes.'],
+  ['Del estado tras la muerte y la resurrección', 'El alma subsiste; los cuerpos resucitarán en el último día.'],
+  ['Del juicio final', 'Dios juzgará al mundo con justicia por medio de Cristo.'],
+];
+---
+
+<Layout
+  title="La Confesión de 1689"
+  description="Por qué confesamos la Confesión de Fe Bautista de Londres de 1689 y qué contienen sus 32 capítulos."
+>
+  <PageHero
+    eyebrow="Nuestra confesión"
+    title="La Confesión de Fe Bautista de Londres, 1689"
+    subtitle="Un resumen fiel de lo que la Escritura enseña, confesado con la iglesia de los siglos."
+    image="biblia-espanol"
+  />
+
+  <Section surface="marfil" space="md" contain="reading">
+    <div class="prose">
+      <p>
+        La Confesión de 1689 es un documento redactado por pastores bautistas
+        reformados del siglo XVII para declarar, capítulo por capítulo, lo que creían
+        que la Escritura enseña. No sustituye a la Biblia ni tiene autoridad por sí
+        misma: la Palabra sola es infalible. La confesión es sierva de la Escritura.
+      </p>
+      <h2>¿Por qué usar una confesión?</h2>
+      <p>
+        Porque toda iglesia enseña algo, y es más honesto ponerlo por escrito que
+        dejarlo en la ambigüedad. Una confesión protege a la congregación de errores,
+        une a los hermanos en torno a las mismas verdades y nos conecta con la iglesia
+        histórica.
+      </p>
+    </div>
+
+    <Callout title="Texto completo">
+      <p>
+        Podés leer y descargar el texto íntegro de la Confesión de 1689 en español.
+      </p>
+      <p>
+        {/* PLACEHOLDER: reemplazar la ruta por el PDF real de la Confesión */}
+        <Button variant="secondary" href="/recursos/confesion-1689.pdf" download size="sm">
+          <Icon name="download" size={16} /> Descargar la Confesión (PDF)
+        </Button>
+      </p>
+    </Callout>
+  </Section>
+
+  <Section surface="crema" space="md" contain="reading">
+    <h2 class="t-h2">Los 32 capítulos</h2>
+    <p class="t-body mt-3 mb-6 measure">
+      Un vistazo al contenido de la confesión. Desplegá cada capítulo para ver un
+      breve resumen.
+    </p>
+    <div class="capitulos">
+      {capitulos.map(([titulo, resumen], i) => (
+        <Accordion summary={`${i + 1}. ${titulo}`}>
+          <p>{resumen}</p>
+        </Accordion>
+      ))}
+    </div>
+  </Section>
+</Layout>
+
+<style>
+  .mt-3 { margin-top: var(--space-3); }
+  .mb-6 { margin-bottom: var(--space-6); }
+  .capitulos {
+    border-top: 1px solid var(--border-subtle);
+  }
+</style>

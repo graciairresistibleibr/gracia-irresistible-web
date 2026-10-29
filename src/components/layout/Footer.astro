@@ -1,0 +1,176 @@
+---
+/**
+ * Pie institucional. Fondo tinta, Poppins 13px, links crema al 80%.
+ * 3 columnas en desktop → 1 en mobile. Cierra con versículo en Lora italic.
+ */
+import Container from '../ui/Container.astro';
+import Logo from '../brand/Logo.astro';
+import Icon from '../ui/Icon.astro';
+import Divider from '../ui/Divider.astro';
+import { iglesia, NAV_SECUNDARIA } from '../../data/iglesia.ts';
+
+const year = new Date().getFullYear();
+const { ubicacion, contacto, redes } = iglesia;
+---
+
+<footer class="site-footer">
+  <Container>
+    <div class="site-footer__grid">
+      <!-- (a) Identidad + dirección + email -->
+      <div class="site-footer__col">
+        <Logo class="site-footer__logo" />
+        <address class="site-footer__address">
+          {ubicacion.calle}<br />
+          {ubicacion.ciudad}, {ubicacion.provincia}<br />
+          {ubicacion.pais}
+        </address>
+        <a href={`mailto:${contacto.email}`} class="site-footer__link">{contacto.email}</a>
+      </div>
+
+      <!-- (b) Navegación secundaria -->
+      <nav class="site-footer__col" aria-label="Navegación secundaria">
+        <h2 class="site-footer__heading">Explorar</h2>
+        <ul>
+          {NAV_SECUNDARIA.map((item) => (
+            <li><a href={item.href} class="site-footer__link">{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <!-- (c) Redes sociales -->
+      <div class="site-footer__col">
+        <h2 class="site-footer__heading">Seguinos</h2>
+        <ul class="site-footer__social">
+          {redes.youtube && (
+            <li>
+              <a href={redes.youtube} class="site-footer__link" target="_blank" rel="noopener noreferrer">
+                <Icon name="youtube" size={18} /> YouTube
+              </a>
+            </li>
+          )}
+          {redes.instagram && (
+            <li>
+              <a href={redes.instagram} class="site-footer__link" target="_blank" rel="noopener noreferrer">
+                <Icon name="instagram" size={18} /> Instagram
+              </a>
+            </li>
+          )}
+          {redes.facebook && (
+            <li>
+              <a href={redes.facebook} class="site-footer__link" target="_blank" rel="noopener noreferrer">
+                <Icon name="facebook" size={18} /> Facebook
+              </a>
+            </li>
+          )}
+        </ul>
+      </div>
+    </div>
+
+    <Divider variant="diamond-line" color="crema" class="site-footer__divider" />
+
+    <div class="site-footer__bottom">
+      <p class="site-footer__verse">
+        «Todo lo que hacéis, sea de palabra o de hecho, hacedlo todo en el nombre del Señor Jesús.»
+        <span class="site-footer__verse-ref">Colosenses 3:17</span>
+      </p>
+      <p class="site-footer__copy">
+        © {year} {iglesia.nombreCompleto}. Resistencia, Chaco.
+      </p>
+    </div>
+  </Container>
+</footer>
+
+<style>
+  .site-footer {
+    background: var(--color-tinta);
+    color: var(--color-crema);
+    padding-block: clamp(3rem, 7vw, 5rem) 2rem;
+    font-family: var(--font-sans);
+    font-size: 0.8125rem;
+  }
+  .site-footer__grid {
+    display: grid;
+    gap: var(--space-8);
+  }
+  @media (min-width: 700px) {
+    .site-footer__grid {
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: var(--space-12);
+    }
+  }
+  .site-footer__logo {
+    color: var(--color-crema);
+    margin-bottom: var(--space-4);
+  }
+  .site-footer__address {
+    font-style: normal;
+    line-height: 1.7;
+    color: rgba(245, 239, 230, 0.8);
+    margin-bottom: var(--space-3);
+  }
+  .site-footer__heading {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--color-oro-antiguo);
+    margin-bottom: var(--space-4);
+  }
+  .site-footer__col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+  .site-footer__link {
+    color: rgba(245, 239, 230, 0.8);
+    text-decoration: none;
+    transition: color 160ms ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .site-footer__link:hover,
+  .site-footer__link:focus-visible {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .site-footer__social li {
+    line-height: 1;
+  }
+  .site-footer__divider {
+    margin-block: var(--space-12) var(--space-8);
+    opacity: 0.5;
+  }
+  .site-footer__bottom {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .site-footer__verse {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    color: rgba(245, 239, 230, 0.85);
+    max-width: 60ch;
+  }
+  .site-footer__verse-ref {
+    display: block;
+    font-family: var(--font-sans);
+    font-style: normal;
+    font-size: 0.625rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-oro-antiguo);
+    margin-top: var(--space-2);
+  }
+  .site-footer__copy {
+    color: rgba(245, 239, 230, 0.55);
+    font-size: 0.75rem;
+  }
+</style>

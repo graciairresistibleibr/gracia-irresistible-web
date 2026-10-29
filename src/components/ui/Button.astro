@@ -1,0 +1,124 @@
+---
+/**
+ * Botón sobrio: cuadrado (radius 2px), borde 1px, sin hover exagerado.
+ *  - primary   → fondo sepia, texto crema.
+ *  - secondary → transparente, borde sepia, texto sepia.
+ *  - ghost     → sin borde, subrayado sutil.
+ * Renderiza <a> si recibe `href`, si no <button>.
+ */
+interface Props {
+  variant?: 'primary' | 'secondary' | 'ghost';
+  href?: string;
+  type?: 'button' | 'submit' | 'reset';
+  size?: 'sm' | 'md';
+  onLight?: boolean; // usar sobre fondos oscuros (sepia/tinta)
+  class?: string;
+  [key: string]: unknown;
+}
+const {
+  variant = 'primary',
+  href,
+  type = 'button',
+  size = 'md',
+  onLight = false,
+  class: className,
+  ...rest
+} = Astro.props;
+const Tag = href ? 'a' : 'button';
+const classes = ['btn', `btn--${variant}`, `btn--${size}`, onLight && 'btn--on-dark', className];
+---
+
+<Tag
+  class:list={classes}
+  href={href}
+  type={href ? undefined : type}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style>
+  .btn {
+    --btn-bg: var(--color-sepia);
+    --btn-fg: var(--color-crema);
+    --btn-border: var(--color-sepia);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    letter-spacing: 0.5px;
+    line-height: 1;
+    text-decoration: none;
+    cursor: pointer;
+    border-radius: var(--radius);
+    border: 1px solid var(--btn-border);
+    background: var(--btn-bg);
+    color: var(--btn-fg);
+    transition: background-color 160ms ease, color 160ms ease, border-color 160ms ease;
+  }
+  .btn--md {
+    padding: 0.875rem 1.75rem;
+  }
+  .btn--sm {
+    padding: 0.625rem 1.125rem;
+    font-size: 0.75rem;
+  }
+
+  /* Primary */
+  .btn--primary:hover,
+  .btn--primary:focus-visible {
+    --btn-bg: var(--color-sepia-profundo);
+    --btn-border: var(--color-sepia-profundo);
+  }
+
+  /* Secondary */
+  .btn--secondary {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-sepia);
+    --btn-border: var(--color-sepia);
+  }
+  .btn--secondary:hover,
+  .btn--secondary:focus-visible {
+    --btn-bg: var(--color-sepia);
+    --btn-fg: var(--color-crema);
+  }
+
+  /* Ghost */
+  .btn--ghost {
+    --btn-bg: transparent;
+    --btn-fg: var(--color-sepia);
+    --btn-border: transparent;
+    padding-inline: 0.25rem;
+  }
+  .btn--ghost:hover,
+  .btn--ghost:focus-visible {
+    --btn-fg: var(--color-sepia-profundo);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  /* Sobre fondos oscuros */
+  .btn--on-dark.btn--primary {
+    --btn-bg: var(--color-crema);
+    --btn-fg: var(--color-sepia-profundo);
+    --btn-border: var(--color-crema);
+  }
+  .btn--on-dark.btn--primary:hover,
+  .btn--on-dark.btn--primary:focus-visible {
+    --btn-bg: var(--color-marfil);
+    --btn-border: var(--color-marfil);
+  }
+  .btn--on-dark.btn--secondary {
+    --btn-fg: var(--color-crema);
+    --btn-border: rgba(245, 239, 230, 0.7);
+  }
+  .btn--on-dark.btn--secondary:hover,
+  .btn--on-dark.btn--secondary:focus-visible {
+    --btn-bg: rgba(245, 239, 230, 0.12);
+    --btn-fg: var(--color-crema);
+    --btn-border: var(--color-crema);
+  }
+</style>

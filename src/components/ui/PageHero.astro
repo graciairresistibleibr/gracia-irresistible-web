@@ -1,0 +1,132 @@
+---
+/**
+ * Hero reutilizable de página interior: eyebrow + título + subtítulo.
+ * Puede llevar una FOTO de fondo con una capa marrón (sepia) al 70% y un leve
+ * difuminado, o una marca de agua del emblema. Fondo configurable de la paleta.
+ */
+import Container from './Container.astro';
+import Eyebrow from './Eyebrow.astro';
+import Watermark from './Watermark.astro';
+interface Props {
+  eyebrow?: string;
+  title: string;
+  subtitle?: string;
+  surface?: 'sepia-profundo' | 'sepia' | 'crema' | 'marfil' | 'tinta';
+  watermark?: boolean;
+  /** Nombre base de la foto en /images (sin extensión), ej: "salmo". */
+  image?: string;
+  /** Opacidad de la capa marrón sobre la foto (0–1). */
+  overlay?: number;
+  align?: 'left' | 'center';
+  class?: string;
+}
+const {
+  eyebrow,
+  title,
+  subtitle,
+  surface = 'sepia-profundo',
+  watermark = true,
+  image,
+  overlay = 0.7,
+  align = 'left',
+  class: className,
+} = Astro.props;
+const bg = {
+  'sepia-profundo': 'var(--color-sepia-profundo)',
+  sepia: 'var(--color-sepia)',
+  crema: 'var(--color-crema)',
+  marfil: 'var(--color-marfil)',
+  tinta: 'var(--color-tinta)',
+};
+// Con foto de fondo el texto siempre va claro.
+const isDark = image ? true : ['sepia', 'sepia-profundo', 'tinta'].includes(surface);
+---
+
+<header
+  class:list={['pagehero', isDark && 'pagehero--dark', `pagehero--${align}`, image && 'pagehero--photo', className]}
+  style={`--hero-bg:${bg[surface]}; --hero-overlay:${overlay};`}
+>
+  {image && (
+    <div class="pagehero__bg" aria-hidden="true">
+      <picture>
+        <source srcset={`/images/${image}.webp`} type="image/webp" />
+        <img src={`/images/${image}.jpg`} alt="" loading="eager" decoding="async" />
+      </picture>
+    </div>
+  )}
+  {image && <div class="pagehero__overlay" aria-hidden="true"></div>}
+  {watermark && !image && (
+    <Watermark
+      position={align === 'center' ? 'center' : 'right'}
+      opacity={isDark ? 0.09 : 0.06}
+      color={isDark ? 'var(--color-crema)' : 'var(--color-sepia)'}
+    />
+  )}
+  <Container>
+    <div class="pagehero__inner">
+      {eyebrow && <Eyebrow color={isDark ? 'crema' : 'sepia'}>{eyebrow}</Eyebrow>}
+      <h1 class="t-h1 pagehero__title">{title}</h1>
+      {subtitle && <p class="pagehero__subtitle">{subtitle}</p>}
+      <slot />
+    </div>
+  </Container>
+</header>
+
+<style>
+  .pagehero {
+    position: relative;
+    overflow: hidden;
+    background: var(--hero-bg);
+    padding-block: clamp(3.5rem, 8vw, 6rem);
+    color: var(--color-tinta);
+  }
+  .pagehero--dark {
+    color: var(--color-crema);
+  }
+  .pagehero--photo {
+    padding-block: clamp(4.5rem, 10vw, 7rem);
+  }
+  .pagehero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .pagehero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    /* Difuminado leve + tratamiento cálido; el scale evita bordes al difuminar */
+    filter: saturate(0.85) blur(2px);
+    transform: scale(1.06);
+  }
+  .pagehero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(74, 46, 23, var(--hero-overlay));
+  }
+  .pagehero__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 62ch;
+  }
+  .pagehero--center .pagehero__inner {
+    margin-inline: auto;
+    text-align: center;
+  }
+  .pagehero__title {
+    margin-top: var(--space-3);
+  }
+  .pagehero__subtitle {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--fs-cita);
+    line-height: 1.5;
+    margin-top: var(--space-4);
+    opacity: 0.9;
+    max-width: 54ch;
+  }
+  .pagehero--center .pagehero__subtitle {
+    margin-inline: auto;
+  }
+</style>

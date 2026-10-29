@@ -1,0 +1,61 @@
+---
+/**
+ * Ítem de acordeón colapsable basado en <details>/<summary> (sin JS, accesible).
+ * Usar varios juntos dentro de un contenedor.
+ */
+import Icon from './Icon.astro';
+interface Props {
+  summary: string;
+  open?: boolean;
+  class?: string;
+}
+const { summary, open = false, class: className } = Astro.props;
+---
+
+<details class:list={['acc', className]} open={open}>
+  <summary class="acc__summary">
+    <span class="acc__label">{summary}</span>
+    <span class="acc__icon" aria-hidden="true"><Icon name="chevron-down" size={20} /></span>
+  </summary>
+  <div class="acc__content"><slot /></div>
+</details>
+
+<style>
+  .acc {
+    border-bottom: 1px solid var(--border-subtle);
+  }
+  .acc__summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding: var(--space-4) 0;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--font-serif);
+    font-size: var(--fs-h3);
+    color: var(--color-tinta);
+  }
+  .acc__summary::-webkit-details-marker {
+    display: none;
+  }
+  .acc__summary:hover .acc__label {
+    color: var(--color-sepia);
+  }
+  .acc__icon {
+    color: var(--color-sepia);
+    flex-shrink: 0;
+    transition: transform 180ms ease;
+  }
+  .acc[open] .acc__icon {
+    transform: rotate(180deg);
+  }
+  .acc__content {
+    padding: 0 0 var(--space-6);
+    line-height: 1.7;
+    max-width: 68ch;
+  }
+  .acc__content :global(p + p) {
+    margin-top: var(--space-4);
+  }
+</style>

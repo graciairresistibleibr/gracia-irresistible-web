@@ -1,0 +1,201 @@
+---
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/ui/PageHero.astro';
+import Section from '../components/ui/Section.astro';
+import Container from '../components/ui/Container.astro';
+import TwoColumn from '../components/ui/TwoColumn.astro';
+import Icon from '../components/ui/Icon.astro';
+import Button from '../components/ui/Button.astro';
+import MapEmbed from '../components/media/MapEmbed.astro';
+import { iglesia } from '../data/iglesia.ts';
+
+const { ubicacion, contacto, horarios, redes } = iglesia;
+---
+
+<Layout
+  title="Contacto"
+  description="Horarios, dirección y formulario de contacto de la Iglesia Bautista Reformada Gracia Irresistible en Resistencia, Chaco."
+>
+  <PageHero
+    eyebrow="Contacto"
+    title="Escribinos o visitanos"
+    subtitle="Las puertas están abiertas cada domingo. Si querés conversar antes, con gusto te respondemos."
+    image="oracion"
+  />
+
+  <Section surface="marfil" space="md">
+    <Container>
+      <TwoColumn ratio="5-7" gap="lg" align="start">
+        <!-- Info -->
+        <div slot="start">
+          <div class="info">
+            <div class="info__item">
+              <h2 class="info__title"><Icon name="clock" size={18} /> Horarios</h2>
+              <ul class="info__list">
+                {horarios.map((h) => (
+                  <li><strong>{h.dia} {h.hora}</strong> — {h.titulo}</li>
+                ))}
+              </ul>
+            </div>
+
+            <div class="info__item">
+              <h2 class="info__title"><Icon name="map-pin" size={18} /> Dirección</h2>
+              <address class="info__address">
+                {ubicacion.calle}<br />
+                {ubicacion.ciudad}, {ubicacion.provincia}, {ubicacion.pais}
+              </address>
+            </div>
+
+            <div class="info__item">
+              <h2 class="info__title"><Icon name="mail" size={18} /> Email</h2>
+              <p><a class="info__link" href={`mailto:${contacto.email}`}>{contacto.email}</a></p>
+              <p><a class="info__link" href={`mailto:${contacto.emailPastoral}`}>{contacto.emailPastoral}</a> <span class="info__note">(consultas pastorales)</span></p>
+            </div>
+
+            <div class="info__item">
+              <h2 class="info__title"><Icon name="whatsapp" size={18} /> WhatsApp</h2>
+              <p><a class="info__link" href={contacto.whatsappUrl} target="_blank" rel="noopener noreferrer">{contacto.whatsapp}</a></p>
+            </div>
+
+            <MapEmbed lat={ubicacion.lat} lng={ubicacion.lng} label="Ubicación de la iglesia" class="info__map" />
+          </div>
+        </div>
+
+        <!-- Formulario -->
+        <div slot="end">
+          <form
+            class="form"
+            name="contacto"
+            method="POST"
+            action="/gracias"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+          >
+            <input type="hidden" name="form-name" value="contacto" />
+            <p class="form__hp" hidden aria-hidden="true">
+              <label>No completar este campo: <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+            </p>
+
+            <div class="form__field">
+              <label for="nombre">Nombre</label>
+              <input type="text" id="nombre" name="nombre" required autocomplete="name" />
+            </div>
+
+            <div class="form__field">
+              <label for="email">Email</label>
+              <input type="email" id="email" name="email" required autocomplete="email" placeholder="tu@correo.com" />
+            </div>
+
+            <div class="form__field">
+              <label for="motivo">Motivo</label>
+              <select id="motivo" name="motivo">
+                <option value="Quiero visitar">Quiero visitar</option>
+                <option value="Consulta pastoral">Consulta pastoral</option>
+                <option value="Otro">Otro</option>
+              </select>
+            </div>
+
+            <div class="form__field">
+              <label for="mensaje">Mensaje</label>
+              <textarea id="mensaje" name="mensaje" rows="6" required></textarea>
+            </div>
+
+            <Button variant="primary" type="submit">Enviar mensaje</Button>
+          </form>
+        </div>
+      </TwoColumn>
+    </Container>
+  </Section>
+</Layout>
+
+<style>
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-8);
+  }
+  .info__title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-sepia);
+    margin-bottom: var(--space-3);
+  }
+  .info__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    line-height: 1.5;
+  }
+  .info__address {
+    font-style: normal;
+    line-height: 1.7;
+  }
+  .info__link {
+    color: var(--color-sepia);
+    text-underline-offset: 3px;
+  }
+  .info__link:hover {
+    text-decoration: underline;
+  }
+  .info__note {
+    color: var(--color-piedra-texto);
+    font-size: 0.8125rem;
+  }
+  .info__map {
+    margin-top: var(--space-2);
+  }
+
+  .form {
+    background: var(--color-crema);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: var(--space-8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .form__field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .form__field label {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--color-sepia-profundo);
+  }
+  .form__field input,
+  .form__field select,
+  .form__field textarea {
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    padding: 0.75rem 0.875rem;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    background: var(--color-marfil);
+    color: var(--color-tinta);
+    width: 100%;
+  }
+  .form__field textarea {
+    resize: vertical;
+  }
+  .form__field input:focus,
+  .form__field select:focus,
+  .form__field textarea:focus {
+    outline: 2px solid var(--color-sepia);
+    outline-offset: 1px;
+    border-color: var(--color-sepia);
+  }
+</style>

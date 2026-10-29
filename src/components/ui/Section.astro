@@ -1,0 +1,67 @@
+---
+/**
+ * Envoltorio de sección con padding vertical estándar (64-80px mobile,
+ * 96-128px desktop) y fondo de la paleta. Opcionalmente envuelve en Container.
+ */
+import Container from './Container.astro';
+interface Props {
+  surface?: 'marfil' | 'crema' | 'sepia' | 'sepia-profundo' | 'tinta' | 'verde' | 'transparent';
+  space?: 'sm' | 'md' | 'lg';
+  contain?: false | 'default' | 'reading' | 'wide';
+  as?: keyof HTMLElementTagNameMap;
+  id?: string;
+  class?: string;
+}
+const {
+  surface = 'transparent',
+  space = 'md',
+  contain = 'default',
+  as = 'section',
+  id,
+  class: className,
+} = Astro.props;
+const Tag = as;
+const bg = {
+  marfil: 'var(--color-marfil)',
+  crema: 'var(--color-crema)',
+  sepia: 'var(--color-sepia)',
+  'sepia-profundo': 'var(--color-sepia-profundo)',
+  tinta: 'var(--color-tinta)',
+  verde: 'var(--color-verde-bosque)',
+  transparent: 'transparent',
+};
+const isDark = ['sepia', 'sepia-profundo', 'tinta', 'verde'].includes(surface);
+---
+
+<Tag
+  id={id}
+  class:list={['section', `section--${space}`, isDark && 'section--dark', className]}
+  style={`--section-bg:${bg[surface]}`}
+>
+  {contain ? (
+    <Container width={contain === 'default' ? 'default' : contain}>
+      <slot />
+    </Container>
+  ) : (
+    <slot />
+  )}
+</Tag>
+
+<style>
+  .section {
+    background: var(--section-bg);
+    position: relative;
+  }
+  .section--sm {
+    padding-block: clamp(2.5rem, 6vw, 4rem);
+  }
+  .section--md {
+    padding-block: clamp(4rem, 9vw, 7rem);
+  }
+  .section--lg {
+    padding-block: clamp(5rem, 11vw, 8rem);
+  }
+  .section--dark {
+    color: var(--color-crema);
+  }
+</style>

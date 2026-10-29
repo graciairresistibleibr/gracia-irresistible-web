@@ -1,0 +1,143 @@
+---
+/**
+ * Tarjeta de sermón para grillas y listados.
+ * serie (eyebrow) · título (Lora) · texto bíblico (italic) · fecha · play/descarga.
+ */
+import Eyebrow from '../ui/Eyebrow.astro';
+import Icon from '../ui/Icon.astro';
+import { formatFecha, isoFecha, formatDuracion } from '../../utils/format.ts';
+
+interface Props {
+  slug: string;
+  titulo: string;
+  serie: string;
+  textoBiblico: string;
+  predicador: string;
+  fecha: Date;
+  duracion: number;
+  audioUrl: string;
+  class?: string;
+}
+const {
+  slug,
+  titulo,
+  serie,
+  textoBiblico,
+  predicador,
+  fecha,
+  duracion,
+  audioUrl,
+  class: className,
+} = Astro.props;
+const href = `/predicacion/${slug}`;
+---
+
+<article class:list={['sermon-card', className]}>
+  <div class="sermon-card__body">
+    <Eyebrow color="sepia">{serie}</Eyebrow>
+    <h3 class="t-h3 sermon-card__title">
+      <a href={href}>{titulo}</a>
+    </h3>
+    <p class="sermon-card__ref">{textoBiblico}</p>
+    <p class="sermon-card__meta">
+      <span>{predicador}</span>
+      <span aria-hidden="true">·</span>
+      <time datetime={isoFecha(fecha)}>{formatFecha(fecha)}</time>
+      <span aria-hidden="true">·</span>
+      <span>{formatDuracion(duracion)}</span>
+    </p>
+  </div>
+
+  <div class="sermon-card__actions">
+    <a class="sermon-card__play" href={href} aria-label={`Escuchar: ${titulo}`}>
+      <Icon name="play" size={16} /> Escuchar
+    </a>
+    <a
+      class="sermon-card__dl"
+      href={audioUrl}
+      download
+      aria-label={`Descargar audio: ${titulo}`}
+    >
+      <Icon name="download" size={16} />
+      <span class="visually-hidden">Descargar audio</span>
+    </a>
+  </div>
+</article>
+
+<style>
+  .sermon-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: var(--space-6);
+    background: var(--color-marfil);
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: var(--space-6);
+    height: 100%;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+  .sermon-card:hover {
+    border-color: var(--color-sepia);
+    box-shadow: var(--shadow-hover);
+  }
+  .sermon-card__title {
+    margin-top: var(--space-3);
+    text-wrap: balance;
+  }
+  .sermon-card__title a {
+    color: var(--color-tinta);
+    text-decoration: none;
+  }
+  .sermon-card__title a:hover,
+  .sermon-card__title a:focus-visible {
+    color: var(--color-sepia);
+  }
+  .sermon-card__ref {
+    font-family: var(--font-sans);
+    font-style: italic;
+    font-size: 0.875rem;
+    color: var(--color-sepia);
+    margin-top: var(--space-2);
+  }
+  .sermon-card__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    font-size: 0.8125rem;
+    color: var(--color-piedra-texto);
+    margin-top: var(--space-3);
+  }
+  .sermon-card__actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border-stone);
+  }
+  .sermon-card__play {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.8125rem;
+    color: var(--color-sepia);
+    text-decoration: none;
+  }
+  .sermon-card__play:hover,
+  .sermon-card__play:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+  }
+  .sermon-card__dl {
+    display: inline-flex;
+    align-items: center;
+    color: var(--color-piedra-texto);
+  }
+  .sermon-card__dl:hover,
+  .sermon-card__dl:focus-visible {
+    color: var(--color-sepia);
+  }
+</style>

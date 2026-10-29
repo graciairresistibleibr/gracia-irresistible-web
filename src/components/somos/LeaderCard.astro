@@ -1,0 +1,65 @@
+---
+/**
+ * Tarjeta de liderazgo: retrato 3:4 + nombre (Lora) + cargo bíblico + rol.
+ * Sin redes personales ni lenguaje de plataforma.
+ */
+import Placeholder from '../media/Placeholder.astro';
+interface Props {
+  nombre: string;
+  cargo: string;
+  bio: string;
+  foto?: string;
+  class?: string;
+}
+const { nombre, cargo, bio, foto, class: className } = Astro.props;
+const initials = nombre
+  .split(' ')
+  .map((p) => p[0])
+  .slice(0, 2)
+  .join('');
+---
+
+<article class:list={['leader', className]}>
+  {
+    foto ? (
+      /* PLACEHOLDER: reemplazar la ruta `foto` por el retrato oficial (3:4). */
+      <img class="leader__photo photo-treatment" src={foto} alt={`Retrato de ${nombre}, ${cargo}`} width="300" height="400" loading="lazy" />
+    ) : (
+      /* PLACEHOLDER: reemplazar con retrato oficial */
+      <Placeholder variant="retrato" initials={initials} label="Retrato pendiente" class="leader__photo" />
+    )
+  }
+  <div class="leader__body">
+    <h2 class="t-h3 leader__name">{nombre}</h2>
+    <p class="t-eyebrow leader__role">{cargo}</p>
+    <p class="leader__bio">{bio}</p>
+  </div>
+</article>
+
+<style>
+  .leader {
+    display: flex;
+    flex-direction: column;
+  }
+  .leader__photo {
+    width: 100%;
+    aspect-ratio: 3 / 4;
+    object-fit: cover;
+    border-radius: var(--radius);
+  }
+  .leader__body {
+    padding-top: var(--space-4);
+  }
+  .leader__name {
+    margin-bottom: var(--space-1);
+  }
+  .leader__role {
+    color: var(--color-sepia);
+    margin-bottom: var(--space-3);
+  }
+  .leader__bio {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-piedra-texto);
+  }
+</style>

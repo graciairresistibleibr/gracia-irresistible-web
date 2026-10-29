@@ -1,0 +1,34 @@
+---
+/**
+ * Contenedor con ancho máximo configurable y padding lateral fluido.
+ * `width="reading"` → columna angosta de lectura (720px).
+ */
+interface Props {
+  width?: 'default' | 'reading' | 'wide';
+  as?: keyof HTMLElementTagNameMap;
+  class?: string;
+}
+const { width = 'default', as = 'div', class: className } = Astro.props;
+const Tag = as;
+---
+
+<Tag class:list={['container', `container--${width}`, className]}>
+  <slot />
+</Tag>
+
+<style>
+  .container {
+    width: 100%;
+    margin-inline: auto;
+    padding-inline: clamp(1.5rem, 5vw, 3rem);
+  }
+  .container--default {
+    max-width: var(--container-max);
+  }
+  .container--reading {
+    max-width: var(--reading-max);
+  }
+  .container--wide {
+    max-width: 1400px;
+  }
+</style>

@@ -1,0 +1,63 @@
+---
+/**
+ * Divisor institucional derivado del logo.
+ *  - "line"          → línea fina.
+ *  - "diamond"       → sólo el rombo centrado.
+ *  - "diamond-line"  → línea con rombo centrado (uso editorial estándar).
+ */
+interface Props {
+  variant?: 'line' | 'diamond' | 'diamond-line';
+  color?: 'sepia' | 'oro' | 'piedra' | 'crema';
+  class?: string;
+}
+const { variant = 'diamond-line', color = 'sepia', class: className } = Astro.props;
+const colorMap = {
+  sepia: 'var(--color-sepia)',
+  oro: 'var(--color-oro-antiguo)',
+  piedra: 'var(--color-piedra-texto)',
+  crema: 'var(--color-crema)',
+};
+---
+
+<div
+  class:list={['divider', `divider--${variant}`, className]}
+  style={`--divider-color:${colorMap[color]}`}
+  role="separator"
+  aria-hidden="true"
+>
+  {variant !== 'line' && <span class="divider__diamond" />}
+</div>
+
+<style>
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    color: var(--divider-color);
+    margin-block: var(--space-8);
+  }
+  .divider--line,
+  .divider--diamond-line {
+    width: 100%;
+  }
+  .divider--line::before,
+  .divider--diamond-line::before,
+  .divider--diamond-line::after {
+    content: '';
+    height: 1px;
+    flex: 1;
+    background: currentColor;
+    opacity: 0.45;
+  }
+  .divider--diamond::before {
+    content: none;
+  }
+  .divider__diamond {
+    width: 7px;
+    height: 7px;
+    background: currentColor;
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+</style>

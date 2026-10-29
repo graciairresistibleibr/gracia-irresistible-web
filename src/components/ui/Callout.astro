@@ -1,0 +1,46 @@
+---
+/**
+ * Nota pastoral: bloque con borde izquierdo sepia. Uso para aclaraciones
+ * doctrinales o pastorales dentro de la prosa.
+ */
+interface Props {
+  title?: string;
+  tone?: 'sepia' | 'oro' | 'verde';
+  class?: string;
+}
+const { title, tone = 'sepia', class: className } = Astro.props;
+const border = {
+  sepia: 'var(--color-sepia)',
+  oro: 'var(--color-oro-antiguo)',
+  verde: 'var(--color-verde-bosque)',
+};
+---
+
+<aside class:list={['callout', className]} style={`--callout-border:${border[tone]}`}>
+  {title && <p class="callout__title">{title}</p>}
+  <div class="callout__body"><slot /></div>
+</aside>
+
+<style>
+  .callout {
+    border-left: 3px solid var(--callout-border);
+    background: var(--color-crema);
+    padding: var(--space-6) var(--space-6) var(--space-6) var(--space-6);
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+  .callout__title {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.6875rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-sepia);
+    margin-bottom: var(--space-3);
+  }
+  .callout__body {
+    line-height: 1.65;
+  }
+  .callout__body :global(p + p) {
+    margin-top: var(--space-3);
+  }
+</style>

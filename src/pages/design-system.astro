@@ -1,0 +1,179 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Section from '../components/ui/Section.astro';
+import Container from '../components/ui/Container.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Divider from '../components/ui/Divider.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import Link from '../components/ui/Link.astro';
+import Verse from '../components/ui/Verse.astro';
+import Callout from '../components/ui/Callout.astro';
+import Accordion from '../components/ui/Accordion.astro';
+import Seal from '../components/brand/Seal.astro';
+import Emblem from '../components/brand/Emblem.astro';
+
+const colores = [
+  ['Sepia', '#6B4423', '--color-sepia'],
+  ['Sepia profundo', '#4A2E17', '--color-sepia-profundo'],
+  ['Tinta', '#1A1A1A', '--color-tinta'],
+  ['Crema', '#F5EFE6', '--color-crema'],
+  ['Marfil', '#FAF7F2', '--color-marfil'],
+  ['Piedra', '#78716C', '--color-piedra'],
+  ['Oro antiguo', '#B8935A', '--color-oro-antiguo'],
+  ['Verde bosque', '#3E5641', '--color-verde-bosque'],
+  ['Verde profundo', '#2A3D2D', '--color-verde-profundo'],
+  ['Verde salvia', '#7A8B72', '--color-verde-salvia'],
+];
+
+const escala = [
+  ['Display', 't-display', 'Gracia Irresistible'],
+  ['H1', 't-h1', 'Título de página'],
+  ['H2', 't-h2', 'Título de sección'],
+  ['H3', 't-h3', 'Subsección'],
+  ['Body large', 't-body-lg', 'Introducción de párrafo con Poppins.'],
+  ['Body', 't-body', 'Cuerpo de lectura estándar en Poppins, 16px mínimo.'],
+  ['Cita', 't-cita', 'Versículo o autor clásico en Lora italic.'],
+];
+---
+
+<Layout title="Sistema de diseño" description="Referencia interna del sistema de diseño." noindex={true}>
+  <Section surface="sepia-profundo" space="sm">
+    <Container>
+      <Eyebrow color="crema">Referencia interna · no listada en el menú</Eyebrow>
+      <h1 class="t-display ds__title">Sistema de diseño</h1>
+      <p class="ds__sub">Tokens, tipografía y componentes de la identidad «Gracia Irresistible».</p>
+    </Container>
+  </Section>
+
+  <!-- Marca -->
+  <Section surface="marfil" space="md">
+    <Container>
+      <h2 class="t-h2 ds__h">Marca</h2>
+      <div class="ds__marca">
+        <div class="ds__marca-item"><span class="ds__seal"><Seal /></span><span>Seal</span></div>
+        <div class="ds__marca-item ds__marca-item--dark"><span class="ds__emblem"><Emblem /></span><span>Emblem</span></div>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Colores -->
+  <Section surface="crema" space="md">
+    <Container>
+      <h2 class="t-h2 ds__h">Paleta</h2>
+      <div class="ds__swatches">
+        {colores.map(([nombre, hex, token]) => (
+          <div class="ds__swatch">
+            <span class="ds__chip" style={`background:${hex}`}></span>
+            <span class="ds__swatch-name">{nombre}</span>
+            <span class="ds__swatch-hex">{hex}</span>
+            <code class="ds__swatch-token">{token}</code>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Tipografía -->
+  <Section surface="marfil" space="md">
+    <Container>
+      <h2 class="t-h2 ds__h">Escala tipográfica</h2>
+      <div class="ds__type">
+        {escala.map(([nombre, cls, muestra]) => (
+          <div class="ds__type-row">
+            <span class="ds__type-label">{nombre}</span>
+            <span class={cls}>{muestra}</span>
+          </div>
+        ))}
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Botones -->
+  <Section surface="crema" space="md">
+    <Container>
+      <h2 class="t-h2 ds__h">Botones</h2>
+      <div class="ds__row">
+        <Button variant="primary">Primary</Button>
+        <Button variant="secondary">Secondary</Button>
+        <Button variant="ghost">Ghost</Button>
+      </div>
+      <div class="ds__row ds__row--dark">
+        <Button variant="primary" onLight>Primary</Button>
+        <Button variant="secondary" onLight>Secondary</Button>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Divisores -->
+  <Section surface="marfil" space="md">
+    <Container width="reading">
+      <h2 class="t-h2 ds__h">Divisores</h2>
+      <Divider variant="line" />
+      <Divider variant="diamond" />
+      <Divider variant="diamond-line" />
+    </Container>
+  </Section>
+
+  <!-- Componentes -->
+  <Section surface="crema" space="md">
+    <Container>
+      <h2 class="t-h2 ds__h">Componentes</h2>
+      <div class="ds__cards">
+        <Card surface="marfil">
+          <h3 class="t-h3">Card</h3>
+          <p class="ds__muted">Superficie con borde sutil y radius 2px.</p>
+          <Link href="#" arrow>Enlace con flecha</Link>
+        </Card>
+        <Callout title="Callout">
+          <p>Nota pastoral con borde izquierdo sepia.</p>
+        </Callout>
+      </div>
+      <div class="ds__acc">
+        <Accordion summary="Acordeón (details/summary, sin JS)">
+          <p>Contenido colapsable, accesible y sin JavaScript.</p>
+        </Accordion>
+      </div>
+    </Container>
+  </Section>
+
+  <!-- Verse -->
+  <Section surface="sepia" space="md">
+    <Verse reference="Colosenses 3:17" accent="oro" color="var(--color-crema)">
+      Y todo lo que hacéis, sea de palabra o de hecho, hacedlo todo en el nombre del
+      Señor Jesús.
+    </Verse>
+  </Section>
+</Layout>
+
+<style>
+  .ds__title { color: var(--color-crema); margin-top: var(--space-3); }
+  .ds__sub { color: rgba(245,239,230,0.85); margin-top: var(--space-3); font-family: var(--font-serif); font-style: italic; }
+  .ds__h { margin-bottom: var(--space-8); }
+  .ds__muted { color: var(--color-piedra-texto); font-size: 0.9375rem; margin-block: var(--space-3); }
+
+  .ds__marca { display: flex; flex-wrap: wrap; gap: var(--space-8); }
+  .ds__marca-item { display: flex; flex-direction: column; align-items: center; gap: var(--space-3); color: var(--color-sepia); font-size: 0.75rem; }
+  .ds__marca-item--dark { background: var(--color-sepia-profundo); color: var(--color-crema); padding: var(--space-6); border-radius: var(--radius); }
+  .ds__seal { display: inline-flex; width: 120px; height: 120px; color: var(--color-sepia); }
+  .ds__emblem { display: inline-flex; width: 90px; height: 90px; }
+  .ds__seal :global(svg), .ds__emblem :global(svg) { width: 100%; height: 100%; display: block; }
+
+  .ds__swatches { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: var(--space-4); }
+  .ds__swatch { display: flex; flex-direction: column; gap: 2px; }
+  .ds__chip { height: 64px; border-radius: var(--radius); border: 1px solid var(--border-subtle); margin-bottom: var(--space-2); }
+  .ds__swatch-name { font-weight: 600; font-size: 0.875rem; }
+  .ds__swatch-hex { font-size: 0.8125rem; color: var(--color-piedra-texto); }
+  .ds__swatch-token { font-size: 0.75rem; color: var(--color-sepia); }
+
+  .ds__type { display: flex; flex-direction: column; gap: var(--space-6); }
+  .ds__type-row { display: grid; gap: var(--space-2); border-top: 1px solid var(--border-subtle); padding-top: var(--space-4); }
+  @media (min-width: 720px) { .ds__type-row { grid-template-columns: 120px 1fr; align-items: baseline; gap: var(--space-6); } }
+  .ds__type-label { font-family: var(--font-sans); font-size: 0.6875rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--color-piedra-texto); }
+
+  .ds__row { display: flex; flex-wrap: wrap; gap: var(--space-4); margin-bottom: var(--space-6); }
+  .ds__row--dark { background: var(--color-sepia-profundo); padding: var(--space-6); border-radius: var(--radius); }
+
+  .ds__cards { display: grid; gap: var(--space-6); grid-template-columns: 1fr; margin-bottom: var(--space-8); }
+  @media (min-width: 720px) { .ds__cards { grid-template-columns: 1fr 1fr; } }
+</style>

@@ -1,0 +1,29 @@
+---
+/**
+ * Etiqueta sobre título: Poppins uppercase 11px, tracking 3px.
+ */
+interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  color?: 'sepia' | 'oro' | 'piedra' | 'crema';
+  class?: string;
+}
+const { as = 'p', color = 'sepia', class: className } = Astro.props;
+const Tag = as;
+const colorMap = {
+  sepia: 'var(--color-sepia)',
+  oro: 'var(--color-oro-antiguo)',
+  piedra: 'var(--color-piedra-texto)',
+  crema: 'var(--color-crema)',
+};
+---
+
+<Tag class:list={['t-eyebrow', 'eyebrow', className]} style={`--eyebrow-color:${colorMap[color]}`}>
+  <slot />
+</Tag>
+
+<style>
+  .eyebrow {
+    color: var(--eyebrow-color);
+    margin: 0;
+  }
+</style>

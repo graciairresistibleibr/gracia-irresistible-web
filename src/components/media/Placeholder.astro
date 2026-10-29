@@ -1,0 +1,91 @@
+---
+/**
+ * Placeholder semántico para la fase de desarrollo (ver Manual §6.2).
+ * Reemplazar por fotografía real antes de producción. NUNCA usar stock provisorio.
+ *  - variant="interior" → bloque sepia con marca de agua del emblema.
+ *  - variant="retrato"  → bloque crema con las iniciales en Lora.
+ */
+import Emblem from '../brand/Emblem.astro';
+interface Props {
+  variant?: 'interior' | 'retrato';
+  ratio?: string; // ej: "16/9", "3/4", "4/3"
+  initials?: string;
+  label?: string; // texto visible de "PLACEHOLDER"
+  rounded?: boolean;
+  class?: string;
+}
+const {
+  variant = 'interior',
+  ratio = variant === 'retrato' ? '3/4' : '16/9',
+  initials = '',
+  label,
+  rounded = true,
+  class: className,
+} = Astro.props;
+---
+
+<div
+  class:list={['ph', `ph--${variant}`, rounded && 'ph--rounded', className]}
+  style={`aspect-ratio:${ratio}`}
+  role="img"
+  aria-label={label ?? (variant === 'retrato' ? 'Retrato pendiente' : 'Imagen pendiente')}
+  data-placeholder
+>
+  {variant === 'interior' ? (
+    <span class="ph__emblem"><Emblem /></span>
+  ) : (
+    <span class="ph__initials">{initials}</span>
+  )}
+  {label && <span class="ph__label">{label}</span>}
+</div>
+
+<style>
+  .ph {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 100%;
+  }
+  .ph--rounded {
+    border-radius: var(--radius);
+  }
+  .ph--interior {
+    background: var(--color-sepia-profundo);
+    color: var(--color-crema);
+  }
+  .ph--retrato {
+    background: var(--color-crema);
+    color: var(--color-sepia);
+    border: 1px solid var(--border-subtle);
+  }
+  .ph__emblem {
+    display: inline-flex;
+    width: 42%;
+    max-width: 160px;
+    opacity: 0.22;
+  }
+  .ph__emblem :global(svg) {
+    width: 100%;
+    height: 100%;
+    display: block;
+  }
+  .ph__initials {
+    font-family: var(--font-serif);
+    font-size: clamp(2.5rem, 8vw, 4rem);
+    letter-spacing: 1px;
+    opacity: 0.8;
+  }
+  .ph__label {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.5625rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    opacity: 0.85;
+  }
+</style>

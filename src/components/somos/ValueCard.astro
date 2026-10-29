@@ -1,0 +1,41 @@
+---
+/**
+ * Valor fundamental: número grande (Lora, oro antiguo) + título + descripción.
+ */
+interface Props {
+  numero: number | string;
+  titulo: string;
+  class?: string;
+}
+const { numero, titulo, class: className } = Astro.props;
+const n = typeof numero === 'number' ? String(numero).padStart(2, '0') : numero;
+---
+
+<article class:list={['value', className]}>
+  <span class="value__num" aria-hidden="true">{n}</span>
+  <h3 class="t-h3 value__title">{titulo}</h3>
+  <p class="value__desc"><slot /></p>
+</article>
+
+<style>
+  .value {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--space-4);
+  }
+  .value__num {
+    font-family: var(--font-serif);
+    font-size: 2rem;
+    line-height: 1;
+    color: var(--color-oro-texto);
+    display: block;
+    margin-bottom: var(--space-3);
+  }
+  .value__title {
+    margin-bottom: var(--space-2);
+  }
+  .value__desc {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-piedra-texto);
+  }
+</style>

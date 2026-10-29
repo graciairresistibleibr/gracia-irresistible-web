@@ -1,0 +1,60 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Section from '../../components/ui/Section.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import LeaderCard from '../../components/somos/LeaderCard.astro';
+
+const lideres = (await getCollection('liderazgo')).sort((a, b) => a.data.orden - b.data.orden);
+---
+
+<Layout
+  title="Liderazgo"
+  description="Los ancianos y diáconos que Cristo ha puesto para pastorear y servir a la Iglesia Bautista Reformada Gracia Irresistible."
+>
+  <PageHero
+    eyebrow="Liderazgo"
+    title="Quienes pastorean y sirven"
+    subtitle="Cristo gobierna a su iglesia por medio de ancianos, y la sirve por medio de diáconos."
+    image="oracion"
+  />
+
+  <Section surface="marfil" space="md">
+    <p class="intro measure">
+      La Escritura reconoce dos oficios en la iglesia local: ancianos (también
+      llamados pastores u obispos), que enseñan y gobiernan, y diáconos, que
+      atienden las necesidades del cuerpo. Estos hermanos no son figuras de
+      plataforma, sino siervos que rinden cuentas ante Dios por el rebaño.
+    </p>
+
+    <div class="lideres-grid">
+      {lideres.map((l) => (
+        <LeaderCard nombre={l.data.nombre} cargo={l.data.cargo} bio={l.data.bio} foto={l.data.foto} />
+      ))}
+    </div>
+  </Section>
+</Layout>
+
+<style>
+  .intro {
+    max-width: 62ch;
+    margin-bottom: var(--space-12);
+    color: var(--color-piedra-texto);
+  }
+  .lideres-grid {
+    display: grid;
+    gap: var(--space-8);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 720px) {
+    .lideres-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 460px) {
+    .lideres-grid {
+      grid-template-columns: 1fr;
+      max-width: 280px;
+    }
+  }
+</style>

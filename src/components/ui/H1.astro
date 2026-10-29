@@ -1,0 +1,13 @@
+---
+/** Título de página. Lora. */
+interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  color?: string;
+  class?: string;
+}
+const { as = 'h1', color, class: className } = Astro.props;
+const Tag = as;
+---
+<Tag class:list={['t-h1', className]} style={[color && `color:${color}`, 'text-wrap:balance'].filter(Boolean).join(';')}>
+  <slot />
+</Tag>

@@ -1,0 +1,82 @@
+---
+/**
+ * Bloque de una "Sola": numeral romano gigante + nombre latín (italic) +
+ * nombre español + párrafo + versículos de referencia en aside lateral.
+ */
+import Body from '../ui/Body.astro';
+interface Props {
+  numeral: string; // I, II, III, IV, V
+  latin: string;
+  espanol: string;
+  versiculos: string[];
+  class?: string;
+}
+const { numeral, latin, espanol, versiculos, class: className } = Astro.props;
+---
+
+<article class:list={['sola', className]}>
+  <div class="sola__numeral" aria-hidden="true">{numeral}</div>
+  <div class="sola__main">
+    <p class="sola__latin">{latin}</p>
+    <h2 class="t-h2 sola__es">{espanol}</h2>
+    <Body class="sola__text"><slot /></Body>
+  </div>
+  <aside class="sola__aside">
+    <p class="t-eyebrow sola__aside-title">Referencias</p>
+    <ul>
+      {versiculos.map((v) => <li>{v}</li>)}
+    </ul>
+  </aside>
+</article>
+
+<style>
+  .sola {
+    display: grid;
+    gap: var(--space-6);
+    align-items: start;
+  }
+  @media (min-width: 820px) {
+    .sola {
+      grid-template-columns: auto 1fr 200px;
+      gap: var(--space-12);
+    }
+  }
+  .sola__numeral {
+    font-family: var(--font-serif);
+    font-size: clamp(3.5rem, 9vw, 6rem);
+    line-height: 0.9;
+    color: var(--color-sepia);
+    opacity: 0.85;
+  }
+  .sola__latin {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--fs-cita);
+    color: var(--color-oro-texto);
+    margin-bottom: var(--space-1);
+  }
+  .sola__es {
+    margin-bottom: var(--space-4);
+  }
+  .sola__aside {
+    border-top: 1px solid var(--border-subtle);
+    padding-top: var(--space-3);
+  }
+  .sola__aside-title {
+    color: var(--color-piedra-texto);
+    margin-bottom: var(--space-3);
+  }
+  .sola__aside ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+  .sola__aside li {
+    font-family: var(--font-sans);
+    font-size: 0.875rem;
+    color: var(--color-sepia-profundo);
+  }
+</style>

@@ -1,0 +1,11 @@
+---
+/** Cita simple en Lora italic (versículo o autor clásico) sin ornamento. */
+interface Props {
+  color?: string;
+  class?: string;
+}
+const { color, class: className } = Astro.props;
+---
+<p class:list={['t-cita', className]} style={color ? `color:${color}` : undefined}>
+  <slot />
+</p>

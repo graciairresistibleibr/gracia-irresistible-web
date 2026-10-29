@@ -1,0 +1,75 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import Button from '../../components/ui/Button.astro';
+import SermonCard from '../../components/sermones/SermonCard.astro';
+import { formatFecha } from '../../utils/format.ts';
+
+const series = await getCollection('series');
+const serieActual = series.find((s) => s.data.activa) ?? series[0];
+const sermones = (await getCollection('sermones'))
+  .filter((s) => s.data.serieSlug === serieActual.id)
+  .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
+---
+
+<Layout
+  title="Serie actual"
+  description={`Serie actual: ${serieActual.data.nombre}. ${serieActual.data.descripcion}`}
+>
+  <PageHero
+    eyebrow="Serie actual"
+    title={serieActual.data.nombre}
+    subtitle={serieActual.data.descripcion}
+    image="biblia-espanol"
+  >
+    <p class="serie__meta">
+      {serieActual.data.libro} · Desde {formatFecha(serieActual.data.inicio)} ·
+      {sermones.length} predicaciones
+    </p>
+  </PageHero>
+
+  <Section surface="marfil" space="md">
+    <Container>
+      <h2 class="t-h2 grid-head">Predicaciones de la serie</h2>
+      {sermones.length > 0 ? (
+        <div class="grid">
+          {sermones.map((s) => (
+            <SermonCard
+              slug={s.id}
+              titulo={s.data.titulo}
+              serie={s.data.serie}
+              textoBiblico={s.data.textoBiblico}
+              predicador={s.data.predicador}
+              fecha={s.data.fecha}
+              duracion={s.data.duracion}
+              audioUrl={s.data.audioUrl}
+            />
+          ))}
+        </div>
+      ) : (
+        <p>Todavía no hay predicaciones cargadas para esta serie.</p>
+      )}
+      <p class="mt-8"><Button variant="secondary" href="/predicacion/archivo">Ver todo el archivo</Button></p>
+    </Container>
+  </Section>
+</Layout>
+
+<style>
+  .serie__meta {
+    margin-top: var(--space-4);
+    font-size: 0.8125rem;
+    color: rgba(245, 239, 230, 0.75);
+  }
+  .grid-head {
+    margin-bottom: var(--space-8);
+  }
+  .grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .mt-8 { margin-top: var(--space-8); }
+</style>

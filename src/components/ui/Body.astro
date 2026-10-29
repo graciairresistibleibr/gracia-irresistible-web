@@ -1,0 +1,18 @@
+---
+/** Cuerpo de lectura. Poppins. `lead` para introducciones (body-lg). */
+interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  lead?: boolean;
+  measure?: boolean;
+  color?: string;
+  class?: string;
+}
+const { as = 'p', lead = false, measure = false, color, class: className } = Astro.props;
+const Tag = as;
+---
+<Tag
+  class:list={[lead ? 't-body-lg' : 't-body', measure && 'measure', className]}
+  style={color ? `color:${color}` : undefined}
+>
+  <slot />
+</Tag>

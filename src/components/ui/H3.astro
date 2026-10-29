@@ -1,0 +1,13 @@
+---
+/** Subsección. Lora 500. */
+interface Props {
+  as?: keyof HTMLElementTagNameMap;
+  color?: string;
+  class?: string;
+}
+const { as = 'h3', color, class: className } = Astro.props;
+const Tag = as;
+---
+<Tag class:list={['t-h3', className]} style={color ? `color:${color}` : undefined}>
+  <slot />
+</Tag>

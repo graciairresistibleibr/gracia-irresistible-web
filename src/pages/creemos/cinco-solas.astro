@@ -1,0 +1,90 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import SolaBlock from '../../components/creemos/SolaBlock.astro';
+import Divider from '../../components/ui/Divider.astro';
+
+const solas = [
+  {
+    numeral: 'I',
+    latin: 'Sola Scriptura',
+    espanol: 'Sólo la Escritura',
+    versiculos: ['2 Timoteo 3:16-17', 'Isaías 8:20', 'Salmo 19:7-11'],
+    texto:
+      'La Escritura es la única autoridad infalible para la fe y la vida. Ninguna tradición, concilio ni experiencia se le iguala; todo se somete a la Palabra de Dios, que es suficiente y clara en todo lo necesario para la salvación.',
+  },
+  {
+    numeral: 'II',
+    latin: 'Sola Gratia',
+    espanol: 'Sólo la gracia',
+    versiculos: ['Efesios 2:8-9', 'Tito 3:5', 'Romanos 11:6'],
+    texto:
+      'La salvación es enteramente por gracia. No la merecemos ni la iniciamos: Dios salva a pecadores muertos por su favor inmerecido, de principio a fin, sin aporte de mérito humano.',
+  },
+  {
+    numeral: 'III',
+    latin: 'Sola Fide',
+    espanol: 'Sólo la fe',
+    versiculos: ['Romanos 3:28', 'Gálatas 2:16', 'Habacuc 2:4'],
+    texto:
+      'Somos justificados sólo por la fe, no por las obras. La fe no es una obra que merezca la salvación, sino la mano vacía que recibe a Cristo y su justicia.',
+  },
+  {
+    numeral: 'IV',
+    latin: 'Solus Christus',
+    espanol: 'Sólo Cristo',
+    versiculos: ['1 Timoteo 2:5', 'Hechos 4:12', 'Juan 14:6'],
+    texto:
+      'Cristo es el único mediador entre Dios y los hombres. Su obra perfecta —vida, muerte y resurrección— es la única base de nuestra aceptación delante de Dios. No hay salvación en ningún otro.',
+  },
+  {
+    numeral: 'V',
+    latin: 'Soli Deo Gloria',
+    espanol: 'Sólo a Dios la gloria',
+    versiculos: ['Romanos 11:36', '1 Corintios 10:31', 'Apocalipsis 4:11'],
+    texto:
+      'El fin de todas las cosas es la gloria de Dios. La salvación es suya de principio a fin, para que nadie se gloríe sino en el Señor. Vivimos y adoramos para su honra, y de nadie más.',
+  },
+];
+---
+
+<Layout
+  title="Las Cinco Solas"
+  description="Las cinco afirmaciones que la Reforma recuperó de la Escritura: Sola Scriptura, Sola Gratia, Sola Fide, Solus Christus, Soli Deo Gloria."
+>
+  <PageHero
+    eyebrow="Nuestra confesión"
+    title="Las Cinco Solas"
+    subtitle="Cinco palabras que resumen el evangelio recuperado en la Reforma: sólo, sólo, sólo."
+    image="salmo"
+  />
+
+  <Section surface="marfil" space="md" contain="default">
+    <div class="solas">
+      {solas.map((s, i) => (
+        <>
+          <SolaBlock
+            numeral={s.numeral}
+            latin={s.latin}
+            espanol={s.espanol}
+            versiculos={s.versiculos}
+          >
+            {s.texto}
+          </SolaBlock>
+          {i < solas.length - 1 && <Divider variant="diamond-line" class="solas__div" />}
+        </>
+      ))}
+    </div>
+  </Section>
+</Layout>
+
+<style>
+  .solas {
+    max-width: 1000px;
+    margin-inline: auto;
+  }
+  .solas__div {
+    margin-block: var(--space-12);
+  }
+</style>

@@ -1,0 +1,62 @@
+---
+/**
+ * Sello circular institucional: emblema central + anillo tipográfico + rombos
+ * laterales. Monocromo (currentColor). Uso decorativo (hero, portadas).
+ */
+import Emblem from './Emblem.astro';
+interface Props {
+  class?: string;
+  title?: string;
+}
+const { class: className, title = 'Iglesia Bautista Reformada Gracia Irresistible' } =
+  Astro.props;
+const uid = Math.random().toString(36).slice(2, 8);
+const topId = `sealtop-${uid}`;
+const botId = `sealbot-${uid}`;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 120 120"
+  fill="none"
+  xmlns="http://www.w3.org/2000/svg"
+  role="img"
+  aria-label={title}
+>
+  <title>{title}</title>
+  <defs>
+    <!-- Arco superior (texto legible sobre la parte de arriba) -->
+    <path id={topId} d="M 18 60 A 42 42 0 0 1 102 60" />
+    <!-- Arco inferior (texto legible bajo la parte de abajo) -->
+    <path id={botId} d="M 20 60 A 40 40 0 0 0 100 60" />
+  </defs>
+
+  <!-- Anillos -->
+  <circle cx="60" cy="60" r="57" stroke="currentColor" stroke-width="1.2" />
+  <circle cx="60" cy="60" r="47" stroke="currentColor" stroke-width="0.8" opacity="0.5" />
+
+  <!-- Emblema central -->
+  <g transform="translate(32 30) scale(0.56)">
+    <Emblem />
+  </g>
+
+  <!-- Rombos laterales del sello -->
+  <g fill="currentColor">
+    <rect x="6.5" y="56.5" width="7" height="7" transform="rotate(45 10 60)" />
+    <rect x="106.5" y="56.5" width="7" height="7" transform="rotate(45 110 60)" />
+  </g>
+
+  <!-- Anillo tipográfico -->
+  <g fill="currentColor" font-family="Lora, Georgia, serif" font-size="6.6" letter-spacing="1.5">
+    <text>
+      <textPath href={`#${topId}`} startOffset="50%" text-anchor="middle">
+        IGLESIA BAUTISTA REFORMADA
+      </textPath>
+    </text>
+    <text>
+      <textPath href={`#${botId}`} startOffset="50%" text-anchor="middle">
+        GRACIA IRRESISTIBLE
+      </textPath>
+    </text>
+  </g>
+</svg>

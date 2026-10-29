@@ -1,0 +1,121 @@
+---
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import Divider from '../../components/ui/Divider.astro';
+import Link from '../../components/ui/Link.astro';
+import SermonPlayer from '../../components/sermones/SermonPlayer.astro';
+import SermonCard from '../../components/sermones/SermonCard.astro';
+import { formatFecha, isoFecha, formatDuracion, duracionISO } from '../../utils/format.ts';
+
+export async function getStaticPaths() {
+  const sermones = await getCollection('sermones');
+  return sermones.map((sermon) => ({
+    params: { slug: sermon.id },
+    props: { sermon },
+  }));
+}
+
+const { sermon } = Astro.props;
+const d = sermon.data;
+const { Content } = await render(sermon);
+
+const relacionados = (await getCollection('sermones'))
+  .filter((s) => s.data.serieSlug === d.serieSlug && s.id !== sermon.id)
+  .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
+  .slice(0, 3);
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'AudioObject',
+  name: d.titulo,
+  description: d.descripcion,
+  contentUrl: new URL(d.audioUrl, Astro.site ?? Astro.url).href,
+  uploadDate: isoFecha(d.fecha),
+  duration: duracionISO(d.duracion),
+  author: { '@type': 'Person', name: d.predicador },
+  isPartOf: d.serie,
+};
+---
+
+<Layout title={d.titulo} description={d.descripcion} schema={schema}>
+  <Section surface="sepia-profundo" space="sm">
+    <Container width="reading">
+      <Eyebrow color="crema">{d.serie}</Eyebrow>
+      <h1 class="t-display sermon__title">{d.titulo}</h1>
+      <p class="sermon__meta">
+        <span>{d.predicador}</span>
+        <span aria-hidden="true">·</span>
+        <time datetime={isoFecha(d.fecha)}>{formatFecha(d.fecha)}</time>
+        <span aria-hidden="true">·</span>
+        <span>{d.textoBiblico}</span>
+        <span aria-hidden="true">·</span>
+        <span>{formatDuracion(d.duracion)}</span>
+      </p>
+    </Container>
+  </Section>
+
+  <Section surface="marfil" space="md">
+    <Container width="reading">
+      <SermonPlayer audioUrl={d.audioUrl} titulo={d.titulo} pdfNotas={d.pdfNotas} />
+
+      <div class="prose sermon__notas">
+        <Content />
+      </div>
+    </Container>
+  </Section>
+
+  {relacionados.length > 0 && (
+    <Section surface="crema" space="md">
+      <Container>
+        <h2 class="t-h2 rel__head">Otros sermones de esta serie</h2>
+        <div class="rel__grid">
+          {relacionados.map((s) => (
+            <SermonCard
+              slug={s.id}
+              titulo={s.data.titulo}
+              serie={s.data.serie}
+              textoBiblico={s.data.textoBiblico}
+              predicador={s.data.predicador}
+              fecha={s.data.fecha}
+              duracion={s.data.duracion}
+              audioUrl={s.data.audioUrl}
+            />
+          ))}
+        </div>
+        <p class="rel__back"><Link href="/predicacion/archivo" arrow>Ver todo el archivo</Link></p>
+      </Container>
+    </Section>
+  )}
+</Layout>
+
+<style>
+  .sermon__title {
+    color: var(--color-crema);
+    margin-top: var(--space-3);
+  }
+  .sermon__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: var(--space-5);
+    font-size: 0.8125rem;
+    color: rgba(245, 239, 230, 0.85);
+  }
+  .sermon__notas {
+    margin-top: var(--space-12);
+  }
+  .rel__head {
+    margin-bottom: var(--space-8);
+  }
+  .rel__grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  }
+  .rel__back {
+    margin-top: var(--space-8);
+  }
+</style>

@@ -1,0 +1,234 @@
+---
+/**
+ * Cabecera institucional. Fondo tinta. Logo a la izquierda, navegación a la
+ * derecha (desktop). En mobile: botón que abre un panel a pantalla completa.
+ * Único script del sitio: alterna el panel con aria-expanded y cierre por Escape.
+ */
+import Container from '../ui/Container.astro';
+import Logo from '../brand/Logo.astro';
+import Icon from '../ui/Icon.astro';
+import { NAV_PRINCIPAL } from '../../data/iglesia.ts';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(href + '/');
+---
+
+<header class="site-header">
+  <Container>
+    <div class="site-header__bar">
+      <a href="/" class="site-header__logo">
+        <Logo />
+        <span class="visually-hidden">— Inicio</span>
+      </a>
+
+      <nav class="site-header__nav" aria-label="Navegación principal">
+        <ul>
+          {
+            NAV_PRINCIPAL.map((item) => (
+              <li>
+                <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <button
+        type="button"
+        class="site-header__toggle"
+        aria-expanded="false"
+        aria-controls="menu-movil"
+        data-menu-toggle
+      >
+        <span class="visually-hidden">Abrir menú</span>
+        <Icon name="menu" size={24} />
+      </button>
+    </div>
+  </Container>
+
+  <div class="menu-movil" id="menu-movil" data-menu-panel hidden>
+    <div class="menu-movil__top">
+      <Container>
+        <div class="menu-movil__top-inner">
+          <Logo />
+          <button type="button" class="menu-movil__close" data-menu-close>
+            <span class="visually-hidden">Cerrar menú</span>
+            <Icon name="x" size={26} />
+          </button>
+        </div>
+      </Container>
+    </div>
+    <Container>
+      <nav aria-label="Navegación principal (móvil)">
+        <ul class="menu-movil__list">
+          {
+            NAV_PRINCIPAL.map((item) => (
+              <li>
+                <a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>
+                  {item.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+    </Container>
+  </div>
+</header>
+
+<style>
+  .site-header {
+    background: var(--color-sepia-profundo);
+    color: var(--color-crema);
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    border-bottom: 1px solid rgba(184, 147, 90, 0.35);
+  }
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 60px;
+  }
+  @media (min-width: 768px) {
+    .site-header__bar {
+      height: 72px;
+    }
+  }
+  .site-header__logo {
+    color: var(--color-crema);
+    text-decoration: none;
+    display: inline-flex;
+  }
+
+  .site-header__nav {
+    display: none;
+  }
+  @media (min-width: 768px) {
+    .site-header__nav {
+      display: block;
+    }
+    .site-header__nav ul {
+      display: flex;
+      gap: clamp(1.25rem, 2.5vw, 2.25rem);
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .site-header__nav a {
+      font-family: var(--font-sans);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--color-crema);
+      text-decoration: none;
+      padding-block: 0.5rem;
+      border-bottom: 1px solid transparent;
+      transition: border-color 160ms ease, color 160ms ease;
+    }
+    .site-header__nav a:hover,
+    .site-header__nav a:focus-visible,
+    .site-header__nav a[aria-current='page'] {
+      border-color: var(--color-oro-antiguo);
+      color: #fff;
+    }
+  }
+
+  .site-header__toggle,
+  .menu-movil__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    color: var(--color-crema);
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-right: -0.5rem;
+  }
+  @media (min-width: 768px) {
+    .site-header__toggle {
+      display: none;
+    }
+  }
+
+  /* Panel móvil a pantalla completa */
+  .menu-movil {
+    position: fixed;
+    inset: 0;
+    z-index: 60;
+    background: var(--color-sepia-profundo);
+    color: var(--color-crema);
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+  }
+  .menu-movil[hidden] {
+    display: none;
+  }
+  .menu-movil__top {
+    height: 60px;
+    display: flex;
+    align-items: center;
+  }
+  .menu-movil__top-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .menu-movil__list {
+    list-style: none;
+    margin: 0;
+    padding: var(--space-8) 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .menu-movil__list li + li {
+    border-top: 1px solid rgba(245, 239, 230, 0.12);
+  }
+  .menu-movil__list a {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 1.75rem;
+    color: var(--color-crema);
+    text-decoration: none;
+    padding: var(--space-6) 0;
+  }
+  .menu-movil__list a[aria-current='page'] {
+    color: var(--color-oro-antiguo);
+  }
+</style>
+
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>('[data-menu-toggle]');
+  const panel = document.querySelector<HTMLElement>('[data-menu-panel]');
+  const closeBtn = document.querySelector<HTMLButtonElement>('[data-menu-close]');
+
+  function openMenu() {
+    if (!panel || !toggle) return;
+    panel.hidden = false;
+    toggle.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+    panel.querySelector<HTMLAnchorElement>('a')?.focus();
+  }
+  function closeMenu() {
+    if (!panel || !toggle) return;
+    panel.hidden = true;
+    toggle.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+    toggle.focus();
+  }
+
+  toggle?.addEventListener('click', openMenu);
+  closeBtn?.addEventListener('click', closeMenu);
+  panel?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) closeMenu();
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && panel && !panel.hidden) closeMenu();
+  });
+</script>

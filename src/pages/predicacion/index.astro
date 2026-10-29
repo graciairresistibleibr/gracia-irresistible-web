@@ -1,0 +1,174 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import Eyebrow from '../../components/ui/Eyebrow.astro';
+import Button from '../../components/ui/Button.astro';
+import Link from '../../components/ui/Link.astro';
+import Icon from '../../components/ui/Icon.astro';
+import Watermark from '../../components/ui/Watermark.astro';
+import SermonCard from '../../components/sermones/SermonCard.astro';
+import { formatFecha } from '../../utils/format.ts';
+
+const todos = (await getCollection('sermones')).sort(
+  (a, b) => b.data.fecha.getTime() - a.data.fecha.getTime(),
+);
+const series = await getCollection('series');
+const serieActual = series.find((s) => s.data.activa);
+const ultimos = todos.slice(0, 6);
+const sermonesSerieActual = serieActual
+  ? todos.filter((s) => s.data.serieSlug === serieActual.id).length
+  : 0;
+---
+
+<Layout
+  title="Predicación"
+  description="Escuchá y descargá las predicaciones de la Iglesia Bautista Reformada Gracia Irresistible."
+>
+  <!-- Serie actual destacada -->
+  {serieActual && (
+    <section class="serie-hero">
+      <Watermark position="right" opacity={0.08} color="var(--color-crema)" size="min(55%, 460px)" />
+      <Container>
+        <div class="serie-hero__inner">
+          <Eyebrow color="crema">Serie actual</Eyebrow>
+          <h1 class="t-display serie-hero__title">{serieActual.data.nombre}</h1>
+          <p class="serie-hero__desc">{serieActual.data.descripcion}</p>
+          <p class="serie-hero__meta">
+            <span>{serieActual.data.libro}</span>
+            <span aria-hidden="true">·</span>
+            <span>Desde {formatFecha(serieActual.data.inicio)}</span>
+            <span aria-hidden="true">·</span>
+            <span>{sermonesSerieActual} predicaciones</span>
+          </p>
+          <div class="serie-hero__actions">
+            <Button variant="primary" href="/predicacion/archivo" onLight>
+              Ver la serie
+            </Button>
+          </div>
+        </div>
+      </Container>
+    </section>
+  )}
+
+  <!-- Últimos sermones -->
+  <Section surface="marfil" space="md">
+    <div class="head">
+      <div>
+        <Eyebrow>Predicación</Eyebrow>
+        <h2 class="t-h2 mt-2">Últimas predicaciones</h2>
+      </div>
+      <Link href="/predicacion/archivo" arrow class="head__link">Ver todo el archivo</Link>
+    </div>
+    <div class="grid">
+      {ultimos.map((s) => (
+        <SermonCard
+          slug={s.id}
+          titulo={s.data.titulo}
+          serie={s.data.serie}
+          textoBiblico={s.data.textoBiblico}
+          predicador={s.data.predicador}
+          fecha={s.data.fecha}
+          duracion={s.data.duracion}
+          audioUrl={s.data.audioUrl}
+        />
+      ))}
+    </div>
+  </Section>
+
+  <!-- Recursos -->
+  <Section surface="crema" space="sm">
+    <Container>
+      <div class="recursos">
+        <div>
+          <h2 class="t-h3">Recursos escritos</h2>
+          <p class="recursos__text">
+            Bosquejos, catecismos y hojas de estudio para profundizar en la Palabra.
+          </p>
+        </div>
+        <Button variant="secondary" href="/predicacion/recursos">
+          <Icon name="file-text" size={16} /> Ver recursos
+        </Button>
+      </div>
+    </Container>
+  </Section>
+</Layout>
+
+<style>
+  .mt-2 { margin-top: var(--space-2); }
+  .serie-hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-sepia-profundo);
+    color: var(--color-crema);
+    padding-block: clamp(3.5rem, 9vw, 6.5rem);
+  }
+  .serie-hero__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 48ch;
+  }
+  .serie-hero__title {
+    color: var(--color-crema);
+    margin-top: var(--space-3);
+  }
+  .serie-hero__desc {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: var(--fs-cita);
+    line-height: 1.5;
+    margin-top: var(--space-5);
+    color: rgba(245, 239, 230, 0.9);
+  }
+  .serie-hero__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-top: var(--space-4);
+    font-size: 0.8125rem;
+    color: rgba(245, 239, 230, 0.75);
+  }
+  .serie-hero__actions {
+    margin-top: var(--space-8);
+  }
+  .head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-4);
+    margin-bottom: var(--space-8);
+  }
+  .head__link {
+    white-space: nowrap;
+  }
+  .grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 900px) {
+    .grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 520px) {
+    .grid {
+      grid-template-columns: 1fr;
+    }
+  }
+  .recursos {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+  .recursos__text {
+    color: var(--color-piedra-texto);
+    font-size: 0.9375rem;
+    margin-top: var(--space-2);
+    max-width: 48ch;
+  }
+</style>

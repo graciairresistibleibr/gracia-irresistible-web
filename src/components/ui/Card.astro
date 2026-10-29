@@ -1,0 +1,59 @@
+---
+/**
+ * Tarjeta de superficie: fondo crema o marfil, borde sutil opcional, radius 2px.
+ * Si recibe `href`, toda la tarjeta es un enlace (con hover sobrio).
+ */
+interface Props {
+  surface?: 'crema' | 'marfil' | 'transparent';
+  border?: boolean;
+  href?: string;
+  as?: keyof HTMLElementTagNameMap;
+  class?: string;
+  [key: string]: unknown;
+}
+const {
+  surface = 'crema',
+  border = true,
+  href,
+  as = 'div',
+  class: className,
+  ...rest
+} = Astro.props;
+const Tag = href ? 'a' : as;
+const bg = {
+  crema: 'var(--color-crema)',
+  marfil: 'var(--color-marfil)',
+  transparent: 'transparent',
+};
+---
+
+<Tag
+  class:list={['card', href && 'card--link', border && 'card--border', className]}
+  style={`--card-bg:${bg[surface]}`}
+  href={href}
+  {...rest}
+>
+  <slot />
+</Tag>
+
+<style>
+  .card {
+    display: block;
+    background: var(--card-bg);
+    border-radius: var(--radius);
+    padding: var(--space-6);
+    color: inherit;
+    text-decoration: none;
+  }
+  .card--border {
+    border: 1px solid var(--border-subtle);
+  }
+  .card--link {
+    transition: border-color 160ms ease, box-shadow 160ms ease, transform 160ms ease;
+  }
+  .card--link:hover,
+  .card--link:focus-visible {
+    border-color: var(--color-sepia);
+    box-shadow: var(--shadow-hover);
+  }
+</style>

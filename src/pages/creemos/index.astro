@@ -1,0 +1,84 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Container from '../../components/ui/Container.astro';
+import HubCard from '../../components/ui/HubCard.astro';
+import Verse from '../../components/ui/Verse.astro';
+
+const temas = [
+  {
+    href: '/creemos/confesion-1689',
+    titulo: 'La Confesión de 1689',
+    texto: 'Por qué confesamos nuestra fe con la Confesión Bautista de Londres, y qué contiene.',
+  },
+  {
+    href: '/creemos/cinco-solas',
+    titulo: 'Las Cinco Solas',
+    texto: 'Las cinco afirmaciones que la Reforma recuperó de la Escritura.',
+  },
+  {
+    href: '/creemos/doctrinas-de-la-gracia',
+    titulo: 'Las doctrinas de la gracia',
+    texto: 'La salvación de principio a fin es obra soberana de Dios: el acróstico TULIP.',
+  },
+  {
+    href: '/creemos/que-somos-que-no-somos',
+    titulo: 'Qué somos y qué no somos',
+    texto: 'Con claridad y caridad: dónde estamos parados y dónde no.',
+  },
+];
+---
+
+<Layout
+  title="Creemos"
+  description="Nuestra confesión de fe: reformada, bautista y confesional, según la Escritura."
+>
+  <PageHero
+    eyebrow="Nuestra confesión"
+    title="Creemos lo que la Escritura enseña"
+    subtitle="Retén la forma de las sanas palabras que de mí oíste, en la fe y amor que es en Cristo Jesús. — 2 Timoteo 1:13"
+    image="manos-biblia"
+  />
+
+  <Section surface="marfil" space="md" contain="reading">
+    <p class="t-body-lg measure">
+      No inventamos una doctrina propia ni seguimos las modas de cada época. Con la
+      iglesia de todos los siglos confesamos las verdades que Dios ha revelado en su
+      Palabra, resumidas fielmente en la Confesión de Fe Bautista de Londres de 1689.
+    </p>
+    <p class="t-body mt-6">
+      Confesar la fe no es sustituir la Escritura, sino declarar públicamente cómo la
+      entendemos, para que nadie tenga dudas sobre lo que enseñamos. Estas páginas
+      resumen nuestras convicciones centrales.
+    </p>
+  </Section>
+
+  <Section surface="crema" space="md">
+    <Container>
+      <div class="creemos-grid">
+        {temas.map((t) => <HubCard href={t.href} titulo={t.titulo}>{t.texto}</HubCard>)}
+      </div>
+    </Container>
+  </Section>
+
+  <Section surface="sepia" space="md">
+    <Verse reference="2 Timoteo 1:13" accent="oro" color="var(--color-crema)">
+      Retén la forma de las sanas palabras que de mí oíste, en la fe y amor que es en
+      Cristo Jesús.
+    </Verse>
+  </Section>
+</Layout>
+
+<style>
+  .mt-6 { margin-top: var(--space-6); }
+  .creemos-grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+  @media (min-width: 720px) {
+    .creemos-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+</style>

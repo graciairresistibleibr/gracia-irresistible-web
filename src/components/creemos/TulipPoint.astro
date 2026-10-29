@@ -1,0 +1,89 @@
+---
+/**
+ * Punto de TULIP: inicial destacada + nombre + subtítulo + desarrollo.
+ * `highlight` da el tratamiento especial a la "I" (Gracia Irresistible),
+ * que da nombre a la iglesia: fondo sepia, oro antiguo, marca de agua.
+ */
+import Watermark from '../ui/Watermark.astro';
+interface Props {
+  inicial: string; // T U L I P
+  titulo: string;
+  subtitulo: string;
+  highlight?: boolean;
+  id?: string;
+  class?: string;
+}
+const { inicial, titulo, subtitulo, highlight = false, id, class: className } = Astro.props;
+---
+
+<article
+  id={id}
+  class:list={['tulip', highlight && 'tulip--highlight', className]}
+>
+  {highlight && <Watermark position="right" opacity={0.1} color="var(--color-oro-antiguo)" size="min(50%, 360px)" />}
+  <div class="tulip__inner">
+    <span class="tulip__inicial" aria-hidden="true">{inicial}</span>
+    <div class="tulip__body">
+      <h2 class="t-h2 tulip__titulo">{titulo}</h2>
+      <p class="tulip__sub">{subtitulo}</p>
+      <div class="tulip__text"><slot /></div>
+    </div>
+  </div>
+</article>
+
+<style>
+  .tulip {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border-subtle);
+    border-radius: var(--radius);
+    padding: var(--space-8);
+    background: var(--color-marfil);
+  }
+  .tulip--highlight {
+    background: var(--color-sepia-profundo);
+    color: var(--color-crema);
+    border-color: var(--color-sepia-profundo);
+  }
+  .tulip__inner {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    gap: var(--space-4);
+    align-items: start;
+  }
+  @media (min-width: 720px) {
+    .tulip__inner {
+      grid-template-columns: auto 1fr;
+      gap: var(--space-8);
+    }
+  }
+  .tulip__inicial {
+    font-family: var(--font-serif);
+    font-size: clamp(4rem, 12vw, 7rem);
+    line-height: 0.85;
+    color: var(--color-sepia);
+  }
+  .tulip--highlight .tulip__inicial {
+    color: var(--color-oro-antiguo);
+  }
+  .tulip__titulo {
+    margin-bottom: var(--space-1);
+  }
+  .tulip__sub {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--color-oro-texto);
+    margin-bottom: var(--space-4);
+  }
+  .tulip--highlight .tulip__sub {
+    color: rgba(245, 239, 230, 0.88);
+  }
+  .tulip__text {
+    line-height: 1.65;
+    max-width: 60ch;
+  }
+  .tulip--highlight .tulip__text {
+    color: rgba(245, 239, 230, 0.9);
+  }
+</style>

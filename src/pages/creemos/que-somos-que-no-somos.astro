@@ -1,0 +1,132 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import Callout from '../../components/ui/Callout.astro';
+import Icon from '../../components/ui/Icon.astro';
+
+const somos = [
+  'Una iglesia bautista reformada y confesional (Confesión de 1689).',
+  'Comprometidos con la predicación expositiva de la Escritura.',
+  'Gobernados por una pluralidad de ancianos.',
+  'Practicantes del bautismo de creyentes por inmersión.',
+  'Una congregación que adora regulada por la Palabra.',
+  'Un pueblo que cuida la membresía y la disciplina restauradora.',
+];
+
+const noSomos = [
+  'Una iglesia de entretenimiento o de espectáculo.',
+  'Predicadores del evangelio de la prosperidad.',
+  'Carismáticos ni pentecostales en doctrina y práctica.',
+  'Un movimiento en torno a la personalidad de un líder.',
+  'Un club social ni una ONG religiosa.',
+  'Indiferentes a la sana doctrina «con tal de que haya amor».',
+];
+---
+
+<Layout
+  title="Qué somos y qué no somos"
+  description="Con claridad y caridad: qué es y qué no es la Iglesia Bautista Reformada Gracia Irresistible."
+>
+  <PageHero
+    eyebrow="Nuestra confesión"
+    title="Qué somos y qué no somos"
+    subtitle="Decirlo con claridad es un acto de amor: que nadie tenga que adivinar dónde estamos parados."
+    image="salmo"
+  />
+
+  <Section surface="marfil" space="md">
+    <div class="cols">
+      <div class="col col--si">
+        <h2 class="t-h2 col__head">Qué somos</h2>
+        <ul>
+          {somos.map((s) => (
+            <li>
+              <span class="mark mark--si" aria-hidden="true"><Icon name="check" size={16} /></span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div class="col col--no">
+        <h2 class="t-h2 col__head">Qué no somos</h2>
+        <ul>
+          {noSomos.map((s) => (
+            <li>
+              <span class="mark mark--no" aria-hidden="true"><Icon name="x" size={16} /></span>
+              <span>{s}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
+
+    <Callout title="Nota pastoral" class="nota">
+      <p>
+        No trazamos estas líneas para señalar a otros con soberbia, sino para ser
+        honestos sobre lo que enseñamos. Amamos a muchos hermanos que difieren de
+        nosotros en algunos puntos. Pero creemos que la claridad doctrinal sirve al
+        amor, no lo estorba: donde hay verdad, hay un fundamento firme sobre el cual
+        amarnos de veras.
+      </p>
+    </Callout>
+  </Section>
+</Layout>
+
+<style>
+  .cols {
+    display: grid;
+    gap: var(--space-8);
+    margin-bottom: var(--space-12);
+  }
+  @media (min-width: 760px) {
+    .cols {
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-12);
+    }
+  }
+  .col__head {
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border-subtle);
+    margin-bottom: var(--space-6);
+  }
+  .col--no .col__head {
+    color: var(--color-piedra-texto);
+  }
+  .col ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+  .col li {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    line-height: 1.55;
+  }
+  .mark {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    margin-top: 1px;
+  }
+  .mark--si {
+    background: rgba(107, 68, 35, 0.12);
+    color: var(--color-sepia);
+  }
+  .mark--no {
+    background: rgba(120, 113, 108, 0.15);
+    color: #57534e;
+  }
+  .nota {
+    max-width: 68ch;
+  }
+</style>

@@ -1,0 +1,97 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../../components/ui/PageHero.astro';
+import Section from '../../components/ui/Section.astro';
+import TulipPoint from '../../components/creemos/TulipPoint.astro';
+
+const puntos = [
+  {
+    inicial: 'T',
+    titulo: 'Depravación total',
+    subtitulo: 'Total depravity',
+    texto:
+      'El pecado alcanza cada parte del ser humano: mente, voluntad y afectos. No somos tan malos como podríamos ser, pero no hay nada en nosotros capaz de salvarnos. Estamos muertos en delitos y pecados, incapaces de buscar a Dios por nosotros mismos.',
+  },
+  {
+    inicial: 'U',
+    titulo: 'Elección incondicional',
+    subtitulo: 'Unconditional election',
+    texto:
+      'Dios eligió a los suyos antes de la fundación del mundo, no por prever fe o mérito alguno en ellos, sino según el puro afecto de su voluntad. La elección no se funda en nosotros, sino en su gracia soberana.',
+  },
+  {
+    inicial: 'L',
+    titulo: 'Redención particular',
+    subtitulo: 'Limited atonement',
+    texto:
+      'Cristo no murió en vano ni al azar: dio su vida efectivamente por su pueblo, y realmente los salvó. Su expiación no hace la salvación meramente posible, sino segura para todos aquellos por quienes murió.',
+  },
+  {
+    inicial: 'I',
+    titulo: 'Gracia irresistible',
+    subtitulo: 'Irresistible grace',
+    highlight: true,
+    texto:
+      'Cuando Dios llama eficazmente a un pecador, su gracia vence toda resistencia y le da un corazón nuevo. No fuerza una voluntad que se niega, sino que transforma la voluntad para que quiera venir a Cristo. Donde esta gracia actúa, transforma: de ella toma su nombre esta congregación.',
+  },
+  {
+    inicial: 'P',
+    titulo: 'Perseverancia de los santos',
+    subtitulo: 'Perseverance of the saints',
+    texto:
+      'A quienes Dios justifica, también los guarda. Los verdaderos creyentes perseverarán hasta el fin, no por su propia firmeza, sino porque Dios completa la obra que comenzó. Ninguno de los suyos se pierde.',
+  },
+];
+---
+
+<Layout
+  title="Las doctrinas de la gracia"
+  description="Las doctrinas de la gracia (TULIP): la salvación es obra soberana de Dios de principio a fin."
+>
+  <PageHero
+    eyebrow="Nuestra confesión"
+    title="Las doctrinas de la gracia"
+    subtitle="La salvación es del Señor, de principio a fin. Cinco verdades, resumidas en el acróstico TULIP."
+    image="manos-biblia"
+  />
+
+  <Section surface="marfil" space="md" contain="default">
+    <p class="intro measure">
+      «Las doctrinas de la gracia» es un nombre tradicional para cinco verdades
+      bíblicas sobre cómo Dios salva. No son un sistema frío, sino motivo de adoración:
+      declaran que no nos salvamos a nosotros mismos, sino que la salvación entera es
+      obra de un Dios soberano y misericordioso.
+    </p>
+
+    <div class="tulip-stack">
+      {puntos.map((p) => (
+        <TulipPoint
+          inicial={p.inicial}
+          titulo={p.titulo}
+          subtitulo={p.subtitulo}
+          highlight={p.highlight}
+          id={p.highlight ? 'gracia-irresistible' : undefined}
+        >
+          {p.texto}
+        </TulipPoint>
+      ))}
+    </div>
+  </Section>
+</Layout>
+
+<style>
+  .intro {
+    max-width: 64ch;
+    margin-inline: auto;
+    margin-bottom: var(--space-12);
+    color: var(--color-piedra-texto);
+    text-align: center;
+  }
+  .tulip-stack {
+    max-width: 940px;
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+</style>

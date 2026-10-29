@@ -1,0 +1,349 @@
+---
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Container from '../components/ui/Container.astro';
+import Section from '../components/ui/Section.astro';
+import Eyebrow from '../components/ui/Eyebrow.astro';
+import Button from '../components/ui/Button.astro';
+import Card from '../components/ui/Card.astro';
+import Link from '../components/ui/Link.astro';
+import Verse from '../components/ui/Verse.astro';
+import Divider from '../components/ui/Divider.astro';
+import TwoColumn from '../components/ui/TwoColumn.astro';
+import PhotoBand from '../components/ui/PhotoBand.astro';
+import Icon from '../components/ui/Icon.astro';
+import SermonCard from '../components/sermones/SermonCard.astro';
+import MapEmbed from '../components/media/MapEmbed.astro';
+import { iglesia } from '../data/iglesia.ts';
+
+const sermones = (await getCollection('sermones'))
+  .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
+  .slice(0, 3);
+
+const solas = [
+  {
+    titulo: 'Sola Scriptura',
+    texto:
+      'La Escritura es nuestra única autoridad infalible. Todo lo demás se somete a la Palabra de Dios.',
+  },
+  {
+    titulo: 'Solus Christus',
+    texto:
+      'Cristo es el único mediador entre Dios y los hombres. En Él, y no en nosotros, está toda la salvación.',
+  },
+  {
+    titulo: 'Soli Deo Gloria',
+    texto:
+      'Todo cuanto somos y hacemos existe para un solo fin: la gloria de Dios, que no comparte con nadie.',
+  },
+];
+
+const { proximoCulto, ubicacion, horarios } = iglesia;
+---
+
+<Layout title={iglesia.nombreCompleto} description={iglesia.descripcionBreve}>
+  <!-- 1 · HERO -->
+  <section class="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <picture>
+        <source srcset="/images/hero-biblia.webp" type="image/webp" />
+        <img src="/images/hero-biblia.jpg" alt="" fetchpriority="high" decoding="async" />
+      </picture>
+    </div>
+    <div class="hero__overlay" aria-hidden="true"></div>
+    <Container>
+      <div class="hero__inner">
+        <Eyebrow color="crema">Iglesia Bautista Reformada</Eyebrow>
+        <h1 class="t-display hero__title">Gracia Irresistible</h1>
+        <p class="hero__subtitle">
+          Glorificamos a Dios y servimos a las personas.
+        </p>
+        <div class="hero__actions">
+          <Button variant="primary" href="/somos" onLight>Conocenos</Button>
+          <Button variant="secondary" href="/creemos" onLight>Qué creemos</Button>
+        </div>
+      </div>
+    </Container>
+  </section>
+
+  <!-- 2 · PRÓXIMO CULTO -->
+  <section class="proximo">
+    <Container>
+      <div class="proximo__inner">
+        <div class="proximo__main">
+          <Eyebrow color="sepia">Próximo culto</Eyebrow>
+          <p class="proximo__when">{proximoCulto.dia} · {proximoCulto.hora}</p>
+          <p class="proximo__serie">{proximoCulto.serie}</p>
+        </div>
+        <Button variant="secondary" href="/contacto" size="sm">
+          <Icon name="map-pin" size={16} /> Cómo llegar
+        </Button>
+      </div>
+    </Container>
+  </section>
+
+  <!-- 3 · CONFESAMOS -->
+  <Section surface="crema" space="md">
+    <div class="block-head">
+      <Eyebrow>Confesamos</Eyebrow>
+      <h2 class="t-h2">Tres afirmaciones que gobiernan todo lo demás</h2>
+    </div>
+    <div class="confesamos__grid">
+      {
+        solas.map((s) => (
+          <Card surface="marfil">
+            <h3 class="t-h3 confesamos__title">{s.titulo}</h3>
+            <p class="confesamos__text">{s.texto}</p>
+            <Link href="/creemos/cinco-solas" arrow>Leer más</Link>
+          </Card>
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- 4 · ÚLTIMOS SERMONES -->
+  <Section surface="marfil" space="md">
+    <div class="block-head block-head--row">
+      <div>
+        <Eyebrow>Predicación</Eyebrow>
+        <h2 class="t-h2">Últimos sermones</h2>
+      </div>
+      <Link href="/predicacion/archivo" arrow class="block-head__link">Ver todo el archivo</Link>
+    </div>
+    <div class="sermones__grid">
+      {
+        sermones.map((s) => (
+          <SermonCard
+            slug={s.id}
+            titulo={s.data.titulo}
+            serie={s.data.serie}
+            textoBiblico={s.data.textoBiblico}
+            predicador={s.data.predicador}
+            fecha={s.data.fecha}
+            duracion={s.data.duracion}
+            audioUrl={s.data.audioUrl}
+          />
+        ))
+      }
+    </div>
+  </Section>
+
+  <!-- 5 · SOMOS UNA IGLESIA LOCAL (franja fotográfica) -->
+  <PhotoBand image="congregacion" align="left" space="md">
+    <Eyebrow color="crema">Somos una iglesia local</Eyebrow>
+    <h2 class="t-h2 mt-3">Un pueblo, no un lugar</h2>
+    <p class="t-body-lg mt-4">
+      La iglesia no es un edificio ni un evento: es un pueblo que Cristo compró
+      con su sangre. Nos reunimos cada semana en Resistencia para escuchar la
+      Palabra predicada, celebrar las ordenanzas y cuidarnos como hermanos.
+    </p>
+    <p class="mt-6">
+      <Button variant="secondary" href="/somos" onLight>Conocé nuestra historia</Button>
+    </p>
+  </PhotoBand>
+
+  <!-- 6 · CITA BÍBLICA (franja fotográfica) -->
+  <PhotoBand image="manos-biblia" align="center" space="md" contain="reading">
+    <Verse reference="Romanos 11:36" accent="oro" color="var(--color-crema)">
+      Porque de él, y por él, y para él, son todas las cosas. A él sea la gloria por
+      los siglos. Amén.
+    </Verse>
+  </PhotoBand>
+
+  <!-- 7 · VISITANOS -->
+  <Section surface="marfil" space="md" id="visitanos">
+    <TwoColumn ratio="5-7" gap="lg" align="start">
+      <div slot="start">
+        <Eyebrow>Visitanos</Eyebrow>
+        <h2 class="t-h2 mt-3">Te esperamos este domingo</h2>
+        <dl class="visita__data">
+          <div>
+            <dt><Icon name="map-pin" size={18} /> Dirección</dt>
+            <dd>{ubicacion.calle}<br />{ubicacion.ciudad}, {ubicacion.provincia}</dd>
+          </div>
+          <div>
+            <dt><Icon name="clock" size={18} /> Horarios</dt>
+            <dd>
+              {horarios.map((h) => (
+                <span class="visita__hora">{h.dia} {h.hora} — {h.titulo}</span>
+              ))}
+            </dd>
+          </div>
+        </dl>
+        <div class="mt-6">
+          <Button variant="primary" href="/contacto">
+            <Icon name="mail" size={16} /> Escribinos
+          </Button>
+        </div>
+      </div>
+      <div slot="end">
+        <MapEmbed lat={ubicacion.lat} lng={ubicacion.lng} label="Ubicación de la iglesia en Resistencia" />
+      </div>
+    </TwoColumn>
+  </Section>
+</Layout>
+
+<style>
+  /* Hero */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: var(--color-sepia-profundo);
+    color: var(--color-crema);
+    padding-block: clamp(5rem, 14vw, 10rem);
+  }
+  .hero__bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+  .hero__bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: saturate(0.85) blur(2px);
+    transform: scale(1.06);
+  }
+  .hero__overlay {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: rgba(74, 46, 23, 0.7);
+  }
+  .hero__inner {
+    position: relative;
+    z-index: 1;
+    max-width: 40ch;
+  }
+  .hero__title {
+    margin-top: var(--space-3);
+    color: var(--color-crema);
+  }
+  .hero__subtitle {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: clamp(1.25rem, 2.4vw, 1.5rem);
+    line-height: 1.4;
+    color: var(--color-oro-antiguo);
+    margin-top: var(--space-6);
+    max-width: 32ch;
+  }
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-4);
+    margin-top: var(--space-8);
+  }
+
+  /* Próximo culto */
+  .proximo {
+    background: var(--color-marfil);
+    border-bottom: 1px solid var(--border-subtle);
+    padding-block: var(--space-6);
+  }
+  .proximo__inner {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-6);
+  }
+  .proximo__when {
+    font-family: var(--font-serif);
+    font-size: 1.5rem;
+    margin-top: var(--space-2);
+  }
+  .proximo__serie {
+    font-size: 0.875rem;
+    color: var(--color-piedra-texto);
+    margin-top: var(--space-1);
+  }
+
+  /* Cabeceras de bloque */
+  .block-head {
+    margin-bottom: var(--space-8);
+  }
+  .block-head h2 {
+    margin-top: var(--space-2);
+    max-width: 24ch;
+  }
+  .block-head--row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: var(--space-4);
+  }
+  .block-head__link {
+    white-space: nowrap;
+  }
+
+  /* Confesamos */
+  .confesamos__grid {
+    display: grid;
+    gap: var(--space-6);
+  }
+  @media (min-width: 720px) {
+    .confesamos__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  .confesamos__title {
+    color: var(--color-sepia);
+    margin-bottom: var(--space-3);
+  }
+  .confesamos__text {
+    font-size: 0.9375rem;
+    line-height: 1.6;
+    color: var(--color-piedra-texto);
+    margin-bottom: var(--space-4);
+  }
+
+  /* Sermones */
+  .sermones__grid {
+    display: grid;
+    gap: var(--space-6);
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 900px) {
+    .sermones__grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+  @media (max-width: 520px) {
+    .sermones__grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* Visita */
+  .visita__data {
+    margin-top: var(--space-6);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+  .visita__data dt {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--color-sepia);
+    margin-bottom: var(--space-2);
+  }
+  .visita__data dd {
+    margin: 0;
+    line-height: 1.7;
+  }
+  .visita__hora {
+    display: block;
+  }
+
+  .mt-3 { margin-top: var(--space-3); }
+  .mt-4 { margin-top: var(--space-4); }
+  .mt-6 { margin-top: var(--space-6); }
+</style>
