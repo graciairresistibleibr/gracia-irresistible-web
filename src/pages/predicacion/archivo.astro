@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getSermones } from '../../utils/sermones.ts';
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/ui/PageHero.astro';
 import Section from '../../components/ui/Section.astro';
@@ -7,7 +7,7 @@ import Container from '../../components/ui/Container.astro';
 import Icon from '../../components/ui/Icon.astro';
 import { formatFecha, isoFecha, formatDuracion } from '../../utils/format.ts';
 
-const sermones = (await getCollection('sermones')).sort(
+const sermones = (await getSermones()).sort(
   (a, b) => b.data.fecha.getTime() - a.data.fecha.getTime(),
 );
 
@@ -97,7 +97,7 @@ const anios = uniq(sermones.map((s) => String(s.data.fecha.getUTCFullYear()))).r
               <div class="fila__meta">
                 <span>{s.data.predicador}</span>
                 <time datetime={isoFecha(s.data.fecha)}>{formatFecha(s.data.fecha)}</time>
-                <span>{formatDuracion(s.data.duracion)}</span>
+                {s.data.duracion && <span>{formatDuracion(s.data.duracion)}</span>}
               </div>
               <span class="fila__icon" aria-hidden="true"><Icon name="chevron-right" size={18} /></span>
             </a>

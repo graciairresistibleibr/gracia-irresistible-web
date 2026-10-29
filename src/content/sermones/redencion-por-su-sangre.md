@@ -6,7 +6,7 @@ predicador: 'Ptro. Juan Pérez'
 fecha: 2026-08-31
 textoBiblico: 'Efesios 1:7-14'
 libro: 'Efesios'
-duracion: 2520
+duracion: 42
 audioUrl: '/audio/redencion-por-su-sangre.mp3'
 pdfNotas: '/notas/redencion-por-su-sangre.pdf'
 descripcion: 'En Cristo tenemos redención por su sangre, el perdón de pecados según las riquezas de su gracia. El Espíritu es las arras de nuestra herencia hasta la redención final.'

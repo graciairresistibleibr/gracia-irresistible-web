@@ -5,6 +5,7 @@
  * difuminado, o una marca de agua del emblema. Fondo configurable de la paleta.
  */
 import Container from './Container.astro';
+import { fotoSrc } from '../../utils/fotos.ts';
 import Eyebrow from './Eyebrow.astro';
 import Watermark from './Watermark.astro';
 interface Props {
@@ -13,7 +14,7 @@ interface Props {
   subtitle?: string;
   surface?: 'sepia-profundo' | 'sepia' | 'crema' | 'marfil' | 'tinta';
   watermark?: boolean;
-  /** Nombre base de la foto en /images (sin extensión), ej: "salmo". */
+  /** Nombre de la foto (ver src/data/fotos.json), ej: "salmo". */
   image?: string;
   /** Opacidad de la capa marrón sobre la foto (0–1). */
   overlay?: number;
@@ -31,6 +32,7 @@ const {
   align = 'left',
   class: className,
 } = Astro.props;
+const foto = image ? fotoSrc(image) : undefined;
 const bg = {
   'sepia-profundo': 'var(--color-sepia-profundo)',
   sepia: 'var(--color-sepia)',
@@ -49,8 +51,8 @@ const isDark = image ? true : ['sepia', 'sepia-profundo', 'tinta'].includes(surf
   {image && (
     <div class="pagehero__bg" aria-hidden="true">
       <picture>
-        <source srcset={`/images/${image}.webp`} type="image/webp" />
-        <img src={`/images/${image}.jpg`} alt="" loading="eager" decoding="async" />
+        {foto?.webp && <source srcset={foto.webp} type="image/webp" />}
+        <img src={foto?.src} alt="" loading="eager" decoding="async" />
       </picture>
     </div>
   )}

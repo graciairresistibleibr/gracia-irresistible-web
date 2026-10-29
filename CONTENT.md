@@ -1,5 +1,8 @@
 # Guía de contenido
 
+> **Lo más fácil es usar el panel en `/admin`** (ver [docs/PANEL.md](docs/PANEL.md)).
+> Esta guía explica qué archivos cambia el panel, por si hace falta editarlos a mano.
+
 Cómo mantener el sitio al día sin tocar código de diseño. Todas las tareas
 habituales se resuelven editando archivos de datos o de contenido.
 
@@ -7,7 +10,7 @@ habituales se resuelven editando archivos de datos o de contenido.
 
 ## 1 · Cambiar el «Próximo culto», horarios, dirección o redes
 
-Todo vive en un solo archivo: **`src/data/iglesia.ts`**.
+Todo vive en un solo archivo: **`src/data/iglesia.json`** (panel → «Datos de la iglesia»).
 
 ### Próximo culto (franja del home)
 
@@ -52,7 +55,7 @@ en [openstreetmap.org](https://www.openstreetmap.org) (clic derecho → «¿Qué
 
 ### Contacto y redes
 
-Editá `contacto` (email, email pastoral, WhatsApp) y `redes` (YouTube, Instagram,
+Editá `contacto` (email, email pastoral, WhatsApp; el enlace `wa.me` se arma solo) y `redes` (YouTube, Instagram,
 Facebook). Dejá una red en `''` (cadena vacía) para ocultarla del footer.
 
 ---
@@ -60,20 +63,21 @@ Facebook). Dejá una red en `''` (cadena vacía) para ocultarla del footer.
 ## 2 · Agregar un sermón
 
 Creá un archivo nuevo en **`src/content/sermones/`**, por ejemplo
-`nuevo-sermon.mdx`. El nombre del archivo es el slug de la URL
+`nuevo-sermon.md`. El nombre del archivo es el slug de la URL
 (`/predicacion/nuevo-sermon`).
 
-```mdx
+```md
 ---
 titulo: 'Título del sermón'
-serie: 'Efesios — Las riquezas de la gracia'
 serieSlug: 'efesios-riquezas-de-la-gracia'   # nombre del archivo de la serie (sin extensión)
 predicador: 'Ptro. Juan Pérez'
 fecha: 2026-09-14
 textoBiblico: 'Efesios 2:11-22'
 libro: 'Efesios'                              # para el filtro por libro
-duracion: 2700                                # en SEGUNDOS
-audioUrl: '/audio/nuevo-sermon.mp3'           # ruta local o URL https://
+duracion: 45                                  # en MINUTOS (opcional)
+youtubeUrl: 'https://youtu.be/XXXXXXXXXXX'    # opcional
+audioUrl: '/audio/nuevo-sermon.mp3'           # opcional; ruta local o URL https://
+spotifyUrl: 'https://open.spotify.com/episode/…'  # opcional
 pdfNotas: '/notas/nuevo-sermon.pdf'           # opcional
 descripcion: 'Resumen de hasta 280 caracteres para las tarjetas y el SEO.'
 destacado: false                              # true para destacarlo
@@ -164,9 +168,8 @@ Cada uno indica qué foto real corresponde. Reglas de tratamiento (Manual §6):
 
 ## 6 · Recursos escritos
 
-Los recursos de `/predicacion/recursos` están definidos como un arreglo dentro de
-`src/pages/predicacion/recursos.astro` (buscá `const recursos`). Editá ese arreglo
-y colocá los PDFs en `public/recursos/`.
+Los recursos de `/predicacion/recursos` están en `src/data/recursos.json`
+(panel → «Recursos escritos»). Los PDFs van en `public/recursos/`.
 
 ---
 
@@ -176,5 +179,6 @@ y colocá los PDFs en `public/recursos/`.
 npm run build      # genera dist/
 ```
 
-Subí `dist/` a Netlify o Cloudflare Pages (ver README → Despliegue). En Netlify, el
-formulario de contacto funciona sin configuración adicional gracias a Netlify Forms.
+Netlify está conectado al repositorio de GitHub: cada commit en `main` (incluidos
+los que hace el panel) se publica solo. El formulario de contacto funciona con
+Netlify Forms sin configuración adicional.

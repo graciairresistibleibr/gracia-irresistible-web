@@ -1,0 +1,28 @@
+{
+  "recursos": [
+    {
+      "titulo": "Confesión de Fe de 1689",
+      "tipo": "PDF",
+      "descripcion": "El texto completo de la Confesión Bautista de Londres, en español.",
+      "archivo": "/recursos/confesion-1689.pdf"
+    },
+    {
+      "titulo": "Catecismo Bautista de 1689",
+      "tipo": "PDF",
+      "descripcion": "Preguntas y respuestas para la enseñanza de la doctrina en el hogar.",
+      "archivo": "/recursos/catecismo-bautista.pdf"
+    },
+    {
+      "titulo": "Guía de estudio: Efesios",
+      "tipo": "PDF",
+      "descripcion": "Preguntas para el estudio personal y familiar de la serie en curso.",
+      "archivo": "/recursos/guia-efesios.pdf"
+    },
+    {
+      "titulo": "Cómo prepararte para la Cena del Señor",
+      "tipo": "Artículo",
+      "descripcion": "Una breve hoja pastoral sobre el examen propio antes de la mesa.",
+      "archivo": "/recursos/cena-del-senor.pdf"
+    }
+  ]
+}

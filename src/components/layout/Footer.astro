@@ -62,6 +62,13 @@ const { ubicacion, contacto, redes } = iglesia;
               </a>
             </li>
           )}
+          {redes.spotify && (
+            <li>
+              <a href={redes.spotify} class="site-footer__link" target="_blank" rel="noopener noreferrer">
+                <Icon name="play" size={18} /> Spotify
+              </a>
+            </li>
+          )}
         </ul>
       </div>
     </div>

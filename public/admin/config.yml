@@ -1,0 +1,376 @@
+# Panel de administración del sitio (Sveltia CMS) → graciairresistible.org/admin
+# Cada cambio que se guarda acá se convierte en un commit en GitHub y Netlify
+# vuelve a publicar el sitio solo, en uno o dos minutos.
+
+backend:
+  name: github
+  repo: graciairresistibleibr/gracia-irresistible-web
+  branch: main
+  commit_messages:
+    create: 'Panel: nuevo {{collection}} «{{slug}}»'
+    update: 'Panel: actualizar {{collection}} «{{slug}}»'
+    delete: 'Panel: borrar {{collection}} «{{slug}}»'
+    uploadMedia: 'Panel: subir {{path}}'
+    deleteMedia: 'Panel: borrar {{path}}'
+
+app_title: Gracia Irresistible · Panel
+site_url: https://www.graciairresistible.org
+logo:
+  src: /favicon.svg
+
+# Imágenes y archivos subidos sin una carpeta propia.
+media_folder: public/images/subidas
+public_folder: /images/subidas
+
+media_libraries:
+  default:
+    config:
+      slugify_filename: true
+      # Las fotos se achican y se pasan a WebP al subirlas, para que el sitio
+      # siga cargando rápido aunque suban fotos directo del celular.
+      transformations:
+        raster_image:
+          format: webp
+          quality: 82
+          width: 2000
+          height: 2000
+
+slug:
+  encoding: ascii
+  clean_accents: true
+
+output:
+  omit_empty_optional_fields: true
+
+collections:
+  # ───────────────────────────── Predicación ─────────────────────────────
+  - name: sermones
+    label: Sermones
+    label_singular: Sermón
+    description: Cada sermón puede tener video de YouTube, audio, enlace a Spotify y notas en PDF. Con uno alcanza.
+    icon: mic
+    folder: src/content/sermones
+    extension: md
+    format: frontmatter
+    create: true
+    slug: '{{fields.titulo}}'
+    summary: '{{fields.titulo}} · {{fields.fecha | date("DD/MM/YYYY")}}'
+    sortable_fields:
+      fields: [fecha, titulo, predicador]
+      default:
+        field: fecha
+        direction: descending
+    preview_path: /predicacion/{{slug}}
+    media_folder: /public/notas
+    public_folder: /notas
+    fields:
+      - { name: titulo, label: Título, widget: string }
+      - name: serieSlug
+        label: Serie
+        widget: relation
+        collection: series
+        value_field: '{{slug}}'
+        search_fields: [nombre]
+        display_fields: [nombre]
+      - name: predicador
+        label: Predicador
+        widget: string
+        hint: 'Ej.: Ptro. Juan Pérez'
+      - name: fecha
+        label: Fecha
+        widget: datetime
+        time_format: false
+        format: YYYY-MM-DD
+      - name: textoBiblico
+        label: Texto bíblico
+        widget: string
+        hint: 'Ej.: Efesios 2:1-10'
+      - name: libro
+        label: Libro de la Biblia
+        widget: string
+        hint: 'Sólo el nombre del libro, ej.: Efesios. Se usa para el filtro del archivo.'
+      - name: youtubeUrl
+        label: Video de YouTube
+        widget: string
+        required: false
+        hint: Pegá el enlace del video (o de la transmisión) en YouTube.
+        pattern: ['^https://(www\.|m\.)?(youtube\.com|youtu\.be)/', 'Tiene que ser un enlace de YouTube']
+      - name: audioUrl
+        label: Audio (MP3)
+        widget: file
+        required: false
+        media_folder: /public/audio
+        public_folder: /audio
+        accept: audio/mpeg,audio/mp3
+        hint: Subí el MP3 (idealmente menos de 40 MB) o pegá el enlace a un MP3 que esté en otro lado.
+      - name: spotifyUrl
+        label: Episodio en Spotify
+        widget: string
+        required: false
+        hint: Enlace al episodio del podcast en Spotify.
+        pattern: ['^https://open\.spotify\.com/', 'Tiene que ser un enlace de open.spotify.com']
+      - name: duracion
+        label: Duración (minutos)
+        widget: number
+        value_type: int
+        min: 1
+        required: false
+      - name: pdfNotas
+        label: Notas en PDF
+        widget: file
+        required: false
+        accept: application/pdf
+      - name: descripcion
+        label: Resumen
+        widget: text
+        hint: Hasta 280 caracteres. Aparece en las tarjetas y en Google.
+        maxlength: 280
+      - name: destacado
+        label: Destacado
+        widget: boolean
+        default: false
+      - name: body
+        label: Notas del sermón (bosquejo, aplicación…)
+        widget: markdown
+        required: false
+
+  - name: series
+    label: Series
+    label_singular: Serie
+    description: Sólo una serie debería estar marcada como «en curso».
+    icon: menu_book
+    folder: src/content/series
+    extension: md
+    format: frontmatter
+    create: true
+    slug: '{{fields.nombre}}'
+    summary: '{{fields.nombre}}{{fields.activa | ternary(" · en curso", "")}}'
+    preview_path: /predicacion/serie-actual
+    fields:
+      - { name: nombre, label: Nombre de la serie, widget: string }
+      - { name: libro, label: Libro de la Biblia, widget: string }
+      - { name: inicio, label: Comenzó, widget: datetime, time_format: false, format: YYYY-MM-DD }
+      - name: fin
+        label: Terminó
+        widget: datetime
+        time_format: false
+        format: YYYY-MM-DD
+        required: false
+        hint: Dejalo vacío mientras la serie esté en curso.
+      - { name: descripcion, label: Descripción, widget: text }
+      - { name: activa, label: Serie en curso, widget: boolean, default: false }
+      - { name: body, label: Texto introductorio, widget: markdown, required: false }
+
+  # ───────────────────────────── La iglesia ──────────────────────────────
+  - name: liderazgo
+    label: Liderazgo
+    label_singular: Líder
+    icon: groups
+    folder: src/content/liderazgo
+    extension: md
+    format: frontmatter
+    create: true
+    slug: '{{fields.nombre}}'
+    summary: '{{fields.nombre}} · {{fields.cargo}}'
+    sortable_fields:
+      fields: [orden, nombre]
+      default:
+        field: orden
+        direction: ascending
+    preview_path: /somos/liderazgo
+    media_folder: /public/liderazgo
+    public_folder: /liderazgo
+    fields:
+      - { name: nombre, label: Nombre y apellido, widget: string }
+      - name: cargo
+        label: Cargo
+        widget: select
+        options: [Pastor, Anciano, Diácono]
+      - name: orden
+        label: Orden en la página
+        widget: number
+        value_type: int
+        hint: El número más bajo aparece primero.
+      - { name: bio, label: Descripción breve, widget: text }
+      - name: foto
+        label: Retrato
+        widget: image
+        required: false
+        hint: Foto vertical (proporción 3:4). Sin foto se muestran las iniciales.
+
+singletons:
+  - name: datos
+    label: Datos de la iglesia
+    icon: church
+    file: src/data/iglesia.json
+    format: json
+    fields:
+      - name: proximoCulto
+        label: Próximo culto (franja de la portada)
+        widget: object
+        fields:
+          - { name: dia, label: Día, widget: string }
+          - { name: hora, label: Hora, widget: string, hint: 'Ej.: 10:00 h' }
+          - { name: serie, label: Texto debajo, widget: string, hint: 'Ej.: Serie actual: Efesios — Las riquezas de la gracia' }
+      - name: horarios
+        label: Horarios de reunión
+        label_singular: horario
+        widget: list
+        summary: '{{fields.dia}} {{fields.hora}} — {{fields.titulo}}'
+        fields:
+          - { name: dia, label: Día, widget: string }
+          - { name: hora, label: Hora, widget: string, hint: 'Ej.: 18:30' }
+          - { name: titulo, label: Reunión, widget: string }
+      - name: ubicacion
+        label: Dirección
+        widget: object
+        fields:
+          - { name: calle, label: Calle y número, widget: string }
+          - { name: ciudad, label: Ciudad, widget: string }
+          - { name: provincia, label: Provincia, widget: string }
+          - { name: pais, label: País, widget: string }
+          - { name: codigoPostal, label: Código postal, widget: string }
+          - name: lat
+            label: Latitud (mapa)
+            widget: number
+            value_type: float
+            hint: En openstreetmap.org hacé clic derecho sobre el templo → «Mostrar dirección» y copiá el primer número.
+          - name: lng
+            label: Longitud (mapa)
+            widget: number
+            value_type: float
+            hint: El segundo número de las coordenadas.
+      - name: contacto
+        label: Contacto
+        widget: object
+        fields:
+          - { name: email, label: Email general, widget: string }
+          - { name: emailPastoral, label: Email pastoral, widget: string }
+          - { name: whatsapp, label: WhatsApp, widget: string, hint: 'Con código de país, ej.: +54 9 362 000 0000' }
+      - name: redes
+        label: Redes sociales
+        widget: object
+        hint: Dejá vacía una red para que no aparezca en el pie de página.
+        fields:
+          - { name: youtube, label: YouTube, widget: string, required: false }
+          - { name: instagram, label: Instagram, widget: string, required: false }
+          - { name: facebook, label: Facebook, widget: string, required: false }
+          - { name: spotify, label: Spotify (podcast), widget: string, required: false }
+      - name: nombre
+        label: Denominación
+        widget: string
+      - name: nombreMarca
+        label: Nombre de la iglesia
+        widget: string
+      - name: nombreCompleto
+        label: Nombre completo
+        widget: string
+      - name: descripcionBreve
+        label: Descripción para Google y redes
+        widget: text
+
+  - name: inicio
+    label: Portada
+    icon: home
+    file: src/data/inicio.json
+    format: json
+    preview_path: /
+    fields:
+      - name: hero
+        label: Encabezado
+        widget: object
+        fields:
+          - { name: antetitulo, label: Texto chico de arriba, widget: string }
+          - { name: titulo, label: Título, widget: string }
+          - { name: subtitulo, label: Frase, widget: string }
+      - name: confesamos
+        label: Bloque «Confesamos»
+        widget: object
+        fields:
+          - { name: antetitulo, label: Texto chico de arriba, widget: string }
+          - { name: titulo, label: Título, widget: string }
+          - name: tarjetas
+            label: Tarjetas
+            label_singular: tarjeta
+            widget: list
+            summary: '{{fields.titulo}}'
+            fields:
+              - { name: titulo, label: Título, widget: string }
+              - { name: texto, label: Texto, widget: text }
+      - name: iglesiaLocal
+        label: Franja «Somos una iglesia local»
+        widget: object
+        fields:
+          - { name: antetitulo, label: Texto chico de arriba, widget: string }
+          - { name: titulo, label: Título, widget: string }
+          - { name: texto, label: Texto, widget: text }
+      - name: versiculo
+        label: Versículo destacado
+        widget: object
+        fields:
+          - { name: texto, label: Texto, widget: text }
+          - { name: referencia, label: Referencia, widget: string }
+      - name: visitanos
+        label: Bloque «Visitanos»
+        widget: object
+        fields:
+          - { name: antetitulo, label: Texto chico de arriba, widget: string }
+          - { name: titulo, label: Título, widget: string }
+
+  - name: fotos
+    label: Fotos del sitio
+    icon: photo_library
+    file: src/data/fotos.json
+    format: json
+    fields:
+      - name: hero-biblia
+        label: Portada (encabezado)
+        widget: image
+        hint: Fotos de fondo de encabezados y franjas. El sitio les pone encima el tono sepia de la marca.
+      - { name: congregacion, label: 'Congregación (portada y «Nuestra historia»)', widget: image }
+      - { name: manos-biblia, label: 'Manos con Biblia (versículo de la portada, «Creemos», «Doctrinas de la gracia»)', widget: image }
+      - { name: oracion, label: 'Oración («Somos», «Liderazgo», «Membresía», «Contacto»)', widget: image }
+      - { name: salmo, label: 'Salmo («Cinco Solas», «Qué somos», «Recursos»)', widget: image }
+      - { name: biblia-espanol, label: 'Biblia («Confesión 1689», «Archivo», «Serie actual»)', widget: image }
+
+  - name: recursos
+    label: Recursos escritos
+    icon: description
+    file: src/data/recursos.json
+    format: json
+    preview_path: /predicacion/recursos
+    media_folder: /public/recursos
+    public_folder: /recursos
+    fields:
+      - name: recursos
+        label: Recursos
+        label_singular: recurso
+        widget: list
+        summary: '{{fields.titulo}}'
+        fields:
+          - { name: titulo, label: Título, widget: string }
+          - name: tipo
+            label: Tipo
+            widget: select
+            options: [PDF, Artículo, Guía, Catecismo, Libro, Enlace]
+          - { name: descripcion, label: Descripción, widget: text }
+          - { name: archivo, label: Archivo (PDF), widget: file, required: false, accept: application/pdf }
+          - name: enlace
+            label: …o un enlace externo
+            widget: string
+            required: false
+
+  - name: historia
+    label: Página «Nuestra historia»
+    icon: history_edu
+    file: src/content/paginas/historia.md
+    format: frontmatter
+    preview_path: /somos/historia
+    fields:
+      - { name: antetitulo, label: Texto chico de arriba, widget: string }
+      - { name: titulo, label: Título, widget: string }
+      - { name: introduccion, label: Introducción, widget: text }
+      - { name: versiculo, label: Versículo, widget: text, required: false }
+      - { name: referencia, label: Referencia del versículo, widget: string, required: false }
+      - { name: descripcion, label: Descripción para Google, widget: text }
+      - { name: body, label: Texto de la página, widget: markdown }

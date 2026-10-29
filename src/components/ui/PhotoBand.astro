@@ -4,8 +4,9 @@
  * difuminado. Texto claro por encima. Para banners fotográficos entre secciones.
  */
 import Container from './Container.astro';
+import { fotoSrc } from '../../utils/fotos.ts';
 interface Props {
-  image: string; // nombre base en /images (sin extensión)
+  image: string; // nombre de la foto (ver src/data/fotos.json)
   overlay?: number; // opacidad de la capa marrón (0–1)
   space?: 'sm' | 'md' | 'lg';
   align?: 'left' | 'center';
@@ -22,6 +23,7 @@ const {
   minHeight,
   class: className,
 } = Astro.props;
+const foto = image ? fotoSrc(image) : undefined;
 ---
 
 <section
@@ -30,8 +32,8 @@ const {
 >
   <div class="band__bg" aria-hidden="true">
     <picture>
-      <source srcset={`/images/${image}.webp`} type="image/webp" />
-      <img src={`/images/${image}.jpg`} alt="" loading="lazy" decoding="async" />
+      {foto?.webp && <source srcset={foto.webp} type="image/webp" />}
+      <img src={foto?.src} alt="" loading="lazy" decoding="async" />
     </picture>
   </div>
   <div class="band__overlay" aria-hidden="true"></div>

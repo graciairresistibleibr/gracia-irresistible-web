@@ -15,9 +15,8 @@ export function isoFecha(fecha: Date): string {
   return fecha.toISOString().slice(0, 10);
 }
 
-/** Segundos → "46 min" o "1 h 12 min" */
-export function formatDuracion(segundos: number): string {
-  const min = Math.round(segundos / 60);
+/** Minutos → "46 min" o "1 h 12 min" */
+export function formatDuracion(min: number): string {
   if (min < 60) return `${min} min`;
   const h = Math.floor(min / 60);
   const m = min % 60;
@@ -25,9 +24,14 @@ export function formatDuracion(segundos: number): string {
 }
 
 /** Duración legible por lector de pantalla / atributo. */
-export function duracionISO(segundos: number): string {
-  const h = Math.floor(segundos / 3600);
-  const m = Math.floor((segundos % 3600) / 60);
-  const s = segundos % 60;
-  return `PT${h ? h + 'H' : ''}${m}M${s}S`;
+export function duracionISO(min: number): string {
+  const h = Math.floor(min / 60);
+  const m = min % 60;
+  return `PT${h ? h + 'H' : ''}${m}M`;
+}
+
+/** Enlace de YouTube (watch, youtu.be, shorts, live) → id del video. */
+export function youtubeId(url: string): string | undefined {
+  const m = url.match(/(?:youtu\.be\/|[?&]v=|\/(?:embed|shorts|live)\/)([\w-]{11})/);
+  return m?.[1];
 }
