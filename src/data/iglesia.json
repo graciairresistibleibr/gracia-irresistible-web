@@ -1,36 +1,42 @@
 {
-  "nombre": "Iglesia Bautista Reformada",
-  "nombreMarca": "Gracia Irresistible",
-  "nombreCompleto": "Iglesia Bautista Reformada «Gracia Irresistible»",
-  "descripcionBreve": "Glorificamos a Dios y servimos a las personas. Iglesia Bautista Reformada en Resistencia, Chaco, confesante de la Confesión de Fe Bautista de Londres de 1689.",
+  "proximoCulto": {
+    "dia": "Domingo",
+    "hora": "10:00 h",
+    "serie": "Serie actual: Carta de Santiago"
+  },
+  "horarios": [
+    {
+      "dia": "Domingo",
+      "hora": "10:00",
+      "titulo": "Culto de adoración"
+    },
+    {
+      "dia": "Miércoles",
+      "hora": "20 hs",
+      "titulo": "Reunión de Oración/ Estudio Bíblico"
+    }
+  ],
   "ubicacion": {
-    "calle": "Av. Ejemplo 1234",
+    "calle": "Olegario Andrade 230",
     "ciudad": "Resistencia",
     "provincia": "Chaco",
     "pais": "Argentina",
     "codigoPostal": "H3500",
-    "lat": -27.4512,
-    "lng": -58.9866
+    "lat": -27.451,
+    "lng": -58.986
   },
   "contacto": {
-    "email": "contacto@graciairresistible.org",
-    "emailPastoral": "pastor@graciairresistible.org",
-    "whatsapp": "+54 9 362 000 0000"
+    "email": "graciairresistibleibr@gmail.com",
+    "emailPastoral": "jonatelias@gmail.com",
+    "whatsapp": "+54 9 362 4 725219"
   },
   "redes": {
-    "youtube": "https://youtube.com/@graciairresistible",
-    "facebook": "https://facebook.com/graciairresistible",
-    "instagram": "https://instagram.com/graciairresistible",
-    "spotify": ""
+    "youtube": "https://www.youtube.com/@iglesiabautistareformadagr3783",
+    "instagram": "https://www.instagram.com/iglesiagraciairresistible/",
+    "facebook": "https://www.facebook.com/iglesiadelagraciairresistible"
   },
-  "horarios": [
-    { "dia": "Domingo", "hora": "10:00", "titulo": "Culto de adoración" },
-    { "dia": "Domingo", "hora": "18:30", "titulo": "Estudio bíblico" },
-    { "dia": "Miércoles", "hora": "20:00", "titulo": "Oración y estudio bíblico" }
-  ],
-  "proximoCulto": {
-    "dia": "Domingo",
-    "hora": "10:00 h",
-    "serie": "Serie actual: Efesios — Las riquezas de la gracia"
-  }
+  "nombre": "Iglesia Bautista Reformada",
+  "nombreMarca": "Gracia Irresistible",
+  "nombreCompleto": "Iglesia Bautista Reformada «Gracia Irresistible»",
+  "descripcionBreve": "Glorificamos a Dios y servimos a las personas. Iglesia Bautista Reformada en Resistencia, Chaco, Argentina."
 }
