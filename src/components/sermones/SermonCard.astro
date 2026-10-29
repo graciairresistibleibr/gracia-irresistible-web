@@ -81,11 +81,36 @@ const accion = !audioUrl && youtubeUrl ? 'Ver' : 'Escuchar';
     border-radius: var(--radius);
     padding: clamp(var(--space-4), 4vw, var(--space-6));
     height: 100%;
+    position: relative;
+    overflow: hidden;
     transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+  /* Línea dorada superior que se dibuja al pasar el cursor */
+  .sermon-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--color-oro-antiguo);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
   }
   .sermon-card:hover {
     border-color: var(--color-sepia);
     box-shadow: var(--shadow-hover);
+  }
+  .sermon-card:hover::before,
+  .sermon-card:focus-within::before {
+    transform: scaleX(1);
+  }
+  .sermon-card__play :global(svg) {
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .sermon-card:hover .sermon-card__play :global(svg) {
+    transform: scale(1.18);
   }
   .sermon-card__title {
     margin-top: var(--space-3);

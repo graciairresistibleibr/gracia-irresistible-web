@@ -15,7 +15,7 @@ const { href, titulo, surface = 'marfil', class: className } = Astro.props;
 <Card surface={surface} href={href} class:list={['hubcard', className]}>
   <h2 class="t-h3 hubcard__title">{titulo}</h2>
   <p class="hubcard__text"><slot /></p>
-  <span class="hubcard__more">Leer más →</span>
+  <span class="hubcard__more">Leer más <span class="hubcard__arrow" aria-hidden="true">→</span></span>
 </Card>
 
 <style>
@@ -40,5 +40,12 @@ const { href, titulo, surface = 'marfil', class: className } = Astro.props;
     font-weight: 600;
     font-size: 0.8125rem;
     color: var(--color-sepia);
+  }
+  .hubcard__arrow {
+    display: inline-block;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .hubcard:hover .hubcard__arrow {
+    transform: translateX(4px);
   }
 </style>

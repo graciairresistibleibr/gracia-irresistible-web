@@ -23,7 +23,9 @@ const initials = nombre
   {
     foto ? (
       /* PLACEHOLDER: reemplazar la ruta `foto` por el retrato oficial (3:4). */
-      <img class="leader__photo photo-treatment" src={foto} alt={`Retrato de ${nombre}, ${cargo}`} width="300" height="400" loading="lazy" />
+      <div class="leader__frame">
+        <img class="leader__photo photo-treatment" src={foto} alt={`Retrato de ${nombre}, ${cargo}`} width="300" height="400" loading="lazy" />
+      </div>
     ) : (
       /* PLACEHOLDER: reemplazar con retrato oficial */
       <Placeholder variant="retrato" initials={initials} label="Retrato pendiente" class="leader__photo" />
@@ -41,11 +43,32 @@ const initials = nombre
     display: flex;
     flex-direction: column;
   }
+  .leader__frame {
+    overflow: hidden;
+    border-radius: var(--radius);
+    background: var(--color-sepia-profundo);
+  }
   .leader__photo {
+    display: block;
     width: 100%;
     aspect-ratio: 3 / 4;
     object-fit: cover;
     border-radius: var(--radius);
+  }
+  .leader__frame .leader__photo {
+    transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
+  }
+  .leader__name {
+    transition: color 0.3s ease;
+  }
+  @media (hover: hover) {
+    .leader:hover .leader__frame .leader__photo {
+      transform: scale(1.04);
+      filter: sepia(0) saturate(1);
+    }
+    .leader:hover .leader__name {
+      color: var(--color-sepia);
+    }
   }
   .leader__body {
     padding-top: var(--space-4);

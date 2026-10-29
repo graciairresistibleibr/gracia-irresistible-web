@@ -225,6 +225,14 @@ const heroFotos = portada.length ? portada : [fotoSrc('hero-biblia')];
     filter: saturate(0.85) blur(2px);
     transform: scale(1.06);
   }
+  /* Acercamiento muy lento de la foto de fondo */
+  @keyframes acercar {
+    from { transform: scale(1.06); }
+    to { transform: scale(1.16); }
+  }
+  :global(.motion) .hero__bg img {
+    animation: acercar 22s ease-in-out infinite alternate;
+  }
   .hero__overlay {
     position: absolute;
     inset: 0;

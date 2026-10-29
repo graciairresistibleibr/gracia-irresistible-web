@@ -36,6 +36,7 @@ const fotosMiercoles = fotos(miercoles.fotos);
             {f.webp && <source srcset={f.webp} type="image/webp" />}
             <img class="photo-treatment" src={f.src} alt={f.alt} loading="lazy" decoding="async" />
           </picture>
+          {f.alt && <figcaption class="foto__caption" aria-hidden="true">{f.alt}</figcaption>}
         </figure>
       ))}
     </div>
@@ -54,6 +55,7 @@ const fotosMiercoles = fotos(miercoles.fotos);
             {f.webp && <source srcset={f.webp} type="image/webp" />}
             <img class="photo-treatment" src={f.src} alt={f.alt} loading="lazy" decoding="async" />
           </picture>
+          {f.alt && <figcaption class="foto__caption" aria-hidden="true">{f.alt}</figcaption>}
         </figure>
       ))}
     </div>
@@ -108,6 +110,41 @@ const fotosMiercoles = fotos(miercoles.fotos);
     width: 100%;
     height: 100%;
     object-fit: cover;
+  }
+
+  /* Al pasar el cursor: acercamiento lento y la descripción de la foto */
+  .foto__caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: var(--space-8) var(--space-4) var(--space-3);
+    background: linear-gradient(to top, rgba(42, 26, 13, 0.85), transparent);
+    color: var(--color-crema);
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+    pointer-events: none;
+  }
+  @media (hover: hover) {
+    .foto img {
+      transition: transform 1.2s cubic-bezier(0.22, 1, 0.36, 1), filter 0.6s ease;
+    }
+    .foto:hover img {
+      transform: scale(1.05);
+      filter: sepia(0.05) saturate(0.95);
+    }
+    .foto:hover .foto__caption {
+      opacity: 1;
+      transform: none;
+    }
+  }
+  @media (hover: none) {
+    .foto__caption {
+      display: none;
+    }
   }
 
   /* Domingo: la primera foto grande y las demás alrededor, en tamaño parejo */
