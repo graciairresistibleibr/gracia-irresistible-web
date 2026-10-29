@@ -44,6 +44,11 @@ const { ubicacion, contacto, horarios, redes } = iglesia;
                 {ubicacion.calle}<br />
                 {ubicacion.ciudad}, {ubicacion.provincia}, {ubicacion.pais}
               </address>
+              <p class="info__directions">
+                <Button variant="secondary" size="sm" href={ubicacion.mapsUrl} target="_blank" rel="noopener noreferrer">
+                  <Icon name="map-pin" size={16} /> Cómo llegar
+                </Button>
+              </p>
             </div>
 
             <div class="info__item">
@@ -57,7 +62,7 @@ const { ubicacion, contacto, horarios, redes } = iglesia;
               <p><a class="info__link" href={contacto.whatsappUrl} target="_blank" rel="noopener noreferrer">{contacto.whatsapp}</a></p>
             </div>
 
-            <MapEmbed lat={ubicacion.lat} lng={ubicacion.lng} label="Ubicación de la iglesia" class="info__map" />
+            <MapEmbed lat={ubicacion.lat} lng={ubicacion.lng} mapsUrl={ubicacion.mapsUrl} label="Ubicación de la iglesia" class="info__map" />
           </div>
         </div>
 
@@ -197,5 +202,8 @@ const { ubicacion, contacto, horarios, redes } = iglesia;
     outline: 2px solid var(--color-sepia);
     outline-offset: 1px;
     border-color: var(--color-sepia);
+  }
+  .info__directions {
+    margin-top: var(--space-3);
   }
 </style>

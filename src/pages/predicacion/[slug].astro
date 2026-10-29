@@ -50,7 +50,12 @@ const schema = {
 };
 ---
 
-<Layout title={d.titulo} description={d.descripcion} schema={schema}>
+<Layout
+  title={d.titulo}
+  description={d.descripcion}
+  schema={schema}
+  ogImage={videoId ? `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg` : undefined}
+>
   <Section surface="sepia-profundo" space="sm">
     <Container width="reading">
       <Eyebrow color="crema">{d.serie}</Eyebrow>

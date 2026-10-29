@@ -1,6 +1,6 @@
 # Panel de administración
 
-El contenido del sitio se edita desde **[graciairresistible.org/admin](https://www.graciairresistible.org/admin)**,
+El contenido del sitio se edita desde **[graciairresistible.org/admin](https://graciairresistible.org/admin)**,
 en la computadora o en el celular. No hace falta tocar código.
 
 Cada vez que guardás un cambio, el panel lo guarda en GitHub y Netlify vuelve a

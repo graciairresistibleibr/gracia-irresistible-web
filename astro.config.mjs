@@ -7,7 +7,11 @@ import tailwindcss from '@tailwindcss/vite';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://graciairresistible.org',
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    // Fuera del sitemap: páginas internas o de confirmación.
+    sitemap({ filter: (page) => !/\/(design-system|gracias|admin)\//.test(page) }),
+  ],
   vite: {
     plugins: [tailwindcss()],
   },

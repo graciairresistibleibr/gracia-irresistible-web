@@ -1,21 +1,22 @@
 ---
 /**
- * Mapa sobrio con OpenStreetMap (sin Google, sin publicidad, sin cookies de
- * terceros). Tiles en escala de grises vía filtro CSS. Carga diferida.
+ * Mapa de Google con el pin en la dirección de la iglesia. Carga diferida.
+ * «Cómo llegar» abre el enlace de Google Maps cargado en el panel
+ * (Datos de la iglesia → Dirección → Enlace de Google Maps).
  */
 interface Props {
   lat: number;
   lng: number;
+  mapsUrl?: string;
   label?: string;
-  zoomBox?: number; // margen del bbox en grados (más pequeño = más cerca)
+  zoom?: number;
   class?: string;
 }
-const { lat, lng, label = 'Ubicación de la iglesia', zoomBox = 0.006, class: className } =
+const { lat, lng, mapsUrl, label = 'Ubicación de la iglesia', zoom = 16, class: className } =
   Astro.props;
-const bbox = [lng - zoomBox, lat - zoomBox, lng + zoomBox, lat + zoomBox].join('%2C');
-const src = `https://www.openstreetmap.org/export/embed.html?bbox=${bbox}&layer=mapnik&marker=${lat}%2C${lng}`;
-const verMasUrl = `https://www.openstreetmap.org/?mlat=${lat}&mlon=${lng}#map=17/${lat}/${lng}`;
-const comoLlegarUrl = `https://www.openstreetmap.org/directions?to=${lat}%2C${lng}`;
+const src = `https://www.google.com/maps?q=${lat},${lng}&z=${zoom}&hl=es&output=embed`;
+const comoLlegarUrl =
+  mapsUrl || `https://www.google.com/maps/dir/?api=1&destination=${lat},${lng}`;
 ---
 
 <figure class:list={['map', className]}>
@@ -24,12 +25,11 @@ const comoLlegarUrl = `https://www.openstreetmap.org/directions?to=${lat}%2C${ln
     title={label}
     src={src}
     loading="lazy"
-    referrerpolicy="no-referrer"
+    referrerpolicy="no-referrer-when-downgrade"
+    allowfullscreen
   ></iframe>
   <figcaption class="map__caption">
-    <a href={comoLlegarUrl} target="_blank" rel="noopener noreferrer">Cómo llegar</a>
-    <span aria-hidden="true">·</span>
-    <a href={verMasUrl} target="_blank" rel="noopener noreferrer">Ver mapa más grande</a>
+    <a href={comoLlegarUrl} target="_blank" rel="noopener noreferrer">Cómo llegar (Google Maps)</a>
   </figcaption>
 </figure>
 
@@ -42,7 +42,6 @@ const comoLlegarUrl = `https://www.openstreetmap.org/directions?to=${lat}%2C${ln
     height: 340px;
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius);
-    filter: grayscale(1) contrast(0.92) sepia(0.08);
     display: block;
   }
   .map__caption {

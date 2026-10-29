@@ -7,7 +7,6 @@ import Eyebrow from '../components/ui/Eyebrow.astro';
 import Button from '../components/ui/Button.astro';
 import Card from '../components/ui/Card.astro';
 import Link from '../components/ui/Link.astro';
-import Verse from '../components/ui/Verse.astro';
 import Divider from '../components/ui/Divider.astro';
 import TwoColumn from '../components/ui/TwoColumn.astro';
 import PhotoBand from '../components/ui/PhotoBand.astro';
@@ -24,26 +23,32 @@ const sermones = (await getSermones())
   .slice(0, 3);
 
 const { proximoCulto, ubicacion, horarios } = iglesia;
-const { hero, confesamos, iglesiaLocal, versiculo, visitanos } = inicio;
+const { hero, confesamos, iglesiaLocal, visitanos } = inicio;
 const portada = fotosPortada();
 const heroFotos = portada.length ? portada : [fotoSrc('hero-biblia')];
 ---
 
-<Layout title={iglesia.nombreCompleto} description={iglesia.descripcionBreve}>
+<Layout
+  title={iglesia.nombreCompleto}
+  description={iglesia.descripcionBreve}
+  preloadImage={heroFotos[0].webp ?? heroFotos[0].src}
+>
   <!-- 1 · HERO -->
   <section class="hero">
     <div class="hero__bg" aria-hidden="true" data-hero-fotos>
       {heroFotos.map((foto, i) => (
-        <picture class:list={['hero__foto', i === 0 && 'is-active']}>
-          {foto.webp && <source srcset={foto.webp} type="image/webp" />}
-          <img
-            src={foto.src}
-            alt=""
-            fetchpriority={i === 0 ? 'high' : undefined}
-            loading={i === 0 ? 'eager' : 'lazy'}
-            decoding="async"
-          />
-        </picture>
+        i === 0 ? (
+          <picture class="hero__foto is-active">
+            {foto.webp && <source srcset={foto.webp} type="image/webp" />}
+            <img src={foto.src} alt="" fetchpriority="high" decoding="async" />
+          </picture>
+        ) : (
+          /* Las demás fotos se cargan después, para que la portada abra rápido */
+          <picture class="hero__foto">
+            {foto.webp && <source data-srcset={foto.webp} type="image/webp" />}
+            <img data-src={foto.src} alt="" decoding="async" />
+          </picture>
+        )
       ))}
     </div>
     <div class="hero__overlay" aria-hidden="true"></div>
@@ -69,7 +74,7 @@ const heroFotos = portada.length ? portada : [fotoSrc('hero-biblia')];
           <p class="proximo__when">{proximoCulto.dia} · {proximoCulto.hora}</p>
           <p class="proximo__serie">{proximoCulto.serie}</p>
         </div>
-        <Button variant="secondary" href="/contacto" size="sm">
+        <Button variant="secondary" href={ubicacion.mapsUrl} target="_blank" rel="noopener noreferrer" size="sm">
           <Icon name="map-pin" size={16} /> Cómo llegar
         </Button>
       </div>
@@ -124,20 +129,13 @@ const heroFotos = portada.length ? portada : [fotoSrc('hero-biblia')];
   </Section>
 
   <!-- 5 · SOMOS UNA IGLESIA LOCAL (franja fotográfica) -->
-  <PhotoBand image="congregacion" align="left" space="md">
+  <PhotoBand image="congregacion" align="left" space="lg" sharp>
     <Eyebrow color="crema">{iglesiaLocal.antetitulo}</Eyebrow>
     <h2 class="t-h2 mt-3">{iglesiaLocal.titulo}</h2>
     <p class="t-body-lg mt-4">{iglesiaLocal.texto}</p>
     <p class="mt-6">
       <Button variant="secondary" href="/somos" onLight>Conocé nuestra historia</Button>
     </p>
-  </PhotoBand>
-
-  <!-- 6 · CITA BÍBLICA (franja fotográfica) -->
-  <PhotoBand image="manos-biblia" align="center" space="md" contain="reading">
-    <Verse reference={versiculo.referencia} accent="oro" color="var(--color-crema)">
-      {versiculo.texto}
-    </Verse>
   </PhotoBand>
 
   <!-- 7 · NUESTRAS REUNIONES (galería) -->
@@ -170,7 +168,7 @@ const heroFotos = portada.length ? portada : [fotoSrc('hero-biblia')];
         </div>
       </div>
       <div slot="end">
-        <MapEmbed lat={ubicacion.lat} lng={ubicacion.lng} label="Ubicación de la iglesia en Resistencia" />
+        <MapEmbed lat={ubicacion.lat} lng={ubicacion.lng} mapsUrl={ubicacion.mapsUrl} label="Ubicación de la iglesia en Resistencia" />
       </div>
     </TwoColumn>
   </Section>
@@ -181,6 +179,13 @@ const heroFotos = portada.length ? portada : [fotoSrc('hero-biblia')];
   // visitante pidió reducir el movimiento).
   const fotos = document.querySelectorAll('[data-hero-fotos] .hero__foto');
   if (fotos.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const cargar = () =>
+      document.querySelectorAll<HTMLElement>('[data-hero-fotos] [data-src], [data-hero-fotos] [data-srcset]').forEach((el) => {
+        if (el.dataset.srcset) el.setAttribute('srcset', el.dataset.srcset);
+        if (el.dataset.src) el.setAttribute('src', el.dataset.src);
+      });
+    if (document.readyState === 'complete') cargar();
+    else addEventListener('load', cargar);
     let actual = 0;
     setInterval(() => {
       fotos[actual].classList.remove('is-active');
