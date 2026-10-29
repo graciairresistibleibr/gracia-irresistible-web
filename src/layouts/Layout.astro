@@ -4,6 +4,7 @@
  * enlace de salto, cabecera y pie. Preload de los pesos tipográficos críticos.
  */
 import '../styles/global.css';
+import '../styles/motion.css';
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
 import { iglesia } from '../data/iglesia.ts';
@@ -74,6 +75,9 @@ const jsonLd = schema ? [churchSchema, schema] : churchSchema;
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
+    <script is:inline>
+      if (!matchMedia('(prefers-reduced-motion: reduce)').matches) document.documentElement.classList.add('motion');
+    </script>
 
     {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 
@@ -109,5 +113,8 @@ const jsonLd = schema ? [churchSchema, schema] : churchSchema;
       <slot />
     </main>
     <Footer />
+    <script>
+      import '../scripts/motion.ts';
+    </script>
   </body>
 </html>

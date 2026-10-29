@@ -1,0 +1,192 @@
+/*
+ * Movimiento del sitio: sobrio y lento, al servicio de la lectura.
+ * - Apariciones al hacer scroll (src/scripts/motion.ts agrega .reveal sólo a lo
+ *   que está fuera de pantalla al cargar, así nada queda oculto si falla el JS).
+ * - Entrada suave de las portadas y efectos al pasar el cursor.
+ * Todo se desactiva si el visitante pidió reducir el movimiento.
+ */
+
+:root {
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --shadow-lift: 0 14px 30px -16px rgba(74, 46, 23, 0.35);
+  interpolate-size: allow-keywords;
+}
+
+/* Apariciones al hacer scroll --------------------------------------------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(22px);
+  transition:
+    opacity 0.9s var(--ease-out),
+    transform 0.9s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+/* Las fotos además «se asientan»: arrancan un poco ampliadas */
+.reveal--img {
+  transform: none;
+}
+.reveal--img img {
+  transform: scale(1.06);
+  transition: transform 1.6s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+}
+.reveal--img.is-visible img {
+  transform: none;
+}
+
+/* Entrada de las portadas (al cargar) ------------------------------------- */
+@keyframes subir {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.motion .hero__inner > *,
+.motion .pagehero__inner > * {
+  animation: subir 1s var(--ease-out) both;
+}
+.motion .hero__inner > :nth-child(2),
+.motion .pagehero__inner > :nth-child(2) {
+  animation-delay: 0.12s;
+}
+.motion .hero__inner > :nth-child(3),
+.motion .pagehero__inner > :nth-child(3) {
+  animation-delay: 0.24s;
+}
+.motion .hero__inner > :nth-child(n + 4),
+.motion .pagehero__inner > :nth-child(n + 4) {
+  animation-delay: 0.36s;
+}
+
+/* Línea dorada bajo los títulos de bloque, que se dibuja al aparecer */
+.reveal .t-h2::after,
+.reveal.t-h2::after {
+  content: '';
+  display: block;
+  width: 48px;
+  height: 1px;
+  margin-top: var(--space-4);
+  background: var(--color-oro-antiguo);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 1.1s var(--ease-out) 0.35s;
+}
+.reveal.is-visible .t-h2::after,
+.reveal.is-visible.t-h2::after {
+  transform: scaleX(1);
+}
+.band .t-h2::after,
+.section--dark .t-h2::after,
+.pagehero--center .t-h2::after {
+  display: none;
+}
+
+/* Cursor sobre tarjetas, fotos y enlaces ----------------------------------- */
+@media (hover: hover) {
+  .card--link,
+  .sermon-card,
+  .tulip {
+    transition:
+      border-color 0.3s ease,
+      box-shadow 0.4s var(--ease-out),
+      transform 0.4s var(--ease-out);
+  }
+  .card--link:hover,
+  .sermon-card:hover,
+  .tulip:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lift);
+  }
+  .card--link:hover {
+    border-color: var(--color-sepia);
+  }
+
+  /* Botones: leve elevación */
+  .btn {
+    transition:
+      background-color 0.2s ease,
+      color 0.2s ease,
+      border-color 0.2s ease,
+      transform 0.3s var(--ease-out),
+      box-shadow 0.3s var(--ease-out);
+  }
+  .btn:not(.btn--ghost):hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 18px -10px rgba(26, 26, 26, 0.45);
+  }
+  .btn:not(.btn--ghost):active {
+    transform: translateY(0);
+    box-shadow: none;
+  }
+}
+
+/* Botón «Volver arriba» ---------------------------------------------------- */
+.to-top {
+  position: fixed;
+  right: clamp(1rem, 3vw, 2rem);
+  bottom: clamp(1rem, 3vw, 2rem);
+  z-index: 40;
+  width: 44px;
+  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 1px solid rgba(184, 147, 90, 0.6);
+  background: var(--color-sepia-profundo);
+  color: var(--color-crema);
+  cursor: pointer;
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+  transition:
+    opacity 0.35s ease,
+    transform 0.35s var(--ease-out),
+    background-color 0.2s ease;
+}
+.to-top.is-shown {
+  opacity: 1;
+  transform: none;
+  pointer-events: auto;
+}
+.to-top:hover {
+  background: var(--color-sepia);
+}
+.to-top svg {
+  transform: rotate(-90deg);
+}
+
+/* Acordeones: se abren con un despliegue suave (navegadores que lo permiten) */
+details::details-content {
+  block-size: 0;
+  overflow: hidden;
+  transition:
+    block-size 0.4s var(--ease-out),
+    content-visibility 0.4s allow-discrete;
+}
+details[open]::details-content {
+  block-size: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal--img img {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* Fondos con parallax: un poco más altos para que no se vean los bordes */
+.band:not(.band--sharp) .band__bg,
+.pagehero__bg {
+  inset: -70px 0;
+  will-change: transform;
+}
