@@ -1,8 +1,13 @@
 {
-  "hero-biblia": "/images/hero-biblia.jpg",
-  "congregacion": "/images/congregacion.jpg",
+  "portada": [
+    "/images/portada-1.jpg",
+    "/images/portada-2.jpg",
+    "/images/portada-3.jpg"
+  ],
+  "congregacion": "/images/reunion-congregacion.jpg",
   "manos-biblia": "/images/manos-biblia.jpg",
-  "oracion": "/images/oracion.jpg",
+  "oracion": "/images/reunion-oracion.jpg",
+  "predicacion": "/images/predicacion-pulpito.jpg",
   "salmo": "/images/salmo.jpg",
   "biblia-espanol": "/images/biblia-espanol.jpg"
 }

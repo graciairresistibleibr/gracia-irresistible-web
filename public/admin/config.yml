@@ -323,15 +323,69 @@ singletons:
     file: src/data/fotos.json
     format: json
     fields:
-      - name: hero-biblia
+      - name: portada
         label: Portada (encabezado)
-        widget: image
-        hint: Fotos de fondo de encabezados y franjas. El sitio les pone encima el tono sepia de la marca.
+        label_singular: foto
+        widget: list
+        hint: Fotos de fondo de encabezados y franjas. El sitio les pone encima el tono sepia de la marca y las difumina. En la portada se alternan con un fundido lento; con 2 o 3 alcanza. Mejor fotos horizontales.
+        field: { name: foto, label: Foto, widget: image }
       - { name: congregacion, label: 'Congregación (portada y «Nuestra historia»)', widget: image }
       - { name: manos-biblia, label: 'Manos con Biblia (versículo de la portada, «Creemos», «Doctrinas de la gracia»)', widget: image }
       - { name: oracion, label: 'Oración («Somos», «Liderazgo», «Membresía», «Contacto»)', widget: image }
+      - { name: predicacion, label: 'Predicación (encabezado de «Predicación»)', widget: image }
       - { name: salmo, label: 'Salmo («Cinco Solas», «Qué somos», «Recursos»)', widget: image }
       - { name: biblia-espanol, label: 'Biblia («Confesión 1689», «Archivo», «Serie actual»)', widget: image }
+
+  - name: reuniones
+    label: Galería de reuniones
+    icon: photo_camera
+    file: src/data/reuniones.json
+    format: json
+    preview_path: /#reuniones
+    media_folder: /public/images/reuniones
+    public_folder: /images/reuniones
+    fields:
+      - { name: antetitulo, label: Texto chico de arriba, widget: string }
+      - { name: titulo, label: Título, widget: string }
+      - { name: texto, label: Texto, widget: text, required: false }
+      - name: domingo
+        label: Culto del domingo
+        widget: object
+        fields:
+          - { name: cuando, label: Día y hora, widget: string, hint: 'Ej.: Domingos · 10:00 h' }
+          - { name: titulo, label: Título, widget: string }
+          - { name: texto, label: Texto, widget: text, required: false }
+          - name: fotos
+            label: Fotos
+            label_singular: foto
+            widget: list
+            summary: '{{fields.descripcion}}'
+            hint: La primera foto se muestra grande. Lo ideal son 5 fotos (1 grande + 4 chicas).
+            fields:
+              - { name: foto, label: Foto, widget: image }
+              - name: descripcion
+                label: Descripción
+                widget: string
+                hint: Qué se ve en la foto (para personas que usan lector de pantalla y para Google).
+      - name: miercoles
+        label: Reunión de los miércoles
+        widget: object
+        fields:
+          - { name: cuando, label: Día y hora, widget: string, hint: 'Ej.: Miércoles · 20:00 h' }
+          - { name: titulo, label: Título, widget: string }
+          - { name: texto, label: Texto, widget: text, required: false }
+          - name: fotos
+            label: Fotos
+            label_singular: foto
+            widget: list
+            summary: '{{fields.descripcion}}'
+            hint: Se muestran una al lado de la otra. Lo ideal son 2 fotos.
+            fields:
+              - { name: foto, label: Foto, widget: image }
+              - name: descripcion
+                label: Descripción
+                widget: string
+                hint: Qué se ve en la foto (para personas que usan lector de pantalla y para Google).
 
   - name: recursos
     label: Recursos escritos

@@ -16,7 +16,8 @@ import SermonCard from '../components/sermones/SermonCard.astro';
 import MapEmbed from '../components/media/MapEmbed.astro';
 import { iglesia } from '../data/iglesia.ts';
 import inicio from '../data/inicio.json';
-import { fotoSrc } from '../utils/fotos.ts';
+import Reuniones from '../components/reuniones/Reuniones.astro';
+import { fotoSrc, fotosPortada } from '../utils/fotos.ts';
 
 const sermones = (await getSermones())
   .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
@@ -24,17 +25,26 @@ const sermones = (await getSermones())
 
 const { proximoCulto, ubicacion, horarios } = iglesia;
 const { hero, confesamos, iglesiaLocal, versiculo, visitanos } = inicio;
-const heroFoto = fotoSrc('hero-biblia');
+const portada = fotosPortada();
+const heroFotos = portada.length ? portada : [fotoSrc('hero-biblia')];
 ---
 
 <Layout title={iglesia.nombreCompleto} description={iglesia.descripcionBreve}>
   <!-- 1 · HERO -->
   <section class="hero">
-    <div class="hero__bg" aria-hidden="true">
-      <picture>
-        {heroFoto.webp && <source srcset={heroFoto.webp} type="image/webp" />}
-        <img src={heroFoto.src} alt="" fetchpriority="high" decoding="async" />
-      </picture>
+    <div class="hero__bg" aria-hidden="true" data-hero-fotos>
+      {heroFotos.map((foto, i) => (
+        <picture class:list={['hero__foto', i === 0 && 'is-active']}>
+          {foto.webp && <source srcset={foto.webp} type="image/webp" />}
+          <img
+            src={foto.src}
+            alt=""
+            fetchpriority={i === 0 ? 'high' : undefined}
+            loading={i === 0 ? 'eager' : 'lazy'}
+            decoding="async"
+          />
+        </picture>
+      ))}
     </div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <Container>
@@ -130,7 +140,10 @@ const heroFoto = fotoSrc('hero-biblia');
     </Verse>
   </PhotoBand>
 
-  <!-- 7 · VISITANOS -->
+  <!-- 7 · NUESTRAS REUNIONES (galería) -->
+  <Reuniones />
+
+  <!-- 8 · VISITANOS -->
   <Section surface="marfil" space="md" id="visitanos">
     <TwoColumn ratio="5-7" gap="lg" align="start">
       <div slot="start">
@@ -163,6 +176,20 @@ const heroFoto = fotoSrc('hero-biblia');
   </Section>
 </Layout>
 
+<script>
+  // Las fotos de la portada se alternan con un fundido lento (no si el
+  // visitante pidió reducir el movimiento).
+  const fotos = document.querySelectorAll('[data-hero-fotos] .hero__foto');
+  if (fotos.length > 1 && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    let actual = 0;
+    setInterval(() => {
+      fotos[actual].classList.remove('is-active');
+      actual = (actual + 1) % fotos.length;
+      fotos[actual].classList.add('is-active');
+    }, 7000);
+  }
+</script>
+
 <style>
   /* Hero */
   .hero {
@@ -176,6 +203,15 @@ const heroFoto = fotoSrc('hero-biblia');
     position: absolute;
     inset: 0;
     z-index: 0;
+  }
+  .hero__foto {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 1.6s ease;
+  }
+  .hero__foto.is-active {
+    opacity: 1;
   }
   .hero__bg img {
     width: 100%;
