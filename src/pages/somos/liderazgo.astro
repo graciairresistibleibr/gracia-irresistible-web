@@ -21,10 +21,7 @@ const lideres = (await getCollection('liderazgo')).sort((a, b) => a.data.orden -
 
   <Section surface="marfil" space="md">
     <p class="intro measure">
-      La Escritura reconoce dos oficios en la iglesia local: ancianos (también
-      llamados pastores u obispos), que enseñan y gobiernan, y diáconos, que
-      atienden las necesidades del cuerpo. Estos hermanos no son figuras de
-      plataforma, sino siervos que rinden cuentas ante Dios por el rebaño.
+      La Biblia reconoce dos oficios: ancianos (o pastores), que enseñan y gobiernan, y diáconos, que atienden las necesidades de la iglesia. Son siervos, no figuras.
     </p>
 
     <div class="lideres-grid">
@@ -38,7 +35,7 @@ const lideres = (await getCollection('liderazgo')).sort((a, b) => a.data.orden -
 <style>
   .intro {
     max-width: 62ch;
-    margin-bottom: var(--space-12);
+    margin-bottom: clamp(var(--space-8), 5vw, var(--space-12));
     color: var(--color-piedra-texto);
   }
   .lideres-grid {
@@ -53,8 +50,7 @@ const lideres = (await getCollection('liderazgo')).sort((a, b) => a.data.orden -
   }
   @media (max-width: 460px) {
     .lideres-grid {
-      grid-template-columns: 1fr;
-      max-width: 280px;
+      gap: var(--space-6) var(--space-4);
     }
   }
 </style>

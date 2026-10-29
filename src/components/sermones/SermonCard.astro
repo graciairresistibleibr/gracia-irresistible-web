@@ -79,7 +79,7 @@ const accion = !audioUrl && youtubeUrl ? 'Ver' : 'Escuchar';
     background: var(--color-marfil);
     border: 1px solid var(--border-subtle);
     border-radius: var(--radius);
-    padding: var(--space-6);
+    padding: clamp(var(--space-4), 4vw, var(--space-6));
     height: 100%;
     transition: border-color 160ms ease, box-shadow 160ms ease;
   }

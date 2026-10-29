@@ -180,4 +180,17 @@ const { ubicacion, contacto, redes } = iglesia;
     color: rgba(245, 239, 230, 0.55);
     font-size: 0.75rem;
   }
+  /* En mobile: enlaces en dos columnas y redes en una fila, para no alargar el pie */
+  @media (max-width: 699px) {
+    .site-footer__col ul {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-3) var(--space-4);
+    }
+    .site-footer__col .site-footer__social {
+      display: flex;
+      flex-flow: row wrap;
+      gap: var(--space-3) var(--space-6);
+    }
+  }
 </style>

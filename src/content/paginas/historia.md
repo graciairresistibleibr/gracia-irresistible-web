@@ -11,8 +11,8 @@ La Iglesia Bautista Reformada «Gracia Irresistible» nació del deseo de un gru
 
 ## Los primeros pasos
 
-Lo que empezó como un estudio bíblico en un hogar fue creciendo en número y, sobre todo, en convicción. La necesidad de una mesa del Señor, del bautismo de los creyentes y del gobierno de ancianos llevó a la constitución formal de la iglesia.
+Lo que empezó como un estudio bíblico en un hogar creció en número y en convicción, hasta constituirse formalmente como iglesia.
 
 ## Por qué existimos
 
-No existimos para ofrecer una alternativa religiosa entre muchas, sino para adorar al Dios verdadero del modo que Él ha ordenado, para edificar a los santos por medio de la Palabra y para anunciar el evangelio de la gracia soberana a nuestra ciudad.
+Existimos para adorar a Dios como Él ordena, edificar a la iglesia con la Palabra y anunciar el evangelio en nuestra ciudad.
