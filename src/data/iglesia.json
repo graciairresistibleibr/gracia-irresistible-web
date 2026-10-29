@@ -21,9 +21,10 @@
     "ciudad": "Resistencia",
     "provincia": "Chaco",
     "pais": "Argentina",
-    "codigoPostal": "H3500",
-    "lat": -27.451,
-    "lng": -58.986
+    "codigoPostal": "H3506",
+    "lat": -27.4641059,
+    "lng": -59.0049475,
+    "mapsUrl": "https://maps.app.goo.gl/yAsKwy9Z698QgD6dA"
   },
   "contacto": {
     "email": "graciairresistibleibr@gmail.com",

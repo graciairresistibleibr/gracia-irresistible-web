@@ -15,8 +15,10 @@ interface Props {
   ogImage?: string;
   /** Excluir de indexación. */
   noindex?: boolean;
-  /** Contenido JSON-LD adicional. */
+  /** Contenido JSON-LD adicional (se suma a los datos de la iglesia). */
   schema?: object;
+  /** Imagen principal de la página, para precargarla (mejora la velocidad). */
+  preloadImage?: string;
 }
 
 const {
@@ -25,6 +27,7 @@ const {
   ogImage = '/og-default.png',
   noindex = false,
   schema,
+  preloadImage,
 } = Astro.props;
 
 const siteName = iglesia.nombreCompleto;
@@ -32,21 +35,33 @@ const fullTitle = title === siteName ? title : `${title} · ${iglesia.nombreMarc
 const canonical = new URL(Astro.url.pathname, Astro.site ?? Astro.url).href;
 const ogImageUrl = new URL(ogImage, Astro.site ?? Astro.url).href;
 
-const defaultSchema = {
+const site = Astro.site ?? Astro.url;
+const { ubicacion, contacto, redes } = iglesia;
+const churchSchema = {
   '@context': 'https://schema.org',
   '@type': 'Church',
+  '@id': new URL('/#iglesia', site).href,
   name: siteName,
-  url: Astro.site?.href,
+  alternateName: iglesia.nombreMarca,
+  url: new URL('/', site).href,
+  logo: new URL('/favicon-512.png', site).href,
+  image: new URL('/og-default.png', site).href,
   description: iglesia.descripcionBreve,
-  email: iglesia.contacto.email,
+  email: contacto.email,
+  telephone: contacto.whatsapp,
   address: {
     '@type': 'PostalAddress',
-    streetAddress: iglesia.ubicacion.calle,
-    addressLocality: iglesia.ubicacion.ciudad,
-    addressRegion: iglesia.ubicacion.provincia,
+    streetAddress: ubicacion.calle,
+    addressLocality: ubicacion.ciudad,
+    addressRegion: ubicacion.provincia,
+    postalCode: ubicacion.codigoPostal,
     addressCountry: 'AR',
   },
+  geo: { '@type': 'GeoCoordinates', latitude: ubicacion.lat, longitude: ubicacion.lng },
+  ...(ubicacion.mapsUrl ? { hasMap: ubicacion.mapsUrl } : {}),
+  sameAs: Object.values(redes).filter(Boolean),
 };
+const jsonLd = schema ? [churchSchema, schema] : churchSchema;
 ---
 
 <!doctype html>
@@ -54,15 +69,19 @@ const defaultSchema = {
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
     <meta name="generator" content={Astro.generator} />
+
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
 
     <title>{fullTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     {noindex && <meta name="robots" content="noindex, nofollow" />}
-    <meta name="theme-color" content="#1a1a1a" />
+    <meta name="theme-color" content="#4A2E17" />
 
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
@@ -71,8 +90,8 @@ const defaultSchema = {
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:image" content={ogImageUrl} />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="630" />
+    {ogImage === '/og-default.png' && <meta property="og:image:width" content="1200" />}
+    {ogImage === '/og-default.png' && <meta property="og:image:height" content="630" />}
     <meta property="og:locale" content="es_AR" />
 
     <!-- Twitter -->
@@ -81,7 +100,7 @@ const defaultSchema = {
     <meta name="twitter:description" content={description} />
     <meta name="twitter:image" content={ogImageUrl} />
 
-    <script type="application/ld+json" set:html={JSON.stringify(schema ?? defaultSchema)} />
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
   </head>
   <body>
     <a href="#contenido" class="skip-link">Saltar al contenido</a>

@@ -48,7 +48,7 @@ const liderazgo = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/liderazgo' }),
   schema: z.object({
     nombre: z.string(),
-    cargo: z.enum(['Pastor', 'Anciano', 'Diácono']),
+    cargo: z.enum(['Pastor', 'Anciano', 'Diácono', 'Colaborador']),
     orden: z.number(),
     bio: z.string(),
     foto: opcional(z.string()),

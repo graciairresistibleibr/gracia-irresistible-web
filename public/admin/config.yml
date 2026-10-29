@@ -14,9 +14,9 @@ backend:
     deleteMedia: 'Panel: borrar {{path}}'
 
 app_title: Gracia Irresistible · Panel
-site_url: https://www.graciairresistible.org
+site_url: https://graciairresistible.org
 logo:
-  src: /favicon.svg
+  src: /favicon-192.png
 
 # Imágenes y archivos subidos sin una carpeta propia.
 media_folder: public/images/subidas
@@ -185,7 +185,7 @@ collections:
       - name: cargo
         label: Cargo
         widget: select
-        options: [Pastor, Anciano, Diácono]
+        options: [Pastor, Anciano, Diácono, Colaborador]
       - name: orden
         label: Orden en la página
         widget: number
@@ -230,11 +230,15 @@ singletons:
           - { name: provincia, label: Provincia, widget: string }
           - { name: pais, label: País, widget: string }
           - { name: codigoPostal, label: Código postal, widget: string }
+          - name: mapsUrl
+            label: Enlace de Google Maps
+            widget: string
+            hint: Se usa en los botones «Cómo llegar». En Google Maps buscá la iglesia → Compartir → Copiar vínculo.
           - name: lat
             label: Latitud (mapa)
             widget: number
             value_type: float
-            hint: En openstreetmap.org hacé clic derecho sobre el templo → «Mostrar dirección» y copiá el primer número.
+            hint: Ubica el pin del mapa. En Google Maps hacé clic derecho sobre el templo y copiá el primer número.
           - name: lng
             label: Longitud (mapa)
             widget: number
@@ -304,12 +308,6 @@ singletons:
           - { name: antetitulo, label: Texto chico de arriba, widget: string }
           - { name: titulo, label: Título, widget: string }
           - { name: texto, label: Texto, widget: text }
-      - name: versiculo
-        label: Versículo destacado
-        widget: object
-        fields:
-          - { name: texto, label: Texto, widget: text }
-          - { name: referencia, label: Referencia, widget: string }
       - name: visitanos
         label: Bloque «Visitanos»
         widget: object
@@ -330,7 +328,7 @@ singletons:
         hint: Fotos de fondo de encabezados y franjas. El sitio les pone encima el tono sepia de la marca y las difumina. En la portada se alternan con un fundido lento; con 2 o 3 alcanza. Mejor fotos horizontales.
         field: { name: foto, label: Foto, widget: image }
       - { name: congregacion, label: 'Congregación (portada y «Nuestra historia»)', widget: image }
-      - { name: manos-biblia, label: 'Manos con Biblia (versículo de la portada, «Creemos», «Doctrinas de la gracia»)', widget: image }
+      - { name: manos-biblia, label: 'Manos con Biblia («Creemos», «Doctrinas de la gracia»)', widget: image }
       - { name: oracion, label: 'Oración («Somos», «Liderazgo», «Membresía», «Contacto»)', widget: image }
       - { name: predicacion, label: 'Predicación (encabezado de «Predicación»)', widget: image }
       - { name: salmo, label: 'Salmo («Cinco Solas», «Qué somos», «Recursos»)', widget: image }

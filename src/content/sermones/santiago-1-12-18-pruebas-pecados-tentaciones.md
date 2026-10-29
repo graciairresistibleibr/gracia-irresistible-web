@@ -1,7 +1,7 @@
 ---
 titulo: 'Pruebas, pecados, tentaciones… gracia irresistible'
 serieSlug: carta-de-santiago
-predicador: Hno. Adolfo
+predicador: Diác. Adolfo Morales
 fecha: 2026-09-13
 textoBiblico: Santiago 1:12-18
 libro: Santiago
