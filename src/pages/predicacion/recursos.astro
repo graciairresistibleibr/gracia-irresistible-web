@@ -6,33 +6,20 @@ import Container from '../../components/ui/Container.astro';
 import Card from '../../components/ui/Card.astro';
 import Icon from '../../components/ui/Icon.astro';
 
-// PLACEHOLDER: reemplazar por los recursos reales (rutas a PDFs en /recursos/).
-const recursos = [
-  {
-    titulo: 'Confesión de Fe de 1689',
-    tipo: 'PDF',
-    descripcion: 'El texto completo de la Confesión Bautista de Londres, en español.',
-    href: '/recursos/confesion-1689.pdf',
-  },
-  {
-    titulo: 'Catecismo Bautista de 1689',
-    tipo: 'PDF',
-    descripcion: 'Preguntas y respuestas para la enseñanza de la doctrina en el hogar.',
-    href: '/recursos/catecismo-bautista.pdf',
-  },
-  {
-    titulo: 'Guía de estudio: Efesios',
-    tipo: 'PDF',
-    descripcion: 'Preguntas para el estudio personal y familiar de la serie en curso.',
-    href: '/recursos/guia-efesios.pdf',
-  },
-  {
-    titulo: 'Cómo prepararte para la Cena del Señor',
-    tipo: 'Artículo',
-    descripcion: 'Una breve hoja pastoral sobre el examen propio antes de la mesa.',
-    href: '/recursos/cena-del-senor.pdf',
-  },
-];
+// Los recursos se editan desde el panel (/admin → «Recursos escritos»).
+import datos from '../../data/recursos.json';
+
+interface Recurso {
+  titulo: string;
+  tipo: string;
+  descripcion: string;
+  archivo?: string; // PDF subido desde el panel
+  enlace?: string; // o un enlace externo
+}
+const recursos = (datos.recursos as Recurso[]).map((r) => ({
+  ...r,
+  href: r.archivo || r.enlace || '#',
+}));
 ---
 
 <Layout

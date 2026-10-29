@@ -6,7 +6,7 @@ predicador: 'Anc. Marcos Giménez'
 fecha: 2025-08-10
 textoBiblico: 'Marcos 1:14-15'
 libro: 'Marcos'
-duracion: 2280
+duracion: 38
 audioUrl: '/audio/el-evangelio-del-reino.mp3'
 descripcion: 'El primer anuncio público de Jesús: el tiempo se ha cumplido y el reino de Dios se ha acercado. Arrepentíos y creed en el evangelio.'
 destacado: false

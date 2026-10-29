@@ -1,5 +1,6 @@
 ---
-import { getCollection, render } from 'astro:content';
+import { render } from 'astro:content';
+import { getSermones } from '../../utils/sermones.ts';
 import Layout from '../../layouts/Layout.astro';
 import Section from '../../components/ui/Section.astro';
 import Container from '../../components/ui/Container.astro';
@@ -8,10 +9,10 @@ import Divider from '../../components/ui/Divider.astro';
 import Link from '../../components/ui/Link.astro';
 import SermonPlayer from '../../components/sermones/SermonPlayer.astro';
 import SermonCard from '../../components/sermones/SermonCard.astro';
-import { formatFecha, isoFecha, formatDuracion, duracionISO } from '../../utils/format.ts';
+import { formatFecha, isoFecha, formatDuracion, duracionISO, youtubeId } from '../../utils/format.ts';
 
 export async function getStaticPaths() {
-  const sermones = await getCollection('sermones');
+  const sermones = await getSermones();
   return sermones.map((sermon) => ({
     params: { slug: sermon.id },
     props: { sermon },
@@ -22,19 +23,28 @@ const { sermon } = Astro.props;
 const d = sermon.data;
 const { Content } = await render(sermon);
 
-const relacionados = (await getCollection('sermones'))
+const relacionados = (await getSermones())
   .filter((s) => s.data.serieSlug === d.serieSlug && s.id !== sermon.id)
   .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
   .slice(0, 3);
 
+// Datos estructurados: VideoObject si hay video de YouTube, si no AudioObject.
+const videoId = d.youtubeUrl ? youtubeId(d.youtubeUrl) : undefined;
 const schema = {
   '@context': 'https://schema.org',
-  '@type': 'AudioObject',
+  '@type': videoId ? 'VideoObject' : 'AudioObject',
   name: d.titulo,
   description: d.descripcion,
-  contentUrl: new URL(d.audioUrl, Astro.site ?? Astro.url).href,
+  ...(videoId
+    ? {
+        embedUrl: `https://www.youtube-nocookie.com/embed/${videoId}`,
+        thumbnailUrl: `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+      }
+    : d.audioUrl
+      ? { contentUrl: new URL(d.audioUrl, Astro.site ?? Astro.url).href }
+      : {}),
   uploadDate: isoFecha(d.fecha),
-  duration: duracionISO(d.duracion),
+  ...(d.duracion ? { duration: duracionISO(d.duracion) } : {}),
   author: { '@type': 'Person', name: d.predicador },
   isPartOf: d.serie,
 };
@@ -51,15 +61,21 @@ const schema = {
         <time datetime={isoFecha(d.fecha)}>{formatFecha(d.fecha)}</time>
         <span aria-hidden="true">·</span>
         <span>{d.textoBiblico}</span>
-        <span aria-hidden="true">·</span>
-        <span>{formatDuracion(d.duracion)}</span>
+        {d.duracion && <span aria-hidden="true">·</span>}
+        {d.duracion && <span>{formatDuracion(d.duracion)}</span>}
       </p>
     </Container>
   </Section>
 
   <Section surface="marfil" space="md">
     <Container width="reading">
-      <SermonPlayer audioUrl={d.audioUrl} titulo={d.titulo} pdfNotas={d.pdfNotas} />
+      <SermonPlayer
+        audioUrl={d.audioUrl}
+        youtubeUrl={d.youtubeUrl}
+        spotifyUrl={d.spotifyUrl}
+        titulo={d.titulo}
+        pdfNotas={d.pdfNotas}
+      />
 
       <div class="prose sermon__notas">
         <Content />
@@ -82,6 +98,7 @@ const schema = {
               fecha={s.data.fecha}
               duracion={s.data.duracion}
               audioUrl={s.data.audioUrl}
+              youtubeUrl={s.data.youtubeUrl}
             />
           ))}
         </div>

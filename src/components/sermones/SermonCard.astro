@@ -14,8 +14,9 @@ interface Props {
   textoBiblico: string;
   predicador: string;
   fecha: Date;
-  duracion: number;
-  audioUrl: string;
+  duracion?: number;
+  audioUrl?: string;
+  youtubeUrl?: string;
   class?: string;
 }
 const {
@@ -27,9 +28,12 @@ const {
   fecha,
   duracion,
   audioUrl,
+  youtubeUrl,
   class: className,
 } = Astro.props;
 const href = `/predicacion/${slug}`;
+// Si sólo hay video, la tarjeta invita a «Ver»; si hay audio, a «Escuchar».
+const accion = !audioUrl && youtubeUrl ? 'Ver' : 'Escuchar';
 ---
 
 <article class:list={['sermon-card', className]}>
@@ -43,15 +47,16 @@ const href = `/predicacion/${slug}`;
       <span>{predicador}</span>
       <span aria-hidden="true">·</span>
       <time datetime={isoFecha(fecha)}>{formatFecha(fecha)}</time>
-      <span aria-hidden="true">·</span>
-      <span>{formatDuracion(duracion)}</span>
+      {duracion && <span aria-hidden="true">·</span>}
+      {duracion && <span>{formatDuracion(duracion)}</span>}
     </p>
   </div>
 
   <div class="sermon-card__actions">
-    <a class="sermon-card__play" href={href} aria-label={`Escuchar: ${titulo}`}>
-      <Icon name="play" size={16} /> Escuchar
+    <a class="sermon-card__play" href={href} aria-label={`${accion}: ${titulo}`}>
+      <Icon name="play" size={16} /> {accion}
     </a>
+    {audioUrl && (
     <a
       class="sermon-card__dl"
       href={audioUrl}
@@ -61,6 +66,7 @@ const href = `/predicacion/${slug}`;
       <Icon name="download" size={16} />
       <span class="visually-hidden">Descargar audio</span>
     </a>
+    )}
   </div>
 </article>
 

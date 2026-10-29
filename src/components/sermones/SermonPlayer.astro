@@ -1,34 +1,66 @@
 ---
 /**
- * Reproductor de sermón sobrio basado en <audio> nativo (accesible, sin
- * librerías). Debajo: descargar audio, descargar notas y copiar enlace.
+ * Reproductor de sermón sobrio. Muestra, según lo que tenga cargado el sermón:
+ * video de YouTube (modo sin cookies), audio con <audio> nativo y enlace a
+ * Spotify. Debajo: descargar audio, descargar notas y copiar enlace.
  */
 import Icon from '../ui/Icon.astro';
+import { youtubeId } from '../../utils/format.ts';
 interface Props {
-  audioUrl: string;
+  audioUrl?: string;
+  youtubeUrl?: string;
+  spotifyUrl?: string;
   titulo: string;
   pdfNotas?: string;
   class?: string;
 }
-const { audioUrl, titulo, pdfNotas, class: className } = Astro.props;
+const { audioUrl, youtubeUrl, spotifyUrl, titulo, pdfNotas, class: className } = Astro.props;
+const videoId = youtubeUrl ? youtubeId(youtubeUrl) : undefined;
 ---
 
 <div class:list={['player', className]}>
-  <audio
-    class="player__audio"
-    controls
-    preload="none"
-    aria-label={`Reproductor de audio: ${titulo}`}
-  >
-    <source src={audioUrl} type="audio/mpeg" />
-    Tu navegador no puede reproducir el audio.
-    <a href={audioUrl}>Descargá el archivo</a>.
-  </audio>
+  {videoId && (
+    <div class="player__video">
+      <iframe
+        src={`https://www.youtube-nocookie.com/embed/${videoId}?rel=0`}
+        title={`Video: ${titulo}`}
+        loading="lazy"
+        allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+        referrerpolicy="strict-origin-when-cross-origin"
+        allowfullscreen
+      ></iframe>
+    </div>
+  )}
+
+  {audioUrl && (
+    <audio
+      class:list={['player__audio', videoId && 'player__audio--after']}
+      controls
+      preload="none"
+      aria-label={`Reproductor de audio: ${titulo}`}
+    >
+      <source src={audioUrl} type="audio/mpeg" />
+      Tu navegador no puede reproducir el audio.
+      <a href={audioUrl}>Descargá el archivo</a>.
+    </audio>
+  )}
 
   <div class="player__actions">
-    <a class="player__btn" href={audioUrl} download>
-      <Icon name="download" size={16} /> Descargar audio
-    </a>
+    {audioUrl && (
+      <a class="player__btn" href={audioUrl} download>
+        <Icon name="download" size={16} /> Descargar audio
+      </a>
+    )}
+    {spotifyUrl && (
+      <a class="player__btn" href={spotifyUrl} target="_blank" rel="noopener noreferrer">
+        <Icon name="play" size={16} /> Escuchar en Spotify
+      </a>
+    )}
+    {youtubeUrl && !videoId && (
+      <a class="player__btn" href={youtubeUrl} target="_blank" rel="noopener noreferrer">
+        <Icon name="play" size={16} /> Ver en YouTube
+      </a>
+    )}
     {pdfNotas && (
       <a class="player__btn" href={pdfNotas} download>
         <Icon name="file-text" size={16} /> Descargar notas (PDF)
@@ -47,9 +79,26 @@ const { audioUrl, titulo, pdfNotas, class: className } = Astro.props;
     border-radius: var(--radius);
     padding: var(--space-6);
   }
+  .player__video {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    background: var(--color-sepia-profundo);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+  .player__video iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+  }
   .player__audio {
     width: 100%;
     height: 42px;
+  }
+  .player__audio--after {
+    margin-top: var(--space-4);
   }
   .player__actions {
     display: flex;

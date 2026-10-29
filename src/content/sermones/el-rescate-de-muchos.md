@@ -6,7 +6,7 @@ predicador: 'Ptro. Juan Pérez'
 fecha: 2026-02-22
 textoBiblico: 'Marcos 10:35-45'
 libro: 'Marcos'
-duracion: 2640
+duracion: 44
 audioUrl: '/audio/el-rescate-de-muchos.mp3'
 pdfNotas: '/notas/el-rescate-de-muchos.pdf'
 descripcion: 'Los discípulos discuten sobre grandeza; Jesús redefine la grandeza en términos de servicio y entrega. El Hijo del Hombre vino a dar su vida en rescate por muchos.'

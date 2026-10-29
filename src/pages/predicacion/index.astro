@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { getSermones } from '../../utils/sermones.ts';
 import Layout from '../../layouts/Layout.astro';
 import Section from '../../components/ui/Section.astro';
 import Container from '../../components/ui/Container.astro';
@@ -11,7 +12,7 @@ import Watermark from '../../components/ui/Watermark.astro';
 import SermonCard from '../../components/sermones/SermonCard.astro';
 import { formatFecha } from '../../utils/format.ts';
 
-const todos = (await getCollection('sermones')).sort(
+const todos = (await getSermones()).sort(
   (a, b) => b.data.fecha.getTime() - a.data.fecha.getTime(),
 );
 const series = await getCollection('series');
@@ -72,6 +73,7 @@ const sermonesSerieActual = serieActual
           fecha={s.data.fecha}
           duracion={s.data.duracion}
           audioUrl={s.data.audioUrl}
+          youtubeUrl={s.data.youtubeUrl}
         />
       ))}
     </div>

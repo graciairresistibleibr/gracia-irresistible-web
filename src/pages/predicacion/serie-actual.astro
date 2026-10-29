@@ -1,5 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
+import { getSermones } from '../../utils/sermones.ts';
 import Layout from '../../layouts/Layout.astro';
 import PageHero from '../../components/ui/PageHero.astro';
 import Section from '../../components/ui/Section.astro';
@@ -10,7 +11,7 @@ import { formatFecha } from '../../utils/format.ts';
 
 const series = await getCollection('series');
 const serieActual = series.find((s) => s.data.activa) ?? series[0];
-const sermones = (await getCollection('sermones'))
+const sermones = (await getSermones())
   .filter((s) => s.data.serieSlug === serieActual.id)
   .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime());
 ---
@@ -46,6 +47,7 @@ const sermones = (await getCollection('sermones'))
               fecha={s.data.fecha}
               duracion={s.data.duracion}
               audioUrl={s.data.audioUrl}
+              youtubeUrl={s.data.youtubeUrl}
             />
           ))}
         </div>

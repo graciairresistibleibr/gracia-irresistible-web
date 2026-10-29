@@ -7,51 +7,35 @@ import Divider from '../../components/ui/Divider.astro';
 import PhotoBand from '../../components/ui/PhotoBand.astro';
 import Verse from '../../components/ui/Verse.astro';
 import Link from '../../components/ui/Link.astro';
+import { getEntry, render } from 'astro:content';
+
+// El texto de esta página se edita desde el panel (/admin → «Páginas»).
+const pagina = (await getEntry('paginas', 'historia'))!;
+const d = pagina.data;
+const { Content } = await render(pagina);
 ---
 
 <Layout
-  title="Nuestra historia"
-  description="Cómo el Señor levantó la Iglesia Bautista Reformada Gracia Irresistible en Resistencia, Chaco."
+  title={d.antetitulo}
+  description={d.descripcion}
 >
   <Section surface="marfil" space="sm" contain="reading">
-    <Eyebrow>Nuestra historia</Eyebrow>
-    <h1 class="t-h1 mt-3">Una obra que no comenzamos nosotros</h1>
-    <p class="t-body-lg mt-4 measure">
-      Toda iglesia local es fruto de la gracia de Dios. La nuestra no es la
-      excepción: existe porque el Señor reunió a un grupo de hermanos en torno a su
-      Palabra.
-    </p>
+    <Eyebrow>{d.antetitulo}</Eyebrow>
+    <h1 class="t-h1 mt-3">{d.titulo}</h1>
+    <p class="t-body-lg mt-4 measure">{d.introduccion}</p>
   </Section>
 
-  <PhotoBand image="congregacion" align="center" space="md" contain="reading">
-    <Verse reference="Mateo 16:18" accent="oro" color="var(--color-crema)">
-      Sobre esta roca edificaré mi iglesia, y las puertas del Hades no
-      prevalecerán contra ella.
-    </Verse>
-  </PhotoBand>
+  {d.versiculo && (
+    <PhotoBand image="congregacion" align="center" space="md" contain="reading">
+      <Verse reference={d.referencia ?? ''} accent="oro" color="var(--color-crema)">
+        {d.versiculo}
+      </Verse>
+    </PhotoBand>
+  )}
 
   <Section surface="marfil" space="md" contain="reading">
     <div class="prose">
-      <p>
-        La Iglesia Bautista Reformada «Gracia Irresistible» nació del deseo de un
-        grupo de familias de tener, en Resistencia, una congregación comprometida
-        con la predicación expositiva de la Escritura y con la fe reformada
-        histórica confesada en la Confesión de Londres de 1689.
-      </p>
-      <h2>Los primeros pasos</h2>
-      <p>
-        Lo que empezó como un estudio bíblico en un hogar fue creciendo en número y,
-        sobre todo, en convicción. La necesidad de una mesa del Señor, del bautismo
-        de los creyentes y del gobierno de ancianos llevó a la constitución formal de
-        la iglesia.
-      </p>
-      <h2>Por qué existimos</h2>
-      <p>
-        No existimos para ofrecer una alternativa religiosa entre muchas, sino para
-        adorar al Dios verdadero del modo que Él ha ordenado, para edificar a los
-        santos por medio de la Palabra y para anunciar el evangelio de la gracia
-        soberana a nuestra ciudad.
-      </p>
+      <Content />
     </div>
 
     <Divider variant="diamond-line" />

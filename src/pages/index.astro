@@ -1,5 +1,5 @@
 ---
-import { getCollection } from 'astro:content';
+import { getSermones } from '../utils/sermones.ts';
 import Layout from '../layouts/Layout.astro';
 import Container from '../components/ui/Container.astro';
 import Section from '../components/ui/Section.astro';
@@ -15,30 +15,16 @@ import Icon from '../components/ui/Icon.astro';
 import SermonCard from '../components/sermones/SermonCard.astro';
 import MapEmbed from '../components/media/MapEmbed.astro';
 import { iglesia } from '../data/iglesia.ts';
+import inicio from '../data/inicio.json';
+import { fotoSrc } from '../utils/fotos.ts';
 
-const sermones = (await getCollection('sermones'))
+const sermones = (await getSermones())
   .sort((a, b) => b.data.fecha.getTime() - a.data.fecha.getTime())
   .slice(0, 3);
 
-const solas = [
-  {
-    titulo: 'Sola Scriptura',
-    texto:
-      'La Escritura es nuestra única autoridad infalible. Todo lo demás se somete a la Palabra de Dios.',
-  },
-  {
-    titulo: 'Solus Christus',
-    texto:
-      'Cristo es el único mediador entre Dios y los hombres. En Él, y no en nosotros, está toda la salvación.',
-  },
-  {
-    titulo: 'Soli Deo Gloria',
-    texto:
-      'Todo cuanto somos y hacemos existe para un solo fin: la gloria de Dios, que no comparte con nadie.',
-  },
-];
-
 const { proximoCulto, ubicacion, horarios } = iglesia;
+const { hero, confesamos, iglesiaLocal, versiculo, visitanos } = inicio;
+const heroFoto = fotoSrc('hero-biblia');
 ---
 
 <Layout title={iglesia.nombreCompleto} description={iglesia.descripcionBreve}>
@@ -46,18 +32,16 @@ const { proximoCulto, ubicacion, horarios } = iglesia;
   <section class="hero">
     <div class="hero__bg" aria-hidden="true">
       <picture>
-        <source srcset="/images/hero-biblia.webp" type="image/webp" />
-        <img src="/images/hero-biblia.jpg" alt="" fetchpriority="high" decoding="async" />
+        {heroFoto.webp && <source srcset={heroFoto.webp} type="image/webp" />}
+        <img src={heroFoto.src} alt="" fetchpriority="high" decoding="async" />
       </picture>
     </div>
     <div class="hero__overlay" aria-hidden="true"></div>
     <Container>
       <div class="hero__inner">
-        <Eyebrow color="crema">Iglesia Bautista Reformada</Eyebrow>
-        <h1 class="t-display hero__title">Gracia Irresistible</h1>
-        <p class="hero__subtitle">
-          Glorificamos a Dios y servimos a las personas.
-        </p>
+        <Eyebrow color="crema">{hero.antetitulo}</Eyebrow>
+        <h1 class="t-display hero__title">{hero.titulo}</h1>
+        <p class="hero__subtitle">{hero.subtitulo}</p>
         <div class="hero__actions">
           <Button variant="primary" href="/somos" onLight>Conocenos</Button>
           <Button variant="secondary" href="/creemos" onLight>Qué creemos</Button>
@@ -85,12 +69,12 @@ const { proximoCulto, ubicacion, horarios } = iglesia;
   <!-- 3 · CONFESAMOS -->
   <Section surface="crema" space="md">
     <div class="block-head">
-      <Eyebrow>Confesamos</Eyebrow>
-      <h2 class="t-h2">Tres afirmaciones que gobiernan todo lo demás</h2>
+      <Eyebrow>{confesamos.antetitulo}</Eyebrow>
+      <h2 class="t-h2">{confesamos.titulo}</h2>
     </div>
     <div class="confesamos__grid">
       {
-        solas.map((s) => (
+        confesamos.tarjetas.map((s) => (
           <Card surface="marfil">
             <h3 class="t-h3 confesamos__title">{s.titulo}</h3>
             <p class="confesamos__text">{s.texto}</p>
@@ -122,6 +106,7 @@ const { proximoCulto, ubicacion, horarios } = iglesia;
             fecha={s.data.fecha}
             duracion={s.data.duracion}
             audioUrl={s.data.audioUrl}
+            youtubeUrl={s.data.youtubeUrl}
           />
         ))
       }
@@ -130,13 +115,9 @@ const { proximoCulto, ubicacion, horarios } = iglesia;
 
   <!-- 5 · SOMOS UNA IGLESIA LOCAL (franja fotográfica) -->
   <PhotoBand image="congregacion" align="left" space="md">
-    <Eyebrow color="crema">Somos una iglesia local</Eyebrow>
-    <h2 class="t-h2 mt-3">Un pueblo, no un lugar</h2>
-    <p class="t-body-lg mt-4">
-      La iglesia no es un edificio ni un evento: es un pueblo que Cristo compró
-      con su sangre. Nos reunimos cada semana en Resistencia para escuchar la
-      Palabra predicada, celebrar las ordenanzas y cuidarnos como hermanos.
-    </p>
+    <Eyebrow color="crema">{iglesiaLocal.antetitulo}</Eyebrow>
+    <h2 class="t-h2 mt-3">{iglesiaLocal.titulo}</h2>
+    <p class="t-body-lg mt-4">{iglesiaLocal.texto}</p>
     <p class="mt-6">
       <Button variant="secondary" href="/somos" onLight>Conocé nuestra historia</Button>
     </p>
@@ -144,9 +125,8 @@ const { proximoCulto, ubicacion, horarios } = iglesia;
 
   <!-- 6 · CITA BÍBLICA (franja fotográfica) -->
   <PhotoBand image="manos-biblia" align="center" space="md" contain="reading">
-    <Verse reference="Romanos 11:36" accent="oro" color="var(--color-crema)">
-      Porque de él, y por él, y para él, son todas las cosas. A él sea la gloria por
-      los siglos. Amén.
+    <Verse reference={versiculo.referencia} accent="oro" color="var(--color-crema)">
+      {versiculo.texto}
     </Verse>
   </PhotoBand>
 
@@ -154,8 +134,8 @@ const { proximoCulto, ubicacion, horarios } = iglesia;
   <Section surface="marfil" space="md" id="visitanos">
     <TwoColumn ratio="5-7" gap="lg" align="start">
       <div slot="start">
-        <Eyebrow>Visitanos</Eyebrow>
-        <h2 class="t-h2 mt-3">Te esperamos este domingo</h2>
+        <Eyebrow>{visitanos.antetitulo}</Eyebrow>
+        <h2 class="t-h2 mt-3">{visitanos.titulo}</h2>
         <dl class="visita__data">
           <div>
             <dt><Icon name="map-pin" size={18} /> Dirección</dt>

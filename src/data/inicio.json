@@ -1,0 +1,38 @@
+{
+  "hero": {
+    "antetitulo": "Iglesia Bautista Reformada",
+    "titulo": "Gracia Irresistible",
+    "subtitulo": "Glorificamos a Dios y servimos a las personas."
+  },
+  "confesamos": {
+    "antetitulo": "Confesamos",
+    "titulo": "Tres afirmaciones que gobiernan todo lo demás",
+    "tarjetas": [
+      {
+        "titulo": "Sola Scriptura",
+        "texto": "La Escritura es nuestra única autoridad infalible. Todo lo demás se somete a la Palabra de Dios."
+      },
+      {
+        "titulo": "Solus Christus",
+        "texto": "Cristo es el único mediador entre Dios y los hombres. En Él, y no en nosotros, está toda la salvación."
+      },
+      {
+        "titulo": "Soli Deo Gloria",
+        "texto": "Todo cuanto somos y hacemos existe para un solo fin: la gloria de Dios, que no comparte con nadie."
+      }
+    ]
+  },
+  "iglesiaLocal": {
+    "antetitulo": "Somos una iglesia local",
+    "titulo": "Un pueblo, no un lugar",
+    "texto": "La iglesia no es un edificio ni un evento: es un pueblo que Cristo compró con su sangre. Nos reunimos cada semana en Resistencia para escuchar la Palabra predicada, celebrar las ordenanzas y cuidarnos como hermanos."
+  },
+  "versiculo": {
+    "texto": "Porque de él, y por él, y para él, son todas las cosas. A él sea la gloria por los siglos. Amén.",
+    "referencia": "Romanos 11:36"
+  },
+  "visitanos": {
+    "antetitulo": "Visitanos",
+    "titulo": "Te esperamos este domingo"
+  }
+}

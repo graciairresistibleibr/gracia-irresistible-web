@@ -6,7 +6,7 @@ predicador: 'Anc. Marcos Giménez'
 fecha: 2026-08-24
 textoBiblico: 'Efesios 1:3-6'
 libro: 'Efesios'
-duracion: 2400
+duracion: 40
 audioUrl: '/audio/bendecidos-en-los-lugares-celestiales.mp3'
 descripcion: 'Antes de la fundación del mundo, el Padre nos escogió en Cristo para que fuésemos santos. Toda bendición espiritual desciende de su elección soberana, para alabanza de la gloria de su gracia.'
 destacado: false

@@ -50,9 +50,9 @@ src/
 │   ├── sermones/     SermonCard, SermonPlayer
 │   ├── somos/        LeaderCard, ValueCard
 │   └── creemos/      SolaBlock, TulipPoint
-├── content/          sermones/  series/  liderazgo/   (Markdown + MDX)
+├── content/          sermones/  series/  liderazgo/  paginas/   (Markdown)
 ├── content.config.ts colecciones y schemas Zod
-├── data/iglesia.ts   FUENTE ÚNICA de datos institucionales (ver CONTENT.md)
+├── data/             iglesia.json, inicio.json, fotos.json, recursos.json (editables desde /admin)
 ├── layouts/Layout.astro   layout base con SEO (OG + Twitter + JSON-LD)
 ├── pages/            todas las rutas (ver más abajo)
 ├── styles/global.css tokens de marca, escala tipográfica, utilidades
@@ -77,10 +77,13 @@ src/
 
 ## Tareas frecuentes
 
-Todo el detalle está en **[CONTENT.md](CONTENT.md)**. En resumen:
+El contenido se edita desde el **panel de administración en `/admin`**
+(Sveltia CMS, ver **[docs/PANEL.md](docs/PANEL.md)**). Para editar a mano, el
+detalle está en **[CONTENT.md](CONTENT.md)**. En resumen:
 
-- **Cambiar el próximo culto, horarios, dirección o redes:** editá `src/data/iglesia.ts`.
-- **Agregar un sermón:** creá un `.mdx` en `src/content/sermones/` (ver plantilla en CONTENT.md).
+- **Cambiar el próximo culto, horarios, dirección o redes:** editá `src/data/iglesia.json`.
+- **Textos de la portada / fotos de fondo / recursos:** `src/data/inicio.json`, `fotos.json`, `recursos.json`.
+- **Agregar un sermón:** creá un `.md` en `src/content/sermones/` (ver plantilla en CONTENT.md).
 - **Agregar una serie:** creá un `.md` en `src/content/series/`.
 - **Agregar liderazgo:** creá un `.md` en `src/content/liderazgo/`.
 - **Reemplazar placeholders por fotos reales:** buscá los comentarios `PLACEHOLDER:` en el código.

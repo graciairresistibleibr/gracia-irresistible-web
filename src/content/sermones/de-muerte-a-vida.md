@@ -6,7 +6,7 @@ predicador: 'Ptro. Juan Pérez'
 fecha: 2026-09-07
 textoBiblico: 'Efesios 2:1-10'
 libro: 'Efesios'
-duracion: 2760
+duracion: 46
 audioUrl: '/audio/de-muerte-a-vida.mp3'
 pdfNotas: '/notas/de-muerte-a-vida.pdf'
 descripcion: 'Estábamos muertos en delitos y pecados, pero Dios, rico en misericordia, nos dio vida juntamente con Cristo. La salvación es por gracia, mediante la fe, y esto no de nosotros.'
