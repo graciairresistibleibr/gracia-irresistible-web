@@ -251,7 +251,7 @@ button {
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.2px;
-  margin-top: var(--space-12);
+  margin-top: clamp(var(--space-8), 5vw, var(--space-12));
 }
 .prose h3 {
   font-family: var(--font-serif);
@@ -276,6 +276,15 @@ button {
 .prose ul,
 .prose ol {
   padding-left: var(--space-6);
+}
+.prose ul {
+  list-style: disc;
+}
+.prose ol {
+  list-style: decimal;
+}
+.prose li::marker {
+  color: var(--color-sepia);
 }
 .prose li + li {
   margin-top: var(--space-2);

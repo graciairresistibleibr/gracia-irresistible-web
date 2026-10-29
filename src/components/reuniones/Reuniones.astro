@@ -146,4 +146,34 @@ const fotosMiercoles = fotos(miercoles.fotos);
       margin-bottom: 0;
     }
   }
+  /* En celulares las fotos se deslizan de costado, para no alargar la página */
+  @media (max-width: 599px) {
+    .mosaico,
+    .par {
+      display: flex;
+      gap: var(--space-3);
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      margin-inline: -1.5rem;
+      padding-inline: 1.5rem;
+      scrollbar-width: none;
+    }
+    .mosaico::-webkit-scrollbar,
+    .par::-webkit-scrollbar {
+      display: none;
+    }
+    .mosaico .foto,
+    .par .foto {
+      flex: 0 0 82%;
+      scroll-snap-align: center;
+    }
+    .head {
+      margin-bottom: var(--space-8);
+    }
+    .reunion + .reunion {
+      margin-top: var(--space-8);
+      padding-top: var(--space-8);
+    }
+  }
+
 </style>

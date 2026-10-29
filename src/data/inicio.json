@@ -6,26 +6,26 @@
   },
   "confesamos": {
     "antetitulo": "Confesamos",
-    "titulo": "Tres afirmaciones que gobiernan todo lo demás",
+    "titulo": "Tres verdades que nos gobiernan",
     "tarjetas": [
       {
         "titulo": "Sola Scriptura",
-        "texto": "La Escritura es nuestra única autoridad infalible. Todo lo demás se somete a la Palabra de Dios."
+        "texto": "La Biblia es nuestra única autoridad infalible."
       },
       {
         "titulo": "Solus Christus",
-        "texto": "Cristo es el único mediador entre Dios y los hombres. En Él, y no en nosotros, está toda la salvación."
+        "texto": "Cristo es el único mediador. En Él está toda la salvación."
       },
       {
         "titulo": "Soli Deo Gloria",
-        "texto": "Todo cuanto somos y hacemos existe para un solo fin: la gloria de Dios, que no comparte con nadie."
+        "texto": "Todo lo que somos y hacemos es para la gloria de Dios."
       }
     ]
   },
   "iglesiaLocal": {
     "antetitulo": "Somos una iglesia local",
     "titulo": "Un pueblo, no un lugar",
-    "texto": "La iglesia no es un edificio ni un evento: es un pueblo que Cristo compró con su sangre. Nos reunimos cada semana en Resistencia para escuchar la Palabra predicada, celebrar las ordenanzas y cuidarnos como hermanos."
+    "texto": "No somos un edificio ni un evento: somos un pueblo que Cristo compró con su sangre. Cada semana, en Resistencia, escuchamos la Palabra y nos cuidamos como hermanos."
   },
   "versiculo": {
     "texto": "Porque de él, y por él, y para él, son todas las cosas. A él sea la gloria por los siglos. Amén.",
