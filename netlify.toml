@@ -34,3 +34,9 @@
   for = "/liderazgo/*"
   [headers.values]
     Cache-Control = "public, max-age=86400, stale-while-revalidate=604800"
+
+# Audios de las prédicas: caché de una semana (archivos grandes que no cambian).
+[[headers]]
+  for = "/audio/*"
+  [headers.values]
+    Cache-Control = "public, max-age=604800"
