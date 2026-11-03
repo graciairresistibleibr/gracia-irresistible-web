@@ -8,7 +8,7 @@ libro: Santiago
 duracion: 39
 youtubeUrl: https://www.youtube.com/watch?v=IK0sZHvuiTI
 descripcion: 'Ser inteligente no es lo mismo que ser sabio. La sabiduría de lo alto se ve en una vida humilde, pacífica y llena de buenos frutos.'
-destacado: true
+destacado: false
 ---
 
 ## Resumen
